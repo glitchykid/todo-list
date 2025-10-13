@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+h5 {
+  @apply font-bold text-[40px] leading-none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+hr {
+  @apply bg-[#C9D7ED] border-0 h-px;
+}
