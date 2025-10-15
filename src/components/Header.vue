@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLink from "./AppLink.vue";
+import LinkButton from "./buttons/LinkButton.vue";
 import AppIcon from "./AppIcon.vue";
 import { appRoutes } from "@/routes/routes";
 
@@ -19,16 +19,16 @@ const headerButtonStyle: Record<LinkState, string> = {
     <h5 class="text-center text-[#8276FF]">TODO LIST</h5>
     <hr />
     <nav class="flex flex-col gap-4 w-fill">
-      <AppLink
+      <LinkButton
         v-for="link in appRoutes"
-        :key="link.id"
+        :key="link.name"
         :to="link.path"
         :class="headerButtonStyle.base"
         :active-class="headerButtonStyle.active"
         :inactive-class="headerButtonStyle.inactive"
       >
         <AppIcon :name="link.icon" />
-        {{ link.label }}</AppLink
+        {{ link.label }}</LinkButton
       >
     </nav>
   </header>

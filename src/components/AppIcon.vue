@@ -3,7 +3,7 @@ import HomeIcon from "@/components/icons/Home.vue";
 import HistoryIcon from "@/components/icons/History.vue";
 import BinIcon from "@/components/icons/Bin.vue";
 
-type IconName = "home" | "history" | "bin";
+import type { IconName } from "@/routes/routes";
 
 const props = defineProps<{
   name: IconName;

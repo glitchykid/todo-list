@@ -2,10 +2,9 @@ import HomeView from "@/views/home/HomeView.vue";
 import HistoryView from "@/views/history/HistoryView.vue";
 import BinView from "@/views/bin/BinView.vue";
 
-type IconName = "home" | "history" | "bin";
+export type IconName = "home" | "history" | "bin";
 
 interface AppRoute {
-  id: number;
   path: string;
   name: string;
   label: string;
@@ -15,7 +14,6 @@ interface AppRoute {
 
 export const appRoutes: AppRoute[] = [
   {
-    id: 0,
     path: "/",
     name: "home",
     label: "Home",
@@ -23,7 +21,6 @@ export const appRoutes: AppRoute[] = [
     component: HomeView,
   },
   {
-    id: 1,
     path: "/history",
     name: "history",
     label: "History",
@@ -31,7 +28,6 @@ export const appRoutes: AppRoute[] = [
     component: HistoryView,
   },
   {
-    id: 2,
     path: "/bin",
     name: "bin",
     label: "Bin",
