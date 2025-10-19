@@ -17,17 +17,19 @@ const tooglePopup = () => {
 </script>
 
 <template>
-  <button
-    class="px-4 py-2 transition-all duration-300 border-[#8276FF] relative"
-    :class="[
-      props.border ? 'border-1 rounded-[8px]' : '',
-      active
-        ? 'bg-[#8276FF] text-[#EAEDF2]'
-        : 'text-[#8276FF] hover:bg-[#D0CCFF]',
-    ]"
-    @click="tooglePopup"
-  >
-    <slot>{{ props.label }}</slot>
-    <Calendar v-if="props.name === 'select' && props.active && popup" />
-  </button>
+  <div class="relative z-10 inline-block">
+    <button
+      class="px-4 py-2 transition-all rounded-[8px] duration-300"
+      :class="[
+        props.border ? 'border-1 border-[#8276FF]' : '',
+        active
+          ? 'bg-[#8276FF] text-[#EAEDF2]'
+          : 'text-[#8276FF] hover:bg-[#D0CCFF]',
+      ]"
+      @click="tooglePopup"
+    >
+      <slot>{{ props.label }}</slot>
+      <Calendar v-if="props.name === 'select' && props.active && popup" />
+    </button>
+  </div>
 </template>

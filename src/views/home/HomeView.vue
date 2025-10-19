@@ -27,7 +27,7 @@ const buttons: buttons[] = [
     active: false,
   },
 ];
-
+// fix this
 const date = computed(() => {
   const today: Date = new Date();
   if (activeButton.value === "today") {
@@ -55,7 +55,7 @@ const date = computed(() => {
             :name="button.name"
             :label="button.label"
             :active="activeButton === button.name"
-            :border="false"
+            :border="true"
             @click="activeButton = button.name"
           />
         </div>
