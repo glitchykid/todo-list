@@ -21,7 +21,7 @@ const changeValue = (value: string): void => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative z-50">
     <div
       class="flex flex-row p-4 gap-4 border-1 border-[#C9D7ED] rounded-[8px] min-w-46 justify-between transition-all duration-300"
       :class="
@@ -36,7 +36,7 @@ const changeValue = (value: string): void => {
     </div>
     <div
       v-if="active"
-      class="flex flex-col absolute border-1 bg-white border-[#C9D7ED] min-w-46 top-full rounded-[8px] max-h-60 overflow-auto"
+      class="flex flex-col absolute border-1 bg-white border-[#C9D7ED] w-full top-full rounded-[8px] max-h-60 overflow-auto"
     >
       <span
         v-for="value of values"
