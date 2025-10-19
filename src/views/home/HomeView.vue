@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import HomeMainTopButton from "@/components/buttons/HomeMainTopButton.vue";
+import RegularButton from "@/components/buttons/RegularButton.vue";
 
 interface buttons {
   name: string;
@@ -46,15 +46,16 @@ const date = computed(() => {
     class="bg-white w-full h-full gap-8 px-9 py-8 border-1 border-[#C9D7ED] rounded-[16px]"
   >
     <div class="flex flex-col w-full gap-8">
-      <!-- Depends on a space name -->
       <h6 class="text-[#D0CCFF] text-center">All tasks</h6>
       <div class="flex flex-row items-center justify-between">
         <div class="flex flex-row gap-8">
-          <HomeMainTopButton
+          <RegularButton
             v-for="button in buttons"
             :key="button.name"
+            :name="button.name"
             :label="button.label"
             :active="activeButton === button.name"
+            :border="false"
             @click="activeButton = button.name"
           />
         </div>
