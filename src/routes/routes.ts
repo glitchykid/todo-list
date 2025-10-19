@@ -2,13 +2,13 @@ import HomeView from "@/views/home/HomeView.vue";
 import HistoryView from "@/views/history/HistoryView.vue";
 import BinView from "@/views/bin/BinView.vue";
 
-export type IconName = "home" | "history" | "bin";
+export type RouteIcon = "home" | "history" | "bin";
 
 interface AppRoute {
   path: string;
   name: string;
   label: string;
-  icon: IconName;
+  icon: RouteIcon;
   component: any;
 }
 

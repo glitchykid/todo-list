@@ -2,18 +2,22 @@
 import HomeIcon from "@/components/icons/Home.vue";
 import HistoryIcon from "@/components/icons/History.vue";
 import BinIcon from "@/components/icons/Bin.vue";
+import ChevronDown from "./icons/ChevronDown.vue";
 
-import type { IconName } from "@/routes/routes";
+import type { RouteIcon } from "@/routes/routes";
+
+type RegularIcon = "chevronDown";
 
 const props = defineProps<{
-  name: IconName;
+  name: RouteIcon | RegularIcon;
   class?: string;
 }>();
 
-const icons: Record<IconName, any> = {
+const icons: Record<RouteIcon | RegularIcon, any> = {
   home: HomeIcon,
   history: HistoryIcon,
   bin: BinIcon,
+  chevronDown: ChevronDown,
 };
 </script>
 
