@@ -1,41 +1,51 @@
 <script setup lang="ts">
 import AppIcon from "@/components/AppIcon.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   values: string[];
   default: string;
 }>();
 
-const defaultValue = ref(props.default);
-const active = ref(false);
+const emit = defineEmits<(e: "update:default", value: string) => void>();
+
+const isOpen = ref(false);
+const selected = ref(props.default ?? props.values[0] ?? "");
+
+watch(
+  () => props.default,
+  (v) => {
+    if (v !== undefined && v !== selected.value) selected.value = v;
+  }
+);
+
 const toogleDropdown = () => {
-  active.value = !active.value;
+  isOpen.value = !isOpen.value;
 };
 
-const activeValue = ref(false);
 const changeValue = (value: string): void => {
-  defaultValue.value = value;
-  toogleDropdown();
+  selected.value = value;
+  emit("update:default", value);
+  isOpen.value = false;
 };
 </script>
 
 <template>
   <div class="relative z-50">
     <div
-      class="flex flex-row p-4 gap-4 border-1 border-[#C9D7ED] rounded-[8px] min-w-46 justify-between transition-all duration-300"
+      class="flex flex-row p-4 gap-4 border-1 border-[#C9D7ED] rounded-[8px] min-w-38 justify-between items-center transition-all duration-300"
       :class="
-        active
+        isOpen
           ? 'bg-[#8276FF] text-[#EAEDF2]'
           : 'text-[#8276FF] hover:bg-[#D0CCFF]'
       "
       @click="toogleDropdown"
     >
-      <span>{{ defaultValue }}</span>
+      <span>{{ selected }}</span>
       <AppIcon name="chevronDown" />
     </div>
     <div
-      v-if="active"
+      v-if="isOpen"
       class="flex flex-col absolute border-1 bg-white border-[#C9D7ED] w-full top-full rounded-[8px] max-h-60 overflow-auto"
     >
       <span
@@ -43,11 +53,11 @@ const changeValue = (value: string): void => {
         :key="value"
         class="text-center gap-y-4 w-full py-2 transition-all duration-300"
         :class="
-          activeValue || defaultValue === value
+          selected === value
             ? 'bg-[#8276FF] text-[#EAEDF2]'
             : 'text-[#8276FF] hover:bg-[#D0CCFF]'
         "
-        @click="changeValue(value)"
+        @click.stop="changeValue(value)"
         >{{ value }}</span
       >
     </div>
