@@ -47,7 +47,7 @@ const date = computed(() => {
   >
     <div class="flex flex-col w-full gap-8">
       <h6 class="text-[#D0CCFF] text-center">All tasks</h6>
-      <div class="flex flex-row items-center justify-between">
+      <div class="flex flex-row items-center justify-between gap-8">
         <div class="flex flex-row gap-8">
           <RegularButton
             v-for="button in buttons"
@@ -57,9 +57,10 @@ const date = computed(() => {
             :active="activeButton === button.name"
             :border="true"
             @click="activeButton = button.name"
+            class="px-4 py-2"
           />
         </div>
-        <span class="text-[#D0CCFF] font-bold text-right">
+        <span class="text-[#D0CCFF] font-bold text-right text-nowrap">
           {{ date }}
         </span>
       </div>
