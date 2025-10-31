@@ -7,7 +7,7 @@ const props = defineProps<{
   default: string;
 }>();
 
-const emit = defineEmits<(e: "update:default", value: string) => void>();
+const emit = defineEmits<(e: "update:default", v: string) => void>();
 
 const isOpen = ref(false);
 const selected = ref(props.default ?? props.values[0] ?? "");
@@ -16,7 +16,7 @@ watch(
   () => props.default,
   (v) => {
     if (v !== undefined && v !== selected.value) selected.value = v;
-  }
+  },
 );
 
 const toogleDropdown = () => {

@@ -1,44 +1,34 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import RegularButton from "@/components/buttons/RegularButton.vue";
+import Calendar from "@/components/Calendar.vue";
+import { useTasksStore } from "@/stores/tasks";
+import { storeToRefs } from "pinia";
 
-interface buttons {
-  name: string;
-  label: string;
-  active: boolean;
-}
+const tasksStore = useTasksStore();
+const { activeFilter, formattedSelectedDate, isCalendarOpen } =
+  storeToRefs(tasksStore);
 
-const activeButton = ref("today");
+const quickButtons = [
+  { name: "today", label: "Today" },
+  { name: "tomorrow", label: "Tomorrow" },
+] as const;
 
-const buttons: buttons[] = [
-  {
-    name: "today",
-    label: "Today",
-    active: true,
-  },
-  {
-    name: "tomorrow",
-    label: "Tomorrow",
-    active: false,
-  },
-  {
-    name: "select",
-    label: "Select a date...",
-    active: false,
-  },
-];
-// fix this
-const date = computed(() => {
-  const today: Date = new Date();
-  if (activeButton.value === "today") {
-    return today.toLocaleDateString();
-  } else if (activeButton.value === "tomorrow") {
-    const tomorrow: Date = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    return tomorrow.toLocaleDateString();
+const isSelectActive = computed(
+  () => activeFilter.value === "select" || isCalendarOpen.value,
+);
+
+const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
+  if (name === "today") {
+    tasksStore.selectToday();
+  } else {
+    tasksStore.selectTomorrow();
   }
-  return "Select a date...";
-});
+};
+
+const toggleCalendar = () => {
+  tasksStore.toggleCalendar();
+};
 </script>
 
 <template>
@@ -50,18 +40,29 @@ const date = computed(() => {
       <div class="flex flex-row items-center justify-between gap-8">
         <div class="flex flex-row gap-8">
           <RegularButton
-            v-for="button in buttons"
+            v-for="button in quickButtons"
             :key="button.name"
             :name="button.name"
             :label="button.label"
-            :active="activeButton === button.name"
+            :active="activeFilter === button.name"
             :border="true"
-            @click="activeButton = button.name"
+            @click="handleQuickFilter(button.name)"
             class="px-4 py-2"
           />
+          <div class="relative">
+            <RegularButton
+              name="select"
+              label="Select a date..."
+              :active="isSelectActive"
+              :border="true"
+              class="px-4 py-2"
+              @click="toggleCalendar"
+            />
+            <Calendar v-if="isCalendarOpen" />
+          </div>
         </div>
         <span class="text-[#D0CCFF] font-bold text-right text-nowrap">
-          {{ date }}
+          {{ formattedSelectedDate }}
         </span>
       </div>
     </div>

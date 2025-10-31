@@ -8,4 +8,5 @@ export const locales: Record<string, number> = {
   "uk-UA": 1,
 };
 
-export const currentLocale: string = navigator.language;
+export const currentLocale: string =
+  typeof navigator !== "undefined" ? navigator.language : "en-US";

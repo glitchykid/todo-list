@@ -1,24 +1,28 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { RouterLink } from "vue-router";
+import type { RouterLinkProps } from "vue-router";
 
 defineOptions({
   inheritAttrs: false,
 });
 
-// @ts-ignore
-const props = defineProps({
-  ...RouterLink.props,
-  inactiveClass: String,
-});
+const props = defineProps<
+  RouterLinkProps & {
+    inactiveClass?: string;
+  }
+>();
 
 const isExternalLink = computed(() => {
   return typeof props.to === "string" && props.to.startsWith("http");
 });
+
+const externalHref = computed(() =>
+  typeof props.to === "string" ? props.to : "#",
+);
 </script>
 
 <template>
-  <a v-if="isExternalLink" v-bind="$attrs" :href="to" target="_blank">
+  <a v-if="isExternalLink" v-bind="$attrs" :href="externalHref" target="_blank">
     <slot />
   </a>
   <router-link
