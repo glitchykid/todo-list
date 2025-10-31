@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Calendar from "@/components/Calendar.vue";
-
 const props = defineProps<{
   name: string | number;
   label: string | number;
@@ -20,6 +18,5 @@ const props = defineProps<{
     ]"
   >
     <slot>{{ props.label }}</slot>
-    <Calendar v-if="props.name === 'select' && props.active" />
   </button>
 </template>

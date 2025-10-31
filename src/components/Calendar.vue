@@ -2,33 +2,95 @@
 import Dropdown from "@/components/Dropdown.vue";
 import RegularButton from "@/components/buttons/RegularButton.vue";
 import { locales, currentLocale } from "@/locales/locales";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
+import { useTasksStore } from "@/stores/tasks";
+import { storeToRefs } from "pinia";
 
-import type { Ref } from "vue";
+const tasksStore = useTasksStore();
+const { selectedDateAsDate, calendarCursorDate } = storeToRefs(tasksStore);
 
-const date: Ref<Date> = ref(new Date());
+const viewDate = ref(new Date(calendarCursorDate.value));
+
+const formatYearLabel = (year: number) =>
+  new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
+    new Date(year, 0, 1),
+  );
+
+const createYearNumbers = (centerYear: number) => {
+  const start = centerYear - 10;
+  const numbers: number[] = [];
+  for (let year = start; year <= centerYear + 10; year++) {
+    numbers.push(year);
+  }
+  return numbers;
+};
+
+const yearNumbers = ref<number[]>(createYearNumbers(viewDate.value.getFullYear()));
+const yearLabels = computed(() =>
+  yearNumbers.value.map((year) => formatYearLabel(year)),
+);
+
+const ensureYearInList = (year: number) => {
+  const numbers = yearNumbers.value;
+  if (numbers.includes(year)) return;
+
+  if (numbers.length === 0) {
+    yearNumbers.value = [year];
+    return;
+  }
+
+  let first = numbers[0];
+  while (first !== undefined && year < first) {
+    numbers.unshift(first - 1);
+    first = numbers[0];
+  }
+
+  let last = numbers[numbers.length - 1];
+  while (last !== undefined && year > last) {
+    numbers.push(last + 1);
+    last = numbers[numbers.length - 1];
+  }
+};
+
+watch(calendarCursorDate, (newCursor) => {
+  if (viewDate.value.getTime() !== newCursor.getTime()) {
+    viewDate.value = new Date(newCursor);
+    ensureYearInList(viewDate.value.getFullYear());
+  }
+});
+
+watch(
+  viewDate,
+  (newDate) => {
+    ensureYearInList(newDate.getFullYear());
+    if (calendarCursorDate.value.getTime() !== newDate.getTime()) {
+      tasksStore.setCalendarMonth(newDate);
+    }
+  },
+  { deep: false },
+);
 
 const currentMonth = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     month: "long",
-  }).format(date.value)
+  }).format(viewDate.value),
 );
 const currentYear = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     year: "numeric",
-  }).format(date.value)
+  }).format(viewDate.value),
 );
 
 const weekdays = computed(() => {
   const startOffset = locales[currentLocale] ?? 0;
-  const d = new Date(date.value);
+  const d = new Date(viewDate.value);
   d.setDate(d.getDate() - ((d.getDay() - startOffset + 7) % 7));
   const arr: string[] = [];
   for (let i = 0; i < 7; i++) {
     arr.push(
       new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
-        new Date(d)
-      )
+        new Date(d),
+      ),
     );
     d.setDate(d.getDate() + 1);
   }
@@ -38,28 +100,19 @@ const weekdays = computed(() => {
 const monthNames = computed(() => {
   const arr: string[] = [];
   for (let i = 0; i < 12; i++) {
-    const d = new Date(date.value);
+    const d = new Date(viewDate.value);
+    d.setDate(1);
     d.setMonth(i);
     arr.push(
-      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d)
+      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d),
     );
   }
   return arr;
 });
 
-const y = date.value.getFullYear();
-const yearList: string[] = [];
-for (let i = y - 10; i <= y + 10; i++) {
-  yearList.push(
-    new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
-      new Date(i, 0, 1)
-    )
-  );
-}
-
 const monthDays = computed(() => {
-  const currentYear = date.value.getFullYear();
-  const currentMonth = date.value.getMonth();
+  const currentYear = viewDate.value.getFullYear();
+  const currentMonth = viewDate.value.getMonth();
   const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
   const arr: number[] = [];
   for (let i = 1; i <= lastDay; i++) arr.push(i);
@@ -69,35 +122,62 @@ const monthDays = computed(() => {
 const setMonthByName = (monthName: string) => {
   const index = monthNames.value.indexOf(monthName);
   if (index >= 0) {
-    const d = new Date(date.value);
+    const d = new Date(viewDate.value);
+    d.setDate(1);
     d.setMonth(index);
-    date.value = d;
+    viewDate.value = d;
   }
 };
 
 const setYearByLabel = (yearLabel: string) => {
-  const yearNumber = parseInt(yearLabel, 10);
-  if (!Number.isNaN(yearNumber)) {
-    const d = new Date(date.value);
-    d.setFullYear(yearNumber);
-    date.value = d;
+  const labelIndex = yearLabels.value.indexOf(yearLabel);
+  let yearNumber: number | undefined;
+  if (labelIndex >= 0) {
+    yearNumber = yearNumbers.value[labelIndex];
+  } else {
+    const parsed = parseInt(yearLabel, 10);
+    if (!Number.isNaN(parsed)) yearNumber = parsed;
   }
+
+  if (yearNumber === undefined) return;
+
+  ensureYearInList(yearNumber);
+
+  const d = new Date(viewDate.value);
+  d.setDate(1);
+  d.setFullYear(yearNumber);
+  viewDate.value = d;
 };
 
 const leadingBlanks = computed(() => {
   const startOffset = locales[currentLocale] ?? 0;
-  const year = date.value.getFullYear();
-  const month = date.value.getMonth();
+  const year = viewDate.value.getFullYear();
+  const month = viewDate.value.getMonth();
   const firstDay = new Date(year, month, 1);
   const firstWeekday = firstDay.getDay();
   const blanks = (firstWeekday - startOffset + 7) % 7;
   return Array.from({ length: blanks }, (_, i) => i);
 });
+
+const isActiveDay = (day: number): boolean => {
+  const selected = selectedDateAsDate.value;
+  return (
+    selected.getFullYear() === viewDate.value.getFullYear() &&
+    selected.getMonth() === viewDate.value.getMonth() &&
+    selected.getDate() === day
+  );
+};
+
+const selectDay = (day: number) => {
+  const nextDate = new Date(viewDate.value);
+  nextDate.setDate(day);
+  tasksStore.setSelectedDate(nextDate);
+};
 </script>
 
 <template>
   <div
-    class="bg-white border-1 border-[#C9D7ED] flex flex-col absolute -left-30 top-full mt-4 text-[#8276FF] rounded-[8px] p-4 gap-4"
+    class="bg-white border-1 border-[#C9D7ED] flex flex-col absolute -left-30 top-full mt-4 text-[#8276FF] rounded-[8px] p-4 gap-4 z-40"
   >
     <div class="flex flex-row gap-8 justify-between">
       <Dropdown
@@ -106,7 +186,7 @@ const leadingBlanks = computed(() => {
         @update:default="setMonthByName"
       />
       <Dropdown
-        :values="yearList"
+        :values="yearLabels"
         :default="currentYear"
         @update:default="setYearByLabel"
       />
@@ -122,10 +202,11 @@ const leadingBlanks = computed(() => {
         v-for="numberOfTheMonth of monthDays"
         :key="numberOfTheMonth"
         :border="false"
-        :active="false"
+        :active="isActiveDay(numberOfTheMonth)"
         :label="numberOfTheMonth"
         :name="numberOfTheMonth"
         class="w-9 h-9"
+        @click="selectDay(numberOfTheMonth)"
       />
     </div>
   </div>
