@@ -29,6 +29,10 @@ const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
 const toggleCalendar = () => {
   tasksStore.toggleCalendar();
 };
+
+const closeCalendar = () => {
+  tasksStore.toggleCalendar(false);
+};
 </script>
 
 <template>
@@ -67,6 +71,11 @@ const toggleCalendar = () => {
       </div>
     </div>
   </main>
+  <div
+    v-if="isCalendarOpen"
+    class="fixed inset-0 bg-black/20 z-30"
+    @click="closeCalendar"
+  />
   <aside
     class="bg-white min-w-50 w-50 h-full py-8 flex flex-col gap-8 border-1 border-[#C9D7ED] rounded-[16px]"
   >

@@ -13,7 +13,7 @@ const viewDate = ref(new Date(calendarCursorDate.value));
 
 const formatYearLabel = (year: number) =>
   new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
-    new Date(year, 0, 1),
+    new Date(year, 0, 1)
   );
 
 const createYearNumbers = (centerYear: number) => {
@@ -25,9 +25,11 @@ const createYearNumbers = (centerYear: number) => {
   return numbers;
 };
 
-const yearNumbers = ref<number[]>(createYearNumbers(viewDate.value.getFullYear()));
+const yearNumbers = ref<number[]>(
+  createYearNumbers(viewDate.value.getFullYear())
+);
 const yearLabels = computed(() =>
-  yearNumbers.value.map((year) => formatYearLabel(year)),
+  yearNumbers.value.map((year) => formatYearLabel(year))
 );
 
 const ensureYearInList = (year: number) => {
@@ -67,18 +69,18 @@ watch(
       tasksStore.setCalendarMonth(newDate);
     }
   },
-  { deep: false },
+  { deep: false }
 );
 
 const currentMonth = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     month: "long",
-  }).format(viewDate.value),
+  }).format(viewDate.value)
 );
 const currentYear = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     year: "numeric",
-  }).format(viewDate.value),
+  }).format(viewDate.value)
 );
 
 const weekdays = computed(() => {
@@ -89,8 +91,8 @@ const weekdays = computed(() => {
   for (let i = 0; i < 7; i++) {
     arr.push(
       new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
-        new Date(d),
-      ),
+        new Date(d)
+      )
     );
     d.setDate(d.getDate() + 1);
   }
@@ -104,19 +106,50 @@ const monthNames = computed(() => {
     d.setDate(1);
     d.setMonth(i);
     arr.push(
-      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d),
+      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d)
     );
   }
   return arr;
 });
 
-const monthDays = computed(() => {
+interface CalendarCell {
+  key: number;
+  displayDay: number;
+  date: Date;
+  isCurrentMonth: boolean;
+}
+
+const calendarCells = computed<CalendarCell[]>(() => {
+  const startOffset = locales[currentLocale] ?? 0;
   const currentYear = viewDate.value.getFullYear();
   const currentMonth = viewDate.value.getMonth();
-  const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const arr: number[] = [];
-  for (let i = 1; i <= lastDay; i++) arr.push(i);
-  return arr;
+  const firstOfMonth = new Date(currentYear, currentMonth, 1);
+  const firstWeekday = firstOfMonth.getDay();
+  const leading = (firstWeekday - startOffset + 7) % 7;
+
+  const daysInCurrentMonth = new Date(
+    currentYear,
+    currentMonth + 1,
+    0
+  ).getDate();
+  const totalCells = Math.ceil((leading + daysInCurrentMonth) / 7) * 7;
+
+  const startDate = new Date(firstOfMonth);
+  startDate.setDate(firstOfMonth.getDate() - leading);
+
+  const cells: CalendarCell[] = [];
+  for (let i = 0; i < totalCells; i++) {
+    const cellDate = new Date(startDate);
+    cellDate.setDate(startDate.getDate() + i);
+    cells.push({
+      key: cellDate.getTime(),
+      displayDay: cellDate.getDate(),
+      date: cellDate,
+      isCurrentMonth: cellDate.getMonth() === currentMonth,
+    });
+  }
+
+  return cells;
 });
 
 const setMonthByName = (monthName: string) => {
@@ -149,29 +182,17 @@ const setYearByLabel = (yearLabel: string) => {
   viewDate.value = d;
 };
 
-const leadingBlanks = computed(() => {
-  const startOffset = locales[currentLocale] ?? 0;
-  const year = viewDate.value.getFullYear();
-  const month = viewDate.value.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const firstWeekday = firstDay.getDay();
-  const blanks = (firstWeekday - startOffset + 7) % 7;
-  return Array.from({ length: blanks }, (_, i) => i);
-});
-
-const isActiveDay = (day: number): boolean => {
+const isActiveDay = (cellDate: Date): boolean => {
   const selected = selectedDateAsDate.value;
   return (
-    selected.getFullYear() === viewDate.value.getFullYear() &&
-    selected.getMonth() === viewDate.value.getMonth() &&
-    selected.getDate() === day
+    selected.getFullYear() === cellDate.getFullYear() &&
+    selected.getMonth() === cellDate.getMonth() &&
+    selected.getDate() === cellDate.getDate()
   );
 };
 
-const selectDay = (day: number) => {
-  const nextDate = new Date(viewDate.value);
-  nextDate.setDate(day);
-  tasksStore.setSelectedDate(nextDate);
+const selectDay = (cellDate: Date) => {
+  tasksStore.setSelectedDate(new Date(cellDate));
 };
 </script>
 
@@ -192,22 +213,31 @@ const selectDay = (day: number) => {
       />
     </div>
     <div class="grid grid-cols-7 justify-items-center font-bold">
-      <span v-for="weekday of weekdays" :key="weekday" class="w-8">{{
-        weekday
-      }}</span>
+      <span
+        v-for="weekday of weekdays"
+        :key="weekday"
+        class="w-9 h-9 flex items-center justify-center font-bold select-none"
+        >{{ weekday }}</span
+      >
     </div>
     <div class="grid grid-cols-7 justify-items-center gap-y-3">
-      <span v-for="i in leadingBlanks" :key="'blank-' + i" class="w-9 h-9" />
-      <RegularButton
-        v-for="numberOfTheMonth of monthDays"
-        :key="numberOfTheMonth"
-        :border="false"
-        :active="isActiveDay(numberOfTheMonth)"
-        :label="numberOfTheMonth"
-        :name="numberOfTheMonth"
-        class="w-9 h-9"
-        @click="selectDay(numberOfTheMonth)"
-      />
+      <template v-for="cell in calendarCells" :key="cell.key">
+        <RegularButton
+          v-if="cell.isCurrentMonth"
+          :border="false"
+          :active="isActiveDay(cell.date)"
+          :label="cell.displayDay"
+          :name="cell.displayDay"
+          class="w-9 h-9"
+          @click="selectDay(cell.date)"
+        />
+        <span
+          v-else
+          class="w-9 h-9 flex items-center justify-center text-[#B3BCCD] select-none"
+        >
+          {{ cell.displayDay }}
+        </span>
+      </template>
     </div>
   </div>
 </template>
