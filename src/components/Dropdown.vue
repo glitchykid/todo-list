@@ -16,7 +16,7 @@ watch(
   () => props.default,
   (v) => {
     if (v !== undefined && v !== selected.value) selected.value = v;
-  },
+  }
 );
 
 const toogleDropdown = () => {
@@ -41,7 +41,7 @@ const changeValue = (value: string): void => {
       "
       @click="toogleDropdown"
     >
-      <span>{{ selected }}</span>
+      <span class="select-none">{{ selected }}</span>
       <AppIcon name="chevronDown" />
     </div>
     <div
@@ -51,7 +51,7 @@ const changeValue = (value: string): void => {
       <span
         v-for="value of values"
         :key="value"
-        class="text-center gap-y-4 w-full py-2 transition-all duration-300"
+        class="text-center gap-y-4 w-full py-2 transition-all duration-300 select-none"
         :class="
           selected === value
             ? 'bg-[#8276FF] text-[#EAEDF2]'
