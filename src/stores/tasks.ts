@@ -31,6 +31,7 @@ export const useTasksStore = defineStore("tasks", {
         this.selectedDateAsDate,
       );
     },
+
     tasksForSelectedDate: (state) =>
       state.tasks.filter((task) => task.dueDate === state.selectedDate),
   },
@@ -43,6 +44,7 @@ export const useTasksStore = defineStore("tasks", {
       this.activeFilter = "today";
       this.isCalendarOpen = false;
     },
+
     selectTomorrow() {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -52,6 +54,7 @@ export const useTasksStore = defineStore("tasks", {
       this.activeFilter = "tomorrow";
       this.isCalendarOpen = false;
     },
+
     toggleCalendar(force?: boolean) {
       if (typeof force === "boolean") {
         this.isCalendarOpen = force;
@@ -63,24 +66,29 @@ export const useTasksStore = defineStore("tasks", {
         this.calendarCursor = this.selectedDate;
       }
     },
-    setSelectedDate(date: Date) {
+
+    setSelectedDate(date: Date): void {
       const iso = toISODate(date);
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "select";
       this.isCalendarOpen = false;
     },
-    setCalendarMonth(date: Date) {
+
+    setCalendarMonth(date: Date): void {
       const iso = toISODate(date);
       if (this.calendarCursor === iso) return;
       this.calendarCursor = iso;
     },
-    addTask(task: Task) {
+
+    addTask(task: Task): void {
       this.tasks.push(task);
     },
+
     removeTask(id: string) {
       this.tasks = this.tasks.filter((task) => task.id !== id);
     },
+
     toggleTask(id: string) {
       const task = this.tasks.find((t) => t.id === id);
       if (task) task.completed = !task.completed;
