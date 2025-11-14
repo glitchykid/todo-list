@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Dropdown from "@/components/Dropdown.vue";
 import RegularButton from "@/components/buttons/RegularButton.vue";
-import { locales, currentLocale } from "@/locales/locales";
-import { ref, computed, watch } from "vue";
+import { currentLocale, locales } from "@/locales/locales";
 import { useTasksStore } from "@/stores/tasks";
 import { storeToRefs } from "pinia";
+import { computed, ref, watch } from "vue";
 
 const tasksStore = useTasksStore();
 const { selectedDateAsDate, calendarCursorDate } = storeToRefs(tasksStore);
@@ -13,7 +13,7 @@ const viewDate = ref(new Date(calendarCursorDate.value));
 
 const formatYearLabel = (year: number) =>
   new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
-    new Date(year, 0, 1)
+    new Date(year, 0, 1),
   );
 
 const createYearNumbers = (centerYear: number) => {
@@ -26,10 +26,10 @@ const createYearNumbers = (centerYear: number) => {
 };
 
 const yearNumbers = ref<number[]>(
-  createYearNumbers(viewDate.value.getFullYear())
+  createYearNumbers(viewDate.value.getFullYear()),
 );
 const yearLabels = computed(() =>
-  yearNumbers.value.map((year) => formatYearLabel(year))
+  yearNumbers.value.map((year) => formatYearLabel(year)),
 );
 
 const ensureYearInList = (year: number) => {
@@ -69,18 +69,18 @@ watch(
       tasksStore.setCalendarMonth(newDate);
     }
   },
-  { deep: false }
+  { deep: false },
 );
 
 const currentMonth = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     month: "long",
-  }).format(viewDate.value)
+  }).format(viewDate.value),
 );
 const currentYear = computed(() =>
   new Intl.DateTimeFormat(currentLocale, {
     year: "numeric",
-  }).format(viewDate.value)
+  }).format(viewDate.value),
 );
 
 const weekdays = computed(() => {
@@ -91,8 +91,8 @@ const weekdays = computed(() => {
   for (let i = 0; i < 7; i++) {
     arr.push(
       new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
-        new Date(d)
-      )
+        new Date(d),
+      ),
     );
     d.setDate(d.getDate() + 1);
   }
@@ -106,7 +106,7 @@ const monthNames = computed(() => {
     d.setDate(1);
     d.setMonth(i);
     arr.push(
-      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d)
+      new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d),
     );
   }
   return arr;
@@ -130,7 +130,7 @@ const calendarCells = computed<CalendarCell[]>(() => {
   const daysInCurrentMonth = new Date(
     currentYear,
     currentMonth + 1,
-    0
+    0,
   ).getDate();
   const totalCells = Math.ceil((leading + daysInCurrentMonth) / 7) * 7;
 
@@ -198,17 +198,17 @@ const selectDay = (cellDate: Date) => {
 
 <template>
   <div
-    class="bg-white border-1 border-[#C9D7ED] flex flex-col absolute -left-30 top-full mt-4 text-[#8276FF] rounded-[8px] p-4 gap-4 z-40"
+    class="bg-white border border-[#C9D7ED] flex flex-col absolute -left-30 top-full mt-4 text-[#8276FF] rounded-lg p-4 gap-4 z-40"
   >
     <div class="flex flex-row gap-8 justify-between">
       <Dropdown
-        :values="monthNames"
         :default="currentMonth"
+        :values="monthNames"
         @update:default="setMonthByName"
       />
       <Dropdown
-        :values="yearLabels"
         :default="currentYear"
+        :values="yearLabels"
         @update:default="setYearByLabel"
       />
     </div>
@@ -224,8 +224,8 @@ const selectDay = (cellDate: Date) => {
       <template v-for="cell in calendarCells" :key="cell.key">
         <RegularButton
           v-if="cell.isCurrentMonth"
-          :border="false"
           :active="isActiveDay(cell.date)"
+          :border="false"
           :label="cell.displayDay"
           :name="cell.displayDay"
           class="w-9 h-9"
