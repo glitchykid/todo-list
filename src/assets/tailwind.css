@@ -2,11 +2,11 @@
 @import "tailwindcss";
 
 h5 {
-  @apply font-bold text-[40px] leading-none;
+  @apply text-[40px] leading-none font-bold;
 }
 
 h6 {
-  @apply font-bold text-[32px] leading-8;
+  @apply text-[32px] leading-8 font-bold;
 }
 
 h1,
@@ -20,5 +20,5 @@ h6 {
 }
 
 hr {
-  @apply bg-[#C9D7ED] border-0 h-px;
+  @apply h-px border-0 bg-[#C9D7ED];
 }

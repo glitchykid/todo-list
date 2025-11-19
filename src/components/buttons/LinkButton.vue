@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type { RouterLinkProps } from "vue-router";
+  import { computed } from "vue";
+  import type { RouterLinkProps } from "vue-router";
 
-defineOptions({
-  inheritAttrs: false,
-});
+  defineOptions({
+    inheritAttrs: false,
+  });
 
-const props = defineProps<
-  RouterLinkProps & {
-    inactiveClass?: string;
-  }
->();
+  const props = defineProps<
+    RouterLinkProps & {
+      inactiveClass?: string;
+    }
+  >();
 
-const isExternalLink = computed(() => {
-  return typeof props.to === "string" && props.to.startsWith("http");
-});
+  const isExternalLink = computed(() => {
+    return typeof props.to === "string" && props.to.startsWith("http");
+  });
 
-const externalHref = computed(() =>
-  typeof props.to === "string" ? props.to : "#",
-);
+  const externalHref = computed(() =>
+    typeof props.to === "string" ? props.to : "#",
+  );
 </script>
 
 <template>
