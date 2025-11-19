@@ -1,46 +1,47 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import RegularButton from "@/components/buttons/RegularButton.vue";
-import Calendar from "@/components/Calendar.vue";
-import { useTasksStore } from "@/stores/tasks";
-import { storeToRefs } from "pinia";
+  import RegularButton from "@/components/buttons/RegularButton.vue";
+  import Calendar from "@/components/Calendar.vue";
+  import Messages from "@/components/Messages.vue";
+  import { useCalendarStore } from "@/stores/calendar";
+  import { storeToRefs } from "pinia";
+  import { computed } from "vue";
 
-const tasksStore = useTasksStore();
-const { activeFilter, formattedSelectedDate, isCalendarOpen } =
-  storeToRefs(tasksStore);
+  const calendarStore = useCalendarStore();
+  const { activeFilter, formattedSelectedDate, isCalendarOpen } =
+    storeToRefs(calendarStore);
 
-const quickButtons = [
-  { name: "today", label: "Today" },
-  { name: "tomorrow", label: "Tomorrow" },
-] as const;
+  const quickButtons = [
+    { name: "today", label: "Today" },
+    { name: "tomorrow", label: "Tomorrow" },
+  ] as const;
 
-const isSelectActive = computed(
-  () => activeFilter.value === "select" || isCalendarOpen.value,
-);
+  const isSelectActive = computed(
+    () => activeFilter.value === "select" || isCalendarOpen.value,
+  );
 
-const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
-  if (name === "today") {
-    tasksStore.selectToday();
-  } else {
-    tasksStore.selectTomorrow();
-  }
-};
+  const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
+    if (name === "today") {
+      calendarStore.selectToday();
+    } else {
+      calendarStore.selectTomorrow();
+    }
+  };
 
-const toggleCalendar = () => {
-  tasksStore.toggleCalendar();
-};
+  const toggleCalendar = () => {
+    calendarStore.toggleCalendar();
+  };
 
-const closeCalendar = () => {
-  tasksStore.toggleCalendar(false);
-};
+  const closeCalendar = () => {
+    calendarStore.toggleCalendar(false);
+  };
 </script>
 
 <template>
   <main
-    class="bg-white w-full h-full gap-8 px-9 py-8 border border-[#C9D7ED] rounded-2xl"
+    class="flex h-full w-full flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white px-9 py-8"
   >
-    <div class="flex flex-col w-full gap-8">
-      <h6 class="text-[#D0CCFF] text-center">All tasks</h6>
+    <div class="flex w-full flex-col gap-8">
+      <h6 class="text-center text-[#D0CCFF]">All tasks</h6>
       <div class="flex flex-row items-center justify-between gap-8">
         <div class="flex flex-row gap-8">
           <RegularButton
@@ -65,22 +66,23 @@ const closeCalendar = () => {
             <Calendar v-if="isCalendarOpen" />
           </div>
         </div>
-        <span class="text-[#D0CCFF] font-bold text-right text-nowrap">
+        <span class="text-right font-bold text-nowrap text-[#D0CCFF]">
           {{ formattedSelectedDate }}
         </span>
       </div>
     </div>
+    <Messages />
   </main>
-  <div
-    v-if="isCalendarOpen"
-    class="fixed inset-0 bg-black/20 z-30"
-    @click="closeCalendar"
-  />
   <aside
-    class="bg-white min-w-50 w-50 h-full py-8 flex flex-col gap-8 border rounded-2xl border-[#C9D7ED]"
+    class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white py-8"
   >
     <div>
-      <h6 class="text-[#D0CCFF] text-center">Spaces</h6>
+      <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
     </div>
   </aside>
+  <div
+    v-if="isCalendarOpen"
+    class="fixed inset-0 z-30 bg-black/20"
+    @click="closeCalendar"
+  />
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import LinkButton from "./buttons/LinkButton.vue";
-import AppIcon from "./AppIcon.vue";
 import { appRoutes } from "@/routes/routes";
+import AppIcon from "./AppIcon.vue";
+import LinkButton from "./buttons/LinkButton.vue";
 
 type LinkState = "base" | "active" | "inactive";
 
@@ -14,11 +14,11 @@ const headerButtonStyle: Record<LinkState, string> = {
 
 <template>
   <header
-    class="bg-white min-w-50 w-50 h-full px-4 py-8 flex flex-col gap-8 border border-[#C9D7ED] rounded-[16px]"
+    class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white px-4 py-8"
   >
     <h5 class="text-center text-[#8276FF]">TODO LIST</h5>
     <hr />
-    <nav class="flex flex-col gap-4 w-fill">
+    <nav class="w-fill flex flex-col gap-4">
       <LinkButton
         v-for="link in appRoutes"
         :key="link.name"
