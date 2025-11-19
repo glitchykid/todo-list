@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { appRoutes } from "@/routes/routes";
-import AppIcon from "./AppIcon.vue";
-import LinkButton from "./buttons/LinkButton.vue";
+  import { appRoutes } from "@/routes/routes";
+  import AppIcon from "./AppIcon.vue";
+  import LinkButton from "./buttons/LinkButton.vue";
 
-type LinkState = "base" | "active" | "inactive";
+  type LinkState = "base" | "active" | "inactive";
 
-const headerButtonStyle: Record<LinkState, string> = {
-  base: "py-2 rounded-[8px] transition-all duration-300 ease-in-out flex flex-row place-items-center gap-2",
-  active: "bg-[#8276FF] text-[#EAEDF2] px-4",
-  inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
-} as const;
+  const headerButtonStyle: Record<LinkState, string> = {
+    base: "py-2 rounded-[8px] transition-all duration-300 ease-in-out flex flex-row place-items-center gap-2",
+    active: "bg-[#8276FF] text-[#EAEDF2] px-4",
+    inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
+  } as const;
 </script>
 
 <template>

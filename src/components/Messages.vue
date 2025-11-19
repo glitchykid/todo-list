@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <div class="ml-auto mt-auto flex w-auto flex-col rounded-t-2xl overflow-hidden rounded-bl-2xl">
+  <div
+    class="mt-auto ml-auto flex w-auto flex-col overflow-hidden rounded-t-2xl rounded-bl-2xl"
+  >
     <div class="flex h-9 items-center bg-[#D0CCFF] px-4">
       <slot>Example</slot>
     </div>

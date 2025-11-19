@@ -9,9 +9,9 @@
 
 <template>
   <button
-    class="relative z-10 rounded-[8px] text-nowrap transition-all duration-300"
+    class="relative z-10 rounded-lg text-nowrap transition-all duration-300"
     :class="[
-      props.border && 'border-1 border-[#8276FF]',
+      props.border && 'border border-[#8276FF]',
       props.active
         ? 'bg-[#8276FF] text-[#EAEDF2]'
         : 'text-[#8276FF] hover:bg-[#D0CCFF]',
