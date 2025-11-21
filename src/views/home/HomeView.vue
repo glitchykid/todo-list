@@ -71,7 +71,15 @@
         </span>
       </div>
     </div>
-    <Messages />
+    <div class="mt-auto flex flex-col gap-2">
+      <Messages
+        title="Приготовить ужинyyyyyyyyyyyy qweqweqweqwewqe qweqw"
+        due-date="18:00"
+      />
+      <Messages title="Помыться" due-date="18:00" />
+      <Messages title="1" due-date="16:00" repeatable="everyday" />
+      <Messages title="Помытsadasdasdsadasься" due-date="16:00" />
+    </div>
   </main>
   <aside
     class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white py-8"

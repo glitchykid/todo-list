@@ -6,7 +6,7 @@
   type LinkState = "base" | "active" | "inactive";
 
   const headerButtonStyle: Record<LinkState, string> = {
-    base: "py-2 rounded-[8px] transition-all duration-300 ease-in-out flex flex-row place-items-center gap-2",
+    base: "py-2 rounded-[8px] transition-all duration-300 ease-in-out flex flex-row items-center gap-2",
     active: "bg-[#8276FF] text-[#EAEDF2] px-4",
     inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
   } as const;
