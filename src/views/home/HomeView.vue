@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import Calendar from "@/components/Calendar.vue";
+  import ChatInput from "@/components/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
+  import AppIcon from "@/components/AppIcon.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { storeToRefs } from "pinia";
   import { computed } from "vue";
@@ -47,7 +49,6 @@
           <RegularButton
             v-for="button in quickButtons"
             :key="button.name"
-            :name="button.name"
             :label="button.label"
             :active="activeFilter === button.name"
             :border="true"
@@ -56,7 +57,6 @@
           />
           <div class="relative">
             <RegularButton
-              name="select"
               label="Select a date..."
               :active="isSelectActive"
               :border="true"
@@ -72,14 +72,21 @@
       </div>
     </div>
     <div class="mt-auto flex flex-col gap-2">
+      <Messages title="Приготовить ооочень вкусный ужин" due-date="18:00" />
+      <Messages title="Помыться" due-date="18:30" />
       <Messages
-        title="Приготовить ужинyyyyyyyyyyyy qweqweqweqwewqe qweqw"
-        due-date="18:00"
+        title="Разработать план по захвату Польши"
+        due-date="16:00"
+        repeatable="everyday"
       />
-      <Messages title="Помыться" due-date="18:00" />
-      <Messages title="1" due-date="16:00" repeatable="everyday" />
-      <Messages title="Помытsadasdasdsadasься" due-date="16:00" />
+      <Messages title="Изобрести добро" due-date="16:00" />
     </div>
+    <form class="flex flex-row items-end gap-10">
+      <ChatInput class="w-full" />
+      <button>
+        <AppIcon name="plusCircle" class="size-8 text-[#8276FF]" />
+      </button>
+    </form>
   </main>
   <aside
     class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white py-8"

@@ -17,7 +17,7 @@
     class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white px-4 py-8"
   >
     <h5 class="text-center text-[#8276FF]">TODO LIST</h5>
-    <hr />
+    <hr class="h-px border-none bg-[#C9D7ED]" />
     <nav class="w-fill flex flex-col gap-4">
       <LinkButton
         v-for="link in appRoutes"
