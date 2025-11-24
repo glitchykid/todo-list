@@ -1,0 +1,8 @@
+services:
+  todo-list:
+    ports:
+      - 0.0.0.0:5173:5173
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npx vite --host 0.0.0.0 && npm run dev"
