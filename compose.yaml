@@ -1,5 +1,6 @@
 services:
   todo-list:
+    image: node:24-alpine
     ports:
       - 0.0.0.0:5173:5173
     working_dir: /app
