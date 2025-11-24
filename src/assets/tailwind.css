@@ -18,7 +18,3 @@ h6 {
   user-select: none;
   -webkit-user-select: none;
 }
-
-hr {
-  @apply h-px border-0 bg-[#C9D7ED];
-}

@@ -7,17 +7,21 @@
   import Check from "@/components/icons/Check.vue";
   import ArrowPath from "@/components/icons/ArrowPath.vue";
   import Clock from "@/components/icons/Clock.vue";
+  import Trash from "@/components/icons/Trash.vue";
+  import Calendar from "@/components/icons/Calendar.vue";
+  import PlusCircle from "@/components/icons/PlusCircle.vue";
 
   import type { RouteIcon } from "@/routes/routes";
-  import Trash from "./icons/Trash.vue";
 
-  type RegularIcon =
+  export type RegularIcon =
     | "chevronDown"
     | "arrowLongRight"
     | "check"
     | "trash"
     | "arrowPath"
-    | "clock";
+    | "clock"
+    | "calendar"
+    | "plusCircle";
 
   const props = defineProps<{
     name: RouteIcon | RegularIcon;
@@ -34,6 +38,8 @@
     trash: Trash,
     arrowPath: ArrowPath,
     clock: Clock,
+    calendar: Calendar,
+    plusCircle: PlusCircle,
   };
 </script>
 

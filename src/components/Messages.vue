@@ -20,7 +20,7 @@
 
 <template>
   <div
-    class="ml-auto flex w-auto flex-col overflow-hidden rounded-t-2xl rounded-bl-2xl"
+    class="ml-auto flex flex-col overflow-hidden rounded-t-2xl rounded-bl-2xl"
   >
     <div
       class="bg-[#D0CCFF] px-4 py-1.5 leading-6 text-pretty wrap-break-word break-all text-[#3E3D4D]"
@@ -28,7 +28,7 @@
     >
       <span>{{ props.title }}</span>
     </div>
-    <div class="flex h-9 w-auto flex-row">
+    <div class="flex h-9 flex-row">
       <div
         v-if="props.repeatable"
         class="bg-[#3E3D4D] px-5 text-[#ABA4FF]"
