@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import AppIcon from "@/components/AppIcon.vue";
+  import { ChevronDownIcon } from "@heroicons/vue/20/solid";
   import { ref, watch } from "vue";
 
   const props = defineProps<{
@@ -16,7 +16,7 @@
     () => props.default,
     (v) => {
       if (v !== undefined && v !== selected.value) selected.value = v;
-    },
+    }
   );
 
   const toogleDropdown = () => {
@@ -42,7 +42,7 @@
       @click="toogleDropdown"
     >
       <span class="select-none">{{ selected }}</span>
-      <AppIcon name="chevronDown" />
+      <ChevronDownIcon class="size-5" />
     </div>
     <div
       v-if="isOpen"

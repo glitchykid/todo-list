@@ -3,10 +3,10 @@
   import Calendar from "@/components/Calendar.vue";
   import ChatInput from "@/components/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
-  import AppIcon from "@/components/AppIcon.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { storeToRefs } from "pinia";
   import { computed } from "vue";
+  import { PlusCircleIcon } from "@heroicons/vue/20/solid";
 
   const calendarStore = useCalendarStore();
   const { activeFilter, formattedSelectedDate, isCalendarOpen } =
@@ -18,7 +18,7 @@
   ] as const;
 
   const isSelectActive = computed(
-    () => activeFilter.value === "select" || isCalendarOpen.value,
+    () => activeFilter.value === "select" || isCalendarOpen.value
   );
 
   const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
@@ -28,6 +28,8 @@
       calendarStore.selectTomorrow();
     }
   };
+
+  const toogleSendTask = computed(() => {}); // Fix
 
   const toggleCalendar = () => {
     calendarStore.toggleCalendar();
@@ -63,7 +65,7 @@
               class="px-4 py-2"
               @click="toggleCalendar"
             />
-            <Calendar v-if="isCalendarOpen" />
+            <Calendar v-if="isCalendarOpen" position="bottom" />
           </div>
         </div>
         <span class="text-right font-bold text-nowrap text-[#D0CCFF]">
@@ -72,6 +74,7 @@
       </div>
     </div>
     <div class="mt-auto flex flex-col gap-2">
+      <!-- Переработать -->
       <Messages title="Приготовить ооочень вкусный ужин" due-date="18:00" />
       <Messages title="Помыться" due-date="18:30" />
       <Messages
@@ -80,13 +83,16 @@
         repeatable="everyday"
       />
       <Messages title="Изобрести добро" due-date="16:00" />
+      <!-- До сюда все сообщения должны быть из массива объектов -->
     </div>
-    <form class="flex flex-row items-end gap-10">
+    <div class="flex flex-row items-end gap-10">
       <ChatInput class="w-full" />
-      <button>
-        <AppIcon name="plusCircle" class="size-8 text-[#8276FF]" />
-      </button>
-    </form>
+      <RegularButton
+        :icon="PlusCircleIcon"
+        :active="sendTask"
+        @hover="toogleSendTask"
+      />
+    </div>
   </main>
   <aside
     class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white py-8"
