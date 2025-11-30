@@ -7,13 +7,18 @@
   import { computed, ref, watch } from "vue";
 
   const calendarStore = useCalendarStore();
+
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
 
   const viewDate = ref(new Date(calendarCursorDate.value));
 
+  const props = defineProps<{
+    position: string;
+  }>();
+
   const formatYearLabel = (year: number) =>
     new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
-      new Date(year, 0, 1),
+      new Date(year, 0, 1)
     );
 
   const createYearNumbers = (centerYear: number) => {
@@ -26,10 +31,11 @@
   };
 
   const yearNumbers = ref<number[]>(
-    createYearNumbers(viewDate.value.getFullYear()),
+    createYearNumbers(viewDate.value.getFullYear())
   );
+
   const yearLabels = computed(() =>
-    yearNumbers.value.map((year) => formatYearLabel(year)),
+    yearNumbers.value.map((year) => formatYearLabel(year))
   );
 
   const ensureYearInList = (year: number) => {
@@ -69,18 +75,19 @@
         calendarStore.setCalendarMonth(newDate);
       }
     },
-    { deep: false },
+    { deep: false }
   );
 
   const currentMonth = computed(() =>
     new Intl.DateTimeFormat(currentLocale, {
       month: "long",
-    }).format(viewDate.value),
+    }).format(viewDate.value)
   );
+
   const currentYear = computed(() =>
     new Intl.DateTimeFormat(currentLocale, {
       year: "numeric",
-    }).format(viewDate.value),
+    }).format(viewDate.value)
   );
 
   const weekdays = computed(() => {
@@ -91,8 +98,8 @@
     for (let i = 0; i < 7; i++) {
       arr.push(
         new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
-          new Date(d),
-        ),
+          new Date(d)
+        )
       );
       d.setDate(d.getDate() + 1);
     }
@@ -106,7 +113,7 @@
       d.setDate(1);
       d.setMonth(i);
       arr.push(
-        new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d),
+        new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d)
       );
     }
     return arr;
@@ -130,14 +137,16 @@
     const daysInCurrentMonth = new Date(
       currentYear,
       currentMonth + 1,
-      0,
+      0
     ).getDate();
+
     const totalCells = Math.ceil((leading + daysInCurrentMonth) / 7) * 7;
 
     const startDate = new Date(firstOfMonth);
     startDate.setDate(firstOfMonth.getDate() - leading);
 
     const cells: CalendarCell[] = [];
+
     for (let i = 0; i < totalCells; i++) {
       const cellDate = new Date(startDate);
       cellDate.setDate(startDate.getDate() + i);
@@ -198,7 +207,11 @@
 
 <template>
   <div
-    class="absolute top-full -left-30 z-40 mt-4 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
+    class="absolute -left-30 z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
+    :class="[
+      props.position === 'bottom' && 'top-full mt-4',
+      props.position === 'top' && 'bottom-full mb-4',
+    ]"
   >
     <div class="flex flex-row justify-between gap-8">
       <Dropdown

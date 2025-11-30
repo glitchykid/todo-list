@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import type { RegularIcon } from "@/components/AppIcon.vue";
-  import AppIcon from "@/components/AppIcon.vue";
+  import type { Component } from "vue";
 
   const props = defineProps<{
-    label: string | number;
-    icon?: RegularIcon;
+    label?: string | number;
+    icon?: Component;
     active?: boolean;
     border?: boolean;
   }>();
@@ -12,7 +11,8 @@
 
 <template>
   <button
-    class="relative z-10 flex flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-none text-nowrap transition-all duration-300"
+    v-if="props.label"
+    class="relative z-10 flex flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-6 text-nowrap transition-all duration-300"
     :class="[
       props.border && 'border border-[#8276FF]',
       props.active
@@ -20,7 +20,17 @@
         : 'text-[#8276FF] hover:bg-[#D0CCFF]',
     ]"
   >
-    <AppIcon v-if="props.icon" :name="props.icon" />
+    <component v-if="props.icon" :is="props.icon" class="size-5" />
     <slot>{{ props.label }}</slot>
+  </button>
+  <button
+    v-else-if="props.icon && !props.label"
+    class="flex items-center justify-center"
+  >
+    <component
+      v-if="props.icon"
+      :is="props.icon"
+      class="size-8 transition-all duration-300 text-[#8276FF] hover:scale-125"
+    />
   </button>
 </template>

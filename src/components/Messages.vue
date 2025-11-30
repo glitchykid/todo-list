@@ -1,5 +1,11 @@
 <script setup lang="ts">
-  import AppIcon from "./AppIcon.vue";
+  import {
+    ArrowLongRightIcon,
+    ArrowPathIcon,
+    CheckIcon,
+    ClockIcon,
+    TrashIcon,
+  } from "@heroicons/vue/20/solid";
 
   interface Props {
     title: string | null;
@@ -34,11 +40,11 @@
         class="bg-[#3E3D4D] px-5 text-[#ABA4FF]"
         :class="styles.textAndIcon"
       >
-        <AppIcon name="arrowPath" />
+        <ArrowPathIcon class="size-5" />
         <span>{{ props.repeatable }}</span>
       </div>
       <div class="bg-[#ABA4FF] px-5 text-[#3E3D4D]" :class="styles.textAndIcon">
-        <AppIcon name="clock" />
+        <ClockIcon class="size-5" />
         <span>{{ props.dueDate }}</span>
       </div>
       <div
@@ -46,13 +52,19 @@
         :class="styles.onlyIcon"
         v-if="props.repeatable"
       >
-        <AppIcon name="arrowLongRight" />
+        <ArrowLongRightIcon class="size-5" />
       </div>
-      <div class="bg-[#8CE98C] text-[#274F27]" :class="styles.onlyIcon">
-        <AppIcon name="check" />
+      <div
+        class="bg-[#8CE98C] text-[#274F27] transition-colors duration-300"
+        :class="styles.onlyIcon"
+      >
+        <CheckIcon class="size-5" />
       </div>
-      <div class="bg-[#E27575] text-[#4F2929]" :class="styles.onlyIcon">
-        <AppIcon name="trash" />
+      <div
+        class="bg-[#E27575] text-[#4F2929] transition-colors duration-300"
+        :class="styles.onlyIcon"
+      >
+        <TrashIcon class="size-5" />
       </div>
     </div>
   </div>

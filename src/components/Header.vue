@@ -1,12 +1,11 @@
 <script setup lang="ts">
   import { appRoutes } from "@/routes/routes";
-  import AppIcon from "./AppIcon.vue";
   import LinkButton from "./buttons/LinkButton.vue";
 
   type LinkState = "base" | "active" | "inactive";
 
   const headerButtonStyle: Record<LinkState, string> = {
-    base: "py-2 rounded-[8px] transition-all duration-300 ease-in-out flex flex-row items-center gap-2",
+    base: "py-2 rounded-lg items-center transition-all duration-300 ease-in-out flex flex-row gap-2 leading-6",
     active: "bg-[#8276FF] text-[#EAEDF2] px-4",
     inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
   } as const;
@@ -27,7 +26,7 @@
         :active-class="headerButtonStyle.active"
         :inactive-class="headerButtonStyle.inactive"
       >
-        <AppIcon :name="link.icon" />
+        <component :is="link.icon" class="size-5" />
         {{ link.label }}</LinkButton
       >
     </nav>
