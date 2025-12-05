@@ -1,4 +1,4 @@
-import { useCalendarStore } from "@/stores/calendar";
+import { useSelectCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
 
 export type DateFilter = "today" | "tomorrow" | "select";
@@ -10,7 +10,7 @@ export interface Task {
   dueDate: string;
 }
 
-const calendarStore = useCalendarStore();
+const calendarStore = useSelectCalendarStore();
 
 export const useTasksStore = defineStore("tasks", {
   state: () => {

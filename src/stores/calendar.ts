@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
-export const useCalendarStore = defineStore("calendar", {
+export const useSelectCalendarStore = defineStore("calendarSelect", {
   state: () => {
     const today = new Date();
     const todayIso = toISODate(today);
@@ -13,7 +13,6 @@ export const useCalendarStore = defineStore("calendar", {
       activeFilter: "today" as DateFilter,
       selectedDate: todayIso,
       calendarCursor: todayIso,
-      isCalendarOpen: false,
     };
   },
 
@@ -34,7 +33,6 @@ export const useCalendarStore = defineStore("calendar", {
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "today";
-      this.isCalendarOpen = false;
     },
 
     selectTomorrow() {
@@ -44,19 +42,6 @@ export const useCalendarStore = defineStore("calendar", {
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "tomorrow";
-      this.isCalendarOpen = false;
-    },
-
-    toggleCalendar(force?: boolean) {
-      if (typeof force === "boolean") {
-        this.isCalendarOpen = force;
-      } else {
-        this.isCalendarOpen = !this.isCalendarOpen;
-      }
-
-      if (this.isCalendarOpen) {
-        this.calendarCursor = this.selectedDate;
-      }
     },
 
     setSelectedDate(date: Date): void {
@@ -64,7 +49,6 @@ export const useCalendarStore = defineStore("calendar", {
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "select";
-      this.isCalendarOpen = false;
     },
 
     setCalendarMonth(date: Date): void {

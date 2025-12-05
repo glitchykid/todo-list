@@ -1,8 +1,8 @@
-import HomeView from "@/views/home/HomeView.vue";
-import HistoryView from "@/views/history/HistoryView.vue";
 import BinView from "@/views/bin/BinView.vue";
-import type { Component } from "vue";
+import HistoryView from "@/views/history/HistoryView.vue";
+import HomeView from "@/views/home/HomeView.vue";
 import { HomeIcon, NewspaperIcon, TrashIcon } from "@heroicons/vue/20/solid";
+import type { Component } from "vue";
 
 export type Icon = "HomeIcon" | "NewspaperIcon" | "TrashIcon";
 
