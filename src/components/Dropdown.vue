@@ -16,7 +16,7 @@
     () => props.default,
     (v) => {
       if (v !== undefined && v !== selected.value) selected.value = v;
-    }
+    },
   );
 
   const toogleDropdown = () => {

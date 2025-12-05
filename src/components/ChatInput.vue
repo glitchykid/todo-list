@@ -1,17 +1,14 @@
 <script setup lang="ts">
   import RegularButton from "@/components/buttons/RegularButton.vue";
+  import Calendar from "@/components/Calendar.vue";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
-  import Calendar from "./Calendar.vue";
-  import { useCalendarStore } from "@/stores/calendar";
-  import { storeToRefs } from "pinia";
+  import { ref } from "vue";
 
-  const calendarStore = useCalendarStore();
+  const calendar = ref(false);
 
-  const { isCalendarOpen } = storeToRefs(calendarStore);
-
-  const toogleCalendar = () => {
-    calendarStore.toggleCalendar();
-  };
+  function toggleCalendar() {
+    calendar.value = !calendar.value;
+  }
 </script>
 
 <template>
@@ -21,20 +18,25 @@
       class="h-9 w-full px-4 text-[#808080] outline-none"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
-    <div class="flex flex-row h-9">
+    <div class="flex h-9 flex-row">
       <RegularButton
         label="not repeatable"
-        class="w-full rounded-none border-r"
+        class="w-full rounded-none rounded-bl-lg border-r"
         :icon="ArrowPathIcon"
       />
-      <div class="relative w-full">
+      <div class="relative w-full rounded-br-lg">
         <RegularButton
-          label="<time>"
-          class="w-full rounded-none"
+          label="today"
+          class="h-full w-full rounded-none rounded-br-lg"
           :icon="ClockIcon"
-          @click="toogleCalendar"
+          :active="calendar"
+          @click="toggleCalendar"
         />
-        <Calendar v-if="isCalendarOpen" position="top" />
+        <Calendar
+          v-if="calendar"
+          position="top"
+          @toggleCalendar="toggleCalendar"
+        />
       </div>
     </div>
   </div>

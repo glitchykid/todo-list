@@ -2,13 +2,19 @@
   import Dropdown from "@/components/Dropdown.vue";
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import { currentLocale, locales } from "@/locales/locales";
-  import { useCalendarStore } from "@/stores/calendar";
+  import { useSelectCalendarStore } from "@/stores/calendar";
   import { storeToRefs } from "pinia";
   import { computed, ref, watch } from "vue";
 
-  const calendarStore = useCalendarStore();
+  const calendarStore = useSelectCalendarStore();
 
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
+
+  const emit = defineEmits(["toggleCalendar"]);
+
+  const toggleCalendar = () => {
+    emit("toggleCalendar");
+  };
 
   const viewDate = ref(new Date(calendarCursorDate.value));
 
@@ -18,7 +24,7 @@
 
   const formatYearLabel = (year: number) =>
     new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(
-      new Date(year, 0, 1)
+      new Date(year, 0, 1),
     );
 
   const createYearNumbers = (centerYear: number) => {
@@ -31,11 +37,11 @@
   };
 
   const yearNumbers = ref<number[]>(
-    createYearNumbers(viewDate.value.getFullYear())
+    createYearNumbers(viewDate.value.getFullYear()),
   );
 
   const yearLabels = computed(() =>
-    yearNumbers.value.map((year) => formatYearLabel(year))
+    yearNumbers.value.map((year) => formatYearLabel(year)),
   );
 
   const ensureYearInList = (year: number) => {
@@ -75,19 +81,19 @@
         calendarStore.setCalendarMonth(newDate);
       }
     },
-    { deep: false }
+    { deep: false },
   );
 
   const currentMonth = computed(() =>
     new Intl.DateTimeFormat(currentLocale, {
       month: "long",
-    }).format(viewDate.value)
+    }).format(viewDate.value),
   );
 
   const currentYear = computed(() =>
     new Intl.DateTimeFormat(currentLocale, {
       year: "numeric",
-    }).format(viewDate.value)
+    }).format(viewDate.value),
   );
 
   const weekdays = computed(() => {
@@ -98,8 +104,8 @@
     for (let i = 0; i < 7; i++) {
       arr.push(
         new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
-          new Date(d)
-        )
+          new Date(d),
+        ),
       );
       d.setDate(d.getDate() + 1);
     }
@@ -113,7 +119,7 @@
       d.setDate(1);
       d.setMonth(i);
       arr.push(
-        new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d)
+        new Intl.DateTimeFormat(currentLocale, { month: "long" }).format(d),
       );
     }
     return arr;
@@ -137,7 +143,7 @@
     const daysInCurrentMonth = new Date(
       currentYear,
       currentMonth + 1,
-      0
+      0,
     ).getDate();
 
     const totalCells = Math.ceil((leading + daysInCurrentMonth) / 7) * 7;
@@ -206,51 +212,54 @@
 </script>
 
 <template>
-  <div
-    class="absolute -left-30 z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
-    :class="[
-      props.position === 'bottom' && 'top-full mt-4',
-      props.position === 'top' && 'bottom-full mb-4',
-    ]"
-  >
-    <div class="flex flex-row justify-between gap-8">
-      <Dropdown
-        :default="currentMonth"
-        :values="monthNames"
-        @update:default="setMonthByName"
-      />
-      <Dropdown
-        :default="currentYear"
-        :values="yearLabels"
-        @update:default="setYearByLabel"
-      />
-    </div>
-    <div class="grid grid-cols-7 justify-items-center font-bold">
-      <span
-        v-for="weekday of weekdays"
-        :key="weekday"
-        class="flex h-9 w-9 items-center justify-center font-bold select-none"
-        >{{ weekday }}</span
-      >
-    </div>
-    <div class="grid grid-cols-7 justify-items-center gap-y-3">
-      <template v-for="cell in calendarCells" :key="cell.key">
-        <RegularButton
-          v-if="cell.isCurrentMonth"
-          :active="isActiveDay(cell.date)"
-          :border="false"
-          :label="cell.displayDay"
-          :name="cell.displayDay"
-          class="h-9 w-9"
-          @click="selectDay(cell.date)"
+  <div>
+    <div class="fixed inset-0 z-30 bg-black/20" @click="toggleCalendar" />
+    <div
+      class="absolute z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
+      :class="[
+        props.position === 'bottom' && 'top-full mt-2',
+        props.position === 'top' && 'bottom-full mb-2',
+      ]"
+    >
+      <div class="flex flex-row justify-between gap-8">
+        <Dropdown
+          :default="currentMonth"
+          :values="monthNames"
+          @update:default="setMonthByName"
         />
+        <Dropdown
+          :default="currentYear"
+          :values="yearLabels"
+          @update:default="setYearByLabel"
+        />
+      </div>
+      <div class="grid grid-cols-7 justify-items-center font-bold">
         <span
-          v-else
-          class="flex h-9 w-9 items-center justify-center text-[#B3BCCD] select-none"
+          v-for="weekday of weekdays"
+          :key="weekday"
+          class="flex h-9 w-9 items-center justify-center font-bold select-none"
+          >{{ weekday }}</span
         >
-          {{ cell.displayDay }}
-        </span>
-      </template>
+      </div>
+      <div class="grid grid-cols-7 justify-items-center gap-y-3">
+        <template v-for="cell in calendarCells" :key="cell.key">
+          <RegularButton
+            v-if="cell.isCurrentMonth"
+            :active="isActiveDay(cell.date)"
+            :border="false"
+            :label="cell.displayDay"
+            :name="cell.displayDay"
+            class="h-9 w-9"
+            @click="selectDay(cell.date)"
+          />
+          <span
+            v-else
+            class="flex h-9 w-9 items-center justify-center text-[#B3BCCD] select-none"
+          >
+            {{ cell.displayDay }}
+          </span>
+        </template>
+      </div>
     </div>
   </div>
 </template>

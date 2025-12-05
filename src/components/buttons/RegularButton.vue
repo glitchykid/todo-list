@@ -30,7 +30,7 @@
     <component
       v-if="props.icon"
       :is="props.icon"
-      class="size-8 transition-all duration-300 text-[#8276FF] hover:scale-125"
+      class="size-8 text-[#8276FF] transition-all duration-300 hover:scale-125"
     />
   </button>
 </template>

@@ -3,22 +3,23 @@
   import Calendar from "@/components/Calendar.vue";
   import ChatInput from "@/components/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
-  import { useCalendarStore } from "@/stores/calendar";
-  import { storeToRefs } from "pinia";
-  import { computed } from "vue";
+  import { useSelectCalendarStore } from "@/stores/calendar";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
+  import { storeToRefs } from "pinia";
+  import { computed, ref } from "vue";
 
-  const calendarStore = useCalendarStore();
-  const { activeFilter, formattedSelectedDate, isCalendarOpen } =
-    storeToRefs(calendarStore);
+  const calendarStore = useSelectCalendarStore();
+  const { activeFilter, formattedSelectedDate } = storeToRefs(calendarStore);
 
   const quickButtons = [
     { name: "today", label: "Today" },
     { name: "tomorrow", label: "Tomorrow" },
   ] as const;
 
+  const showCalendar = ref<Boolean>(false);
+
   const isSelectActive = computed(
-    () => activeFilter.value === "select" || isCalendarOpen.value
+    () => activeFilter.value === "select" || showCalendar.value,
   );
 
   const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
@@ -29,14 +30,8 @@
     }
   };
 
-  const toogleSendTask = computed(() => {}); // Fix
-
   const toggleCalendar = () => {
-    calendarStore.toggleCalendar();
-  };
-
-  const closeCalendar = () => {
-    calendarStore.toggleCalendar(false);
+    showCalendar.value = !showCalendar.value;
   };
 </script>
 
@@ -65,7 +60,11 @@
               class="px-4 py-2"
               @click="toggleCalendar"
             />
-            <Calendar v-if="isCalendarOpen" position="bottom" />
+            <Calendar
+              v-if="showCalendar"
+              position="bottom"
+              @toggle-calendar="toggleCalendar"
+            />
           </div>
         </div>
         <span class="text-right font-bold text-nowrap text-[#D0CCFF]">
@@ -87,11 +86,7 @@
     </div>
     <div class="flex flex-row items-end gap-10">
       <ChatInput class="w-full" />
-      <RegularButton
-        :icon="PlusCircleIcon"
-        :active="sendTask"
-        @hover="toogleSendTask"
-      />
+      <RegularButton :icon="PlusCircleIcon" />
     </div>
   </main>
   <aside
@@ -101,9 +96,4 @@
       <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
     </div>
   </aside>
-  <div
-    v-if="isCalendarOpen"
-    class="fixed inset-0 z-30 bg-black/20"
-    @click="closeCalendar"
-  />
 </template>
