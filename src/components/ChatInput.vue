@@ -4,11 +4,11 @@
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
   import { ref } from "vue";
 
-  const calendar = ref(false);
+  const calendar = ref<Boolean>(false);
 
-  function toggleCalendar() {
+  const toggleCalendar = () => {
     calendar.value = !calendar.value;
-  }
+  };
 </script>
 
 <template>
@@ -35,7 +35,7 @@
         <Calendar
           v-if="calendar"
           position="top"
-          @toggleCalendar="toggleCalendar"
+          @toggle-calendar="calendar = $event"
         />
       </div>
     </div>
