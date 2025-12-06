@@ -10,11 +10,9 @@
 
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
 
-  const emit = defineEmits(["toggleCalendar"]);
-
-  const toggleCalendar = () => {
-    emit("toggleCalendar");
-  };
+  const emit = defineEmits<{
+    (e: "toggle-calendar", value: boolean): void;
+  }>();
 
   const viewDate = ref(new Date(calendarCursorDate.value));
 
@@ -213,7 +211,10 @@
 
 <template>
   <div>
-    <div class="fixed inset-0 z-30 bg-black/20" @click="toggleCalendar" />
+    <div
+      class="fixed inset-0 z-30 bg-black/20"
+      @click="emit('toggle-calendar', false)"
+    />
     <div
       class="absolute z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
       :class="[

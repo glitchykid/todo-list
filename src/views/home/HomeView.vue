@@ -22,16 +22,16 @@
     () => activeFilter.value === "select" || showCalendar.value,
   );
 
+  const toggleCalendar = () => {
+    showCalendar.value = !showCalendar.value;
+  };
+
   const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
     if (name === "today") {
       calendarStore.selectToday();
     } else {
       calendarStore.selectTomorrow();
     }
-  };
-
-  const toggleCalendar = () => {
-    showCalendar.value = !showCalendar.value;
   };
 </script>
 
@@ -63,7 +63,7 @@
             <Calendar
               v-if="showCalendar"
               position="bottom"
-              @toggle-calendar="toggleCalendar"
+              @toggle-calendar="showCalendar = $event"
             />
           </div>
         </div>
