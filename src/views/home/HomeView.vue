@@ -4,6 +4,7 @@
   import ChatInput from "@/components/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
   import { useCalendarStore } from "@/stores/calendar";
+  import { useTasksStore, type Task } from "@/stores/tasks";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
@@ -33,6 +34,16 @@
       calendarStore.selectTomorrow();
     }
   };
+
+  const tasksStore = useTasksStore();
+
+  const newTask = ref<Task>({
+    id: 1,
+    title: "qwe",
+    completed: false,
+    repeatable: false,
+    dueDate: "",
+  });
 </script>
 
 <template>
@@ -73,20 +84,19 @@
       </div>
     </div>
     <div class="mt-auto flex flex-col gap-2">
-      <!-- Переработать -->
-      <Messages title="Приготовить ооочень вкусный ужин" due-date="18:00" />
-      <Messages title="Помыться" due-date="18:30" />
       <Messages
-        title="Разработать план по захвату Польши"
-        due-date="16:00"
-        repeatable="everyday"
+        v-for="task of tasksStore.tasks"
+        :title="task.title"
+        :due-date="task.dueDate"
+        :repeatable="task.repeatable"
       />
-      <Messages title="Изобрести добро" due-date="16:00" />
-      <!-- До сюда все сообщения должны быть из массива объектов -->
     </div>
     <div class="flex flex-row items-end gap-10">
       <ChatInput class="w-full" />
-      <RegularButton :icon="PlusCircleIcon" />
+      <RegularButton
+        :icon="PlusCircleIcon"
+        @click="tasksStore.addTask(newTask)"
+      />
     </div>
   </main>
   <aside

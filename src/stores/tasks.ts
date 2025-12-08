@@ -4,13 +4,12 @@ import { defineStore } from "pinia";
 export type DateFilter = "today" | "tomorrow" | "select";
 
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   completed: boolean;
+  repeatable: boolean;
   dueDate: string;
 }
-
-const calendarStore = useCalendarStore();
 
 export const useTasksStore = defineStore("tasks", {
   state: () => {
@@ -20,8 +19,12 @@ export const useTasksStore = defineStore("tasks", {
   },
 
   getters: {
-    tasksForSelectedDate: (state) =>
-      state.tasks.filter((task) => task.dueDate === calendarStore.selectedDate),
+    tasksForSelectedDate: (state) => {
+      const calendarStore = useCalendarStore();
+      return state.tasks.filter(
+        (task) => task.dueDate === calendarStore.selectedDate,
+      );
+    },
   },
 
   actions: {
@@ -29,7 +32,7 @@ export const useTasksStore = defineStore("tasks", {
       this.tasks.push(task);
     },
 
-    removeTask(id: string) {
+    removeTask(id: number) {
       this.tasks = this.tasks.filter((task: Task) => task.id !== id);
     },
   },
