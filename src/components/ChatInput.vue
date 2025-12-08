@@ -36,6 +36,7 @@
           v-if="calendar"
           position="top"
           @toggle-calendar="calendar = $event"
+          :isLocal="true"
         />
       </div>
     </div>
