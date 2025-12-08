@@ -12,7 +12,6 @@
   }>();
 
   const calendarStore = useCalendarStore();
-
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
 
   const emit = defineEmits<{
