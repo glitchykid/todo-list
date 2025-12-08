@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
-export const useSelectCalendarStore = defineStore("calendarSelect", {
+export const useCalendarStore = defineStore("calendarSelect", {
   state: () => {
     const today = new Date();
     const todayIso = toISODate(today);
@@ -27,7 +27,7 @@ export const useSelectCalendarStore = defineStore("calendarSelect", {
   },
 
   actions: {
-    selectToday() {
+    selectToday(): void {
       const today = new Date();
       const iso = toISODate(today);
       this.selectedDate = iso;
@@ -35,7 +35,7 @@ export const useSelectCalendarStore = defineStore("calendarSelect", {
       this.activeFilter = "today";
     },
 
-    selectTomorrow() {
+    selectTomorrow(): void {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const iso = toISODate(tomorrow);

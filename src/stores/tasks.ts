@@ -1,4 +1,4 @@
-import { useSelectCalendarStore } from "@/stores/calendar";
+import { useCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
 
 export type DateFilter = "today" | "tomorrow" | "select";
@@ -10,7 +10,7 @@ export interface Task {
   dueDate: string;
 }
 
-const calendarStore = useSelectCalendarStore();
+const calendarStore = useCalendarStore();
 
 export const useTasksStore = defineStore("tasks", {
   state: () => {
@@ -31,11 +31,6 @@ export const useTasksStore = defineStore("tasks", {
 
     removeTask(id: string) {
       this.tasks = this.tasks.filter((task: Task) => task.id !== id);
-    },
-
-    toggleTask(id: string) {
-      const task = this.tasks.find((t: Task) => t.id === id);
-      if (task) task.completed = !task.completed;
     },
   },
 });

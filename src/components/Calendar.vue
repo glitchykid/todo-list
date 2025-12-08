@@ -2,11 +2,16 @@
   import Dropdown from "@/components/Dropdown.vue";
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import { currentLocale, locales } from "@/locales/locales";
-  import { useSelectCalendarStore } from "@/stores/calendar";
+  import { useCalendarStore } from "@/stores/calendar";
   import { storeToRefs } from "pinia";
   import { computed, ref, watch } from "vue";
 
-  const calendarStore = useSelectCalendarStore();
+  const props = defineProps<{
+    position: string;
+    isLocal?: boolean;
+  }>();
+
+  const calendarStore = useCalendarStore();
 
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
 
@@ -15,10 +20,6 @@
   }>();
 
   const viewDate = ref(new Date(calendarCursorDate.value));
-
-  const props = defineProps<{
-    position: string;
-  }>();
 
   const formatYearLabel = (year: number) =>
     new Intl.DateTimeFormat(currentLocale, { year: "numeric" }).format(

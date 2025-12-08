@@ -3,12 +3,12 @@
   import Calendar from "@/components/Calendar.vue";
   import ChatInput from "@/components/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
-  import { useSelectCalendarStore } from "@/stores/calendar";
+  import { useCalendarStore } from "@/stores/calendar";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
 
-  const calendarStore = useSelectCalendarStore();
+  const calendarStore = useCalendarStore();
   const { activeFilter, formattedSelectedDate } = storeToRefs(calendarStore);
 
   const quickButtons = [
