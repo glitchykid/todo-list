@@ -57,7 +57,7 @@
             : 'text-[#8276FF] hover:bg-[#D0CCFF]'
         "
         class="w-full gap-y-4 py-2 text-center transition-all duration-300 select-none"
-        @click.stop="changeValue(value)"
+        @click="changeValue(value)"
         >{{ value }}</span
       >
     </div>

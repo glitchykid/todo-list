@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import Calendar from "@/components/Calendar.vue";
-  import ChatInput from "@/components/ChatInput.vue";
+  import ChatInput from "@/components/inputs/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
   import { useCalendarStore } from "@/stores/calendar";
-  import { useTasksStore, type Task } from "@/stores/tasks";
+  import { useTasksStore } from "@/stores/tasks";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
@@ -37,13 +37,13 @@
 
   const tasksStore = useTasksStore();
 
-  const newTask = ref<Task>({
-    id: 1,
-    title: "qwe",
-    completed: false,
-    repeatable: false,
-    dueDate: "",
-  });
+  // const newTask = ref<Task>({
+  //   id: 1,
+  //   title: "qwe",
+  //   completed: false,
+  //   repeatable: false,
+  //   dueDate: "00:00",
+  // });
 </script>
 
 <template>
