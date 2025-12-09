@@ -216,7 +216,7 @@
       @click="emit('toggle-calendar', false)"
     />
     <div
-      class="absolute z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
+      class="absolute shadow-lg shadow-[#8276FF]/50 left-1/2 -translate-x-1/2 z-40 flex flex-col gap-4 rounded-lg border border-[#C9D7ED] bg-white p-4 text-[#8276FF]"
       :class="[
         props.position === 'bottom' && 'top-full mt-2',
         props.position === 'top' && 'bottom-full mb-2',

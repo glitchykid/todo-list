@@ -6,7 +6,7 @@
 
   const headerButtonStyle: Record<LinkState, string> = {
     base: "py-2 rounded-lg items-center transition-all duration-300 ease-in-out flex flex-row gap-2 leading-6",
-    active: "bg-[#8276FF] text-[#EAEDF2] px-4",
+    active: "bg-[#8276FF] text-[#EAEDF2] px-4 shadow-lg shadow-[#8276FF]/50",
     inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
   } as const;
 </script>

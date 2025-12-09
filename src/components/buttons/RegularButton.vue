@@ -16,7 +16,7 @@
     :class="[
       props.border && 'border border-[#8276FF]',
       props.active
-        ? 'bg-[#8276FF] text-[#EAEDF2]'
+        ? 'bg-[#8276FF] text-[#EAEDF2] shadow-lg shadow-[#8276FF]/50'
         : 'text-[#8276FF] hover:bg-[#D0CCFF]',
     ]"
   >
