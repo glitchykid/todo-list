@@ -4,7 +4,7 @@
   import ChatInput from "@/components/inputs/ChatInput.vue";
   import Messages from "@/components/Messages.vue";
   import { useCalendarStore } from "@/stores/calendar";
-  import { useTasksStore } from "@/stores/tasks";
+  import { useTasksStore, type Task } from "@/stores/tasks";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
@@ -35,15 +35,15 @@
     }
   };
 
+  const id = ref<number>(0);
   const tasksStore = useTasksStore();
+  const task = ref<Task | null>(null);
 
-  // const newTask = ref<Task>({
-  //   id: 1,
-  //   title: "qwe",
-  //   completed: false,
-  //   repeatable: false,
-  //   dueDate: "00:00",
-  // });
+  const addTask = () => {
+    if (task.value === null || task.value.title === "") return;
+    tasksStore.addTask(task.value);
+    id.value++;
+  };
 </script>
 
 <template>
@@ -83,20 +83,12 @@
         </span>
       </div>
     </div>
-    <div class="mt-auto flex flex-col gap-2">
-      <Messages
-        v-for="task of tasksStore.tasks"
-        :title="task.title"
-        :due-date="task.dueDate"
-        :repeatable="task.repeatable"
-      />
+    <div class="mt-auto flex flex-col gap-2 overflow-hidden h-max">
+      <Messages v-for="task of tasksStore.tasks" :task="task" />
     </div>
     <div class="flex flex-row items-end gap-10">
-      <ChatInput class="w-full" />
-      <RegularButton
-        :icon="PlusCircleIcon"
-        @click="tasksStore.addTask(newTask)"
-      />
+      <ChatInput class="w-full" :id="id" @update:task="task = $event" />
+      <RegularButton :icon="PlusCircleIcon" @click="addTask" />
     </div>
   </main>
   <aside

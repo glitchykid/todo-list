@@ -1,17 +1,25 @@
 <script setup lang="ts">
-  import NumericInput from "@/components/inputs/NumericInput.vue";
+  import TimeInput from "@/components/inputs/TimeInput.vue";
   import { ref, watch } from "vue";
 
   const emit = defineEmits<{
     (e: "toggle-time", value: boolean): void;
-    (e: "take-hours-and-minutes", value: number[]): void;
+    (e: "take-hours-and-minutes", value: [string, string]): void;
   }>();
 
-  const hours = ref<number>(0);
-  const minutes = ref<number>(0);
+  const hours = ref<string>("00");
+  const minutes = ref<string>("00");
 
   watch([hours, minutes], ([newHours, newMinutes]) => {
-    emit("take-hours-and-minutes", [newHours, newMinutes]);
+    newHours = newHours.replace(/[^0-9]/g, "");
+    newMinutes = newMinutes.replace(/[^0-9]/g, "");
+    if (newHours.length === 1) newHours = "0" + newHours;
+    else if (newHours === "" || newHours === "0") newHours = "00";
+    else if (Number(newHours) > 23) newHours = "23";
+    if (newMinutes.length === 1) newMinutes = "0" + newMinutes;
+    else if (newMinutes === "" || newMinutes === "0") newMinutes = "00";
+    else if (Number(newMinutes) > 59) newMinutes = "59";
+    emit("take-hours-and-minutes", [newHours, newMinutes] as [string, string]);
   });
 </script>
 
@@ -24,19 +32,9 @@
     <div
       class="absolute justify-items-center items-center mb-2 bottom-full gap-4 rounded-lg p-4 left-1/2 -translate-x-1/2 shadow-lg shadow-[#8276FF]/50 z-40 flex flex-row bg-white"
     >
-      <NumericInput
-        placeholder="hh"
-        :maxlength="2"
-        :max="23"
-        v-model.number="hours"
-      />
+      <TimeInput placeholder="hh" :max="23" v-model="hours" />
       <span>:</span>
-      <NumericInput
-        placeholder="mm"
-        :maxlength="2"
-        :max="59"
-        v-model.number="minutes"
-      />
+      <TimeInput placeholder="mm" :max="59" v-model="minutes" />
     </div>
   </div>
 </template>

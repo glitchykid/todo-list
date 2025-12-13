@@ -2,15 +2,27 @@
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import Repeatable from "@/components/Repeatable.vue";
   import Time from "@/components/Time.vue";
+  import { type Task } from "@/stores/tasks";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
-  import { reactive, ref } from "vue";
+  import { reactive, ref, watchEffect } from "vue";
 
-  const showTime = ref<Boolean>(false);
-  const showTypesOfRepeat = ref<Boolean>(false);
+  const showTime = ref<boolean>(false);
+  const showTypesOfRepeat = ref<boolean>(false);
 
-  const time = reactive({
-    hours: 0,
-    minutes: 0,
+  const defaultTypeOfRepeat = ref<string>("none");
+
+  interface Time {
+    hours: string;
+    minutes: string;
+  }
+
+  const props = defineProps<{
+    id: number;
+  }>();
+
+  const time = reactive<Time>({
+    hours: "00",
+    minutes: "00",
   });
 
   const toggleTime = () => {
@@ -20,6 +32,34 @@
   const toggleTypesOfRepeat = () => {
     showTypesOfRepeat.value = !showTypesOfRepeat.value;
   };
+
+  const handleTime = ([hh, mm]: [string, string]) => {
+    time.hours = hh;
+    time.minutes = mm;
+  };
+
+  const taskTitle = ref<string>("");
+
+  const emit = defineEmits<{
+    "update:task": [value: Task];
+  }>();
+
+  const task = ref<Task | null>(null);
+
+  watchEffect(() => {
+    task.value = {
+      id: props.id,
+      title: taskTitle.value,
+      completed: false,
+      repeatable:
+        defaultTypeOfRepeat.value === "none"
+          ? false
+          : defaultTypeOfRepeat.value,
+      dueTime: `${time.hours}:${time.minutes}`,
+      space: "default",
+    };
+    emit("update:task", task.value);
+  });
 </script>
 
 <template>
@@ -27,12 +67,13 @@
     <input
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
+      v-model="taskTitle"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
       <div class="relative w-full rounded-bl-lg">
         <RegularButton
-          label="not repeatable"
+          :label="defaultTypeOfRepeat"
           class="w-full h-full rounded-none rounded-bl-lg border-r"
           :icon="ArrowPathIcon"
           :active="showTypesOfRepeat"
@@ -41,6 +82,7 @@
         <Repeatable
           v-if="showTypesOfRepeat"
           @toggle-types-of-repeat="showTypesOfRepeat = $event"
+          v-model:defaultValue="defaultTypeOfRepeat"
         />
       </div>
       <div class="relative w-full rounded-br-lg">
@@ -54,7 +96,7 @@
         <Time
           v-if="showTime"
           @toggle-time="showTime = $event"
-          v-model="(time.hours, time.minutes)"
+          @take-hours-and-minutes="handleTime"
         />
       </div>
     </div>
