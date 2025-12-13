@@ -7,8 +7,10 @@ export interface Task {
   id: number;
   title: string;
   completed: boolean;
-  repeatable: boolean;
-  dueDate: string;
+  repeatable: boolean | string;
+  dueTime: string;
+  dueDate: Date;
+  space: string;
 }
 
 export const useTasksStore = defineStore("tasks", {
@@ -22,7 +24,7 @@ export const useTasksStore = defineStore("tasks", {
     tasksForSelectedDate: (state) => {
       const calendarStore = useCalendarStore();
       return state.tasks.filter(
-        (task) => task.dueDate === calendarStore.selectedDate,
+        (task) => task.dueDate === calendarStore.selectedDateAsDate,
       );
     },
   },
@@ -33,7 +35,7 @@ export const useTasksStore = defineStore("tasks", {
     },
 
     removeTask(id: number) {
-      this.tasks = this.tasks.filter((task: Task) => task.id !== id);
+      this.tasks = this.tasks.filter((task: Task) => id !== task.id);
     },
   },
 });

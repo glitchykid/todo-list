@@ -9,8 +9,8 @@
 
   const emit = defineEmits<(e: "update:default", v: string) => void>();
 
-  const isOpen = ref(false);
-  const selected = ref(props.default ?? props.values[0] ?? "");
+  const isOpen = ref<boolean>(false);
+  const selected = ref<string>(props.default ?? props.values[0] ?? "");
 
   watch(
     () => props.default,
@@ -56,7 +56,7 @@
             ? 'bg-[#8276FF] text-[#EAEDF2]'
             : 'text-[#8276FF] hover:bg-[#D0CCFF]'
         "
-        class="w-full gap-y-4 py-2 text-center transition-all duration-300 select-none"
+        class="w-full gap-y-4 py-2 text-center transition-all duration-300"
         @click="changeValue(value)"
         >{{ value }}</span
       >
