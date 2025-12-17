@@ -9,7 +9,7 @@ export interface Task {
   completed: boolean;
   repeatable: boolean | string;
   dueTime: string;
-  dueDate: Date;
+  dueDate: string;
   space: string;
 }
 
@@ -24,7 +24,7 @@ export const useTasksStore = defineStore("tasks", {
     tasksForSelectedDate: (state) => {
       const calendarStore = useCalendarStore();
       return state.tasks.filter(
-        (task) => task.dueDate === calendarStore.selectedDateAsDate,
+        (task) => task.dueDate === calendarStore.selectedDate,
       );
     },
   },

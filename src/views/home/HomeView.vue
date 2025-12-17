@@ -5,12 +5,14 @@
   import Messages from "@/components/Messages.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { useTasksStore, type Task } from "@/stores/tasks";
+  import { addTask, type AddTask } from "@/utils/addtask";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
 
   const calendarStore = useCalendarStore();
-  const { activeFilter, formattedSelectedDate } = storeToRefs(calendarStore);
+  const { activeFilter, formattedSelectedDate, selectedDateAsDate } =
+    storeToRefs(calendarStore);
 
   const quickButtons = [
     { name: "today", label: "Today" },
@@ -35,15 +37,16 @@
     }
   };
 
-  const id = ref<number>(0);
   const tasksStore = useTasksStore();
-  const task = ref<Task | null>(null);
 
-  const addTask = () => {
-    if (task.value === null || task.value.title === "") return;
-    tasksStore.addTask(task.value);
-    id.value++;
+  const valuesForAddTask: AddTask = {
+    id: ref<number>(0),
+    task: ref<Task | null>(null),
   };
+
+  addTask(valuesForAddTask);
+
+  const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
 </script>
 
 <template>
@@ -83,11 +86,18 @@
         </span>
       </div>
     </div>
-    <div class="mt-auto flex flex-col gap-2 overflow-hidden h-max">
-      <Messages v-for="task of tasksStore.tasks" :task="task" />
+    <div class="flex flex-col mt-auto h-full gap-2">
+      <TransitionGroup tag="div" name="task">
+        <Messages v-for="task of filteredTasks" :key="task.id" :task="task" />
+      </TransitionGroup>
     </div>
     <div class="flex flex-row items-end gap-10">
-      <ChatInput class="w-full" :id="id" @update:task="task = $event" />
+      <ChatInput
+        class="w-full"
+        :id="id"
+        @update:task="task = $event"
+        :valuesForAddTask="valuesForAddTask"
+      />
       <RegularButton :icon="PlusCircleIcon" @click="addTask" />
     </div>
   </main>

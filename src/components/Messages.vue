@@ -22,7 +22,7 @@
 
 <template>
   <div
-    class="ml-auto flex flex-col overflow-hidden rounded-t-2xl rounded-bl-2xl"
+    class="flex flex-col ml-auto w-fit overflow-hidden rounded-t-2xl rounded-bl-2xl"
   >
     <div
       class="bg-[#D0CCFF] px-4 py-1.5 leading-6 text-pretty wrap-break-word break-all text-[#3E3D4D]"

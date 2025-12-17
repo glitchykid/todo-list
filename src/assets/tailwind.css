@@ -19,3 +19,18 @@ span,
 p {
   @apply select-none;
 }
+
+.task-move,
+.task-enter-active,
+.task-leave-active {
+  transition: all 0.5s ease;
+}
+.task-enter-from,
+.task-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.task-leave-active {
+  position: absolute;
+}
