@@ -2,7 +2,9 @@
   import RegularButton from "@/components/buttons/RegularButton.vue";
   import Repeatable from "@/components/Repeatable.vue";
   import Time from "@/components/Time.vue";
+  import { useCalendarStore } from "@/stores/calendar";
   import { type Task } from "@/stores/tasks";
+  import { addTask, type AddTask } from "@/utils/addtask";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
   import { reactive, ref, watchEffect } from "vue";
 
@@ -18,6 +20,7 @@
 
   const props = defineProps<{
     id: number;
+    valuesForAddTask: AddTask;
   }>();
 
   const time = reactive<Time>({
@@ -45,6 +48,7 @@
   }>();
 
   const task = ref<Task | null>(null);
+  const calendarStore = useCalendarStore();
 
   watchEffect(() => {
     task.value = {
@@ -56,9 +60,11 @@
           ? false
           : defaultTypeOfRepeat.value,
       dueTime: `${time.hours}:${time.minutes}`,
+      dueDate: calendarStore.selectedDate,
       space: "default",
     };
-    emit("update:task", task.value);
+
+    if (task.value !== null) emit("update:task", task.value);
   });
 </script>
 
@@ -68,6 +74,7 @@
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
+      @keyup.enter="addTask(props.valuesForAddTask)"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
