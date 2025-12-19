@@ -21,8 +21,8 @@
 
   const showCalendar = ref<Boolean>(false);
 
-  const isSelectActive = computed(
-    () => activeFilter.value === "select" || showCalendar.value,
+  const isSelectActive = computed(() =>
+    activeFilter.value === "select" || showCalendar.value ? true : false,
   );
 
   const toggleCalendar = () => {
@@ -86,7 +86,7 @@
         </span>
       </div>
     </div>
-    <div class="flex flex-col mt-auto h-full gap-2">
+    <div class="mt-auto flex h-full flex-col gap-2">
       <TransitionGroup tag="div" name="task">
         <Messages v-for="task of filteredTasks" :key="task.id" :task="task" />
       </TransitionGroup>
@@ -94,11 +94,14 @@
     <div class="flex flex-row items-end gap-10">
       <ChatInput
         class="w-full"
-        :id="id"
-        @update:task="task = $event"
+        :id="valuesForAddTask.id.value"
+        @update:task="valuesForAddTask.task.value = $event"
         :valuesForAddTask="valuesForAddTask"
       />
-      <RegularButton :icon="PlusCircleIcon" @click="addTask" />
+      <RegularButton
+        :icon="PlusCircleIcon"
+        @click="addTask(valuesForAddTask)"
+      />
     </div>
   </main>
   <aside
