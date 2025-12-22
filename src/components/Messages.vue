@@ -1,29 +1,27 @@
 <script setup lang="ts">
-  import { useTasksStore, type Task } from "@/stores/tasks";
-  import {
-    ArrowLongRightIcon,
-    ArrowPathIcon,
-    CheckIcon,
-    ClockIcon,
-    TrashIcon,
-  } from "@heroicons/vue/20/solid";
+import { useTasksStore, type Task } from "@/stores/tasks";
+import {
+  ArrowLongRightIcon,
+  ArrowPathIcon,
+  CheckIcon,
+  ClockIcon,
+  TrashIcon,
+} from "@heroicons/vue/20/solid";
 
-  const tasksStore = useTasksStore();
+const tasksStore = useTasksStore();
 
-  const props = defineProps<{
-    task: Task;
-  }>();
+const props = defineProps<{
+  task: Task;
+}>();
 
-  const styles: { textAndIcon: string; onlyIcon: string } = {
-    textAndIcon: "flex w-40 flex-row items-center justify-center gap-2",
-    onlyIcon: "flex w-9 items-center justify-center",
-  };
+const styles: { textAndIcon: string; onlyIcon: string } = {
+  textAndIcon: "flex w-40 flex-row items-center justify-center gap-2",
+  onlyIcon: "flex w-9 items-center justify-center",
+};
 </script>
 
 <template>
-  <div
-    class="flex flex-col ml-auto w-fit overflow-hidden rounded-t-2xl rounded-bl-2xl"
-  >
+  <div class="ml-auto w-fit h-fit overflow-hidden rounded-t-2xl rounded-bl-2xl">
     <div
       class="bg-[#D0CCFF] px-4 py-1.5 leading-6 text-pretty wrap-break-word break-all text-[#3E3D4D]"
       :class="props.task.repeatable ? 'w-107' : 'w-58'"

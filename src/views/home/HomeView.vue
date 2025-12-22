@@ -1,52 +1,52 @@
 <script setup lang="ts">
-  import RegularButton from "@/components/buttons/RegularButton.vue";
-  import Calendar from "@/components/Calendar.vue";
-  import ChatInput from "@/components/inputs/ChatInput.vue";
-  import Messages from "@/components/Messages.vue";
-  import { useCalendarStore } from "@/stores/calendar";
-  import { useTasksStore, type Task } from "@/stores/tasks";
-  import { addTask, type AddTask } from "@/utils/addtask";
-  import { PlusCircleIcon } from "@heroicons/vue/20/solid";
-  import { storeToRefs } from "pinia";
-  import { computed, ref } from "vue";
+import RegularButton from "@/components/buttons/RegularButton.vue";
+import Calendar from "@/components/Calendar.vue";
+import ChatInput from "@/components/inputs/ChatInput.vue";
+import Messages from "@/components/Messages.vue";
+import { useCalendarStore } from "@/stores/calendar";
+import { useTasksStore, type Task } from "@/stores/tasks";
+import { addTask, type AddTask } from "@/utils/addtask";
+import { PlusCircleIcon } from "@heroicons/vue/20/solid";
+import { storeToRefs } from "pinia";
+import { computed, ref, TransitionGroup } from "vue";
 
-  const calendarStore = useCalendarStore();
-  const { activeFilter, formattedSelectedDate, selectedDateAsDate } =
-    storeToRefs(calendarStore);
+const calendarStore = useCalendarStore();
+const { activeFilter, formattedSelectedDate, selectedDateAsDate } =
+  storeToRefs(calendarStore);
 
-  const quickButtons = [
-    { name: "today", label: "Today" },
-    { name: "tomorrow", label: "Tomorrow" },
-  ] as const;
+const quickButtons = [
+  { name: "today", label: "Today" },
+  { name: "tomorrow", label: "Tomorrow" },
+] as const;
 
-  const showCalendar = ref<Boolean>(false);
+const showCalendar = ref<Boolean>(false);
 
-  const isSelectActive = computed(() =>
-    activeFilter.value === "select" || showCalendar.value ? true : false,
-  );
+const isSelectActive = computed(() =>
+  activeFilter.value === "select" || showCalendar.value ? true : false,
+);
 
-  const toggleCalendar = () => {
-    showCalendar.value = !showCalendar.value;
-  };
+const toggleCalendar = () => {
+  showCalendar.value = !showCalendar.value;
+};
 
-  const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
-    if (name === "today") {
-      calendarStore.selectToday();
-    } else {
-      calendarStore.selectTomorrow();
-    }
-  };
+const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
+  if (name === "today") {
+    calendarStore.selectToday();
+  } else {
+    calendarStore.selectTomorrow();
+  }
+};
 
-  const tasksStore = useTasksStore();
+const tasksStore = useTasksStore();
 
-  const valuesForAddTask: AddTask = {
-    id: ref<number>(0),
-    task: ref<Task | null>(null),
-  };
+const valuesForAddTask: AddTask = {
+  id: ref<number>(0),
+  task: ref<Task | null>(null),
+};
 
-  addTask(valuesForAddTask);
+addTask(valuesForAddTask);
 
-  const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
+const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
 </script>
 
 <template>
@@ -86,11 +86,13 @@
         </span>
       </div>
     </div>
-    <div class="mt-auto flex h-full flex-col gap-2">
-      <TransitionGroup tag="div" name="task">
-        <Messages v-for="task of filteredTasks" :key="task.id" :task="task" />
-      </TransitionGroup>
-    </div>
+    <TransitionGroup
+      name="tasks"
+      tag="div"
+      class="h-full overflow-y-auto space-y-2 place-content-end-safe"
+    >
+      <Messages v-for="task of filteredTasks" :task="task" :key="task.id" />
+    </TransitionGroup>
     <div class="flex flex-row items-end gap-10">
       <ChatInput
         class="w-full"
@@ -105,10 +107,11 @@
     </div>
   </main>
   <aside
-    class="flex h-full w-50 min-w-50 flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white py-8"
+    class="flex h-full w-50 min-w-50 flex-col rounded-2xl border border-[#C9D7ED] bg-white py-8"
   >
-    <div>
+    <div class="flex flex-col gap-8">
       <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
+      <RegularButton label="all tasks" :active="true" class="rounded-none w-full px-4 py-2" />
     </div>
   </aside>
 </template>
