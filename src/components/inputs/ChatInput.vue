@@ -74,7 +74,7 @@
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
-      @keyup.enter="addTask(props.valuesForAddTask)"
+      @keyup.enter="addTask(props.valuesForAddTask), taskTitle = ''"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
