@@ -6,7 +6,7 @@ export type AddTask = {
   task: Ref<Task | null>;
 };
 
-export const addTask = (valuesForAddTask: AddTask) => {
+export const addTask = (valuesForAddTask: AddTask): void => {
   const tasksStore = useTasksStore();
   if (
     valuesForAddTask.task.value === null ||

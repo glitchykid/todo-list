@@ -1,5 +1,6 @@
 import { useCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
+import { useWorkspacesStore } from "./workspaces";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
@@ -10,7 +11,7 @@ export interface Task {
   repeatable: boolean | string;
   dueTime: string;
   dueDate: string;
-  space: string;
+  workspace: string;
 }
 
 export const useTasksStore = defineStore("tasks", {
@@ -27,6 +28,13 @@ export const useTasksStore = defineStore("tasks", {
         (task) => task.dueDate === calendarStore.selectedDate,
       );
     },
+
+    tasksForSelectedWorkspace: (state) => {
+      const workspacesStore = useWorkspacesStore();
+      return state.tasks.filter(
+        (task) => task.workspace === workspacesStore.currentWorkspace,
+      );
+    },
   },
 
   actions: {
@@ -34,7 +42,7 @@ export const useTasksStore = defineStore("tasks", {
       this.tasks.push(task);
     },
 
-    removeTask(id: number) {
+    removeTask(id: number): void {
       this.tasks = this.tasks.filter((task: Task) => id !== task.id);
     },
   },
