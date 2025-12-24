@@ -1,52 +1,58 @@
 <script setup lang="ts">
-import RegularButton from "@/components/buttons/RegularButton.vue";
-import Calendar from "@/components/Calendar.vue";
-import ChatInput from "@/components/inputs/ChatInput.vue";
-import Messages from "@/components/Messages.vue";
-import { useCalendarStore } from "@/stores/calendar";
-import { useTasksStore, type Task } from "@/stores/tasks";
-import { addTask, type AddTask } from "@/utils/addtask";
-import { PlusCircleIcon } from "@heroicons/vue/20/solid";
-import { storeToRefs } from "pinia";
-import { computed, ref, TransitionGroup } from "vue";
+  import RegularButton from "@/components/buttons/RegularButton.vue";
+  import Calendar from "@/components/Calendar.vue";
+  import ChatInput from "@/components/inputs/ChatInput.vue";
+  import Messages from "@/components/Messages.vue";
+  import { useCalendarStore } from "@/stores/calendar";
+  import { useTasksStore, type Task } from "@/stores/tasks";
+  import { useWorkspacesStore } from "@/stores/workspaces";
+  import { addTask, type AddTask } from "@/utils/addtask";
+  import { PlusCircleIcon } from "@heroicons/vue/20/solid";
+  import { storeToRefs } from "pinia";
+  import { computed, ref, TransitionGroup } from "vue";
 
-const calendarStore = useCalendarStore();
-const { activeFilter, formattedSelectedDate, selectedDateAsDate } =
-  storeToRefs(calendarStore);
+  const calendarStore = useCalendarStore();
+  const { activeFilter, formattedSelectedDate } = storeToRefs(calendarStore);
 
-const quickButtons = [
-  { name: "today", label: "Today" },
-  { name: "tomorrow", label: "Tomorrow" },
-] as const;
+  const quickButtons = [
+    { name: "today", label: "Today" },
+    { name: "tomorrow", label: "Tomorrow" },
+  ] as const;
 
-const showCalendar = ref<Boolean>(false);
+  const showCalendar = ref<Boolean>(false);
 
-const isSelectActive = computed(() =>
-  activeFilter.value === "select" || showCalendar.value ? true : false,
-);
+  const isSelectActive = computed(() =>
+    activeFilter.value === "select" || showCalendar.value ? true : false,
+  );
 
-const toggleCalendar = () => {
-  showCalendar.value = !showCalendar.value;
-};
+  const toggleCalendar = () => {
+    showCalendar.value = !showCalendar.value;
+  };
 
-const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
-  if (name === "today") {
-    calendarStore.selectToday();
-  } else {
-    calendarStore.selectTomorrow();
-  }
-};
+  const handleQuickFilter = (name: (typeof quickButtons)[number]["name"]) => {
+    if (name === "today") {
+      calendarStore.selectToday();
+    } else {
+      calendarStore.selectTomorrow();
+    }
+  };
 
-const tasksStore = useTasksStore();
+  const tasksStore = useTasksStore();
 
-const valuesForAddTask: AddTask = {
-  id: ref<number>(0),
-  task: ref<Task | null>(null),
-};
+  const valuesForAddTask: AddTask = {
+    id: ref<number>(0),
+    task: ref<Task | null>(null),
+  };
 
-addTask(valuesForAddTask);
+  addTask(valuesForAddTask);
 
-const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
+  const filteredTasks = computed(
+    () =>
+      tasksStore.tasksForSelectedDate || tasksStore.tasksForSelectedWorkspace,
+  );
+
+  const workspacesStore = useWorkspacesStore();
+  const { currentWorkspace } = storeToRefs(workspacesStore);
 </script>
 
 <template>
@@ -54,7 +60,9 @@ const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
     class="flex h-full w-full flex-col gap-8 rounded-2xl border border-[#C9D7ED] bg-white px-9 py-8"
   >
     <div class="flex w-full flex-col gap-8">
-      <h6 class="text-center text-[#D0CCFF]">All tasks</h6>
+      <h6 class="text-center text-[#D0CCFF]">
+        {{ currentWorkspace }}
+      </h6>
       <div class="flex flex-row items-center justify-between gap-8">
         <div class="flex flex-row gap-8">
           <RegularButton
@@ -89,7 +97,7 @@ const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
     <TransitionGroup
       name="tasks"
       tag="div"
-      class="h-full overflow-y-auto space-y-2 place-content-end-safe"
+      class="h-full place-content-end-safe space-y-2 overflow-y-auto"
     >
       <Messages v-for="task of filteredTasks" :task="task" :key="task.id" />
     </TransitionGroup>
@@ -111,7 +119,12 @@ const filteredTasks = computed(() => tasksStore.tasksForSelectedDate);
   >
     <div class="flex flex-col gap-8">
       <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
-      <RegularButton label="all tasks" :active="true" class="rounded-none w-full px-4 py-2" />
+      <RegularButton
+        v-for="workspace of workspacesStore.getWorkspaces"
+        :active="true"
+        class="w-full rounded-none px-4 py-2"
+        :label="workspace"
+      />
     </div>
   </aside>
 </template>

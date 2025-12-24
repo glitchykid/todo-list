@@ -32,8 +32,5 @@ coverage
 # Vue directories and files
 node_modules
 
-# Configs
-.prettierrc
-
 # Temporary
 README.md

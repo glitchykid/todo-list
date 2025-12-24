@@ -61,7 +61,7 @@
           : defaultTypeOfRepeat.value,
       dueTime: `${time.hours}:${time.minutes}`,
       dueDate: calendarStore.selectedDate,
-      space: "default",
+      workspace: "default",
     };
 
     if (task.value !== null) emit("update:task", task.value);
@@ -74,14 +74,14 @@
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
-      @keyup.enter="addTask(props.valuesForAddTask), taskTitle = ''"
+      @keyup.enter="(addTask(props.valuesForAddTask), (taskTitle = ''))"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
       <div class="relative w-full rounded-bl-lg">
         <RegularButton
           :label="defaultTypeOfRepeat"
-          class="w-full h-full rounded-none rounded-bl-lg border-r"
+          class="h-full w-full rounded-none rounded-bl-lg border-r"
           :icon="ArrowPathIcon"
           :active="showTypesOfRepeat"
           @click="toggleTypesOfRepeat"
