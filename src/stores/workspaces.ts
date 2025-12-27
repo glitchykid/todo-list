@@ -5,8 +5,7 @@ export type Workspace = string[];
 export const useWorkspacesStore = defineStore("workspaces", {
   state: () => {
     const defaultWorkspace: string = "All tasks";
-    const defaultWorkspaces: Workspace = [];
-    defaultWorkspaces.push(defaultWorkspace);
+    const defaultWorkspaces: Workspace = [defaultWorkspace, "Personal", "Work"];
 
     return {
       workspaces: defaultWorkspaces as Workspace,

@@ -4,8 +4,10 @@
   import Time from "@/components/Time.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { type Task } from "@/stores/tasks";
+import { useWorkspacesStore } from "@/stores/workspaces";
   import { addTask, type AddTask } from "@/utils/addtask";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
+import { storeToRefs } from "pinia";
   import { reactive, ref, watchEffect } from "vue";
 
   const showTime = ref<boolean>(false);
@@ -49,6 +51,8 @@
 
   const task = ref<Task | null>(null);
   const calendarStore = useCalendarStore();
+  const workspacesStore = useWorkspacesStore();
+  const { currentWorkspace } = storeToRefs(workspacesStore);
 
   watchEffect(() => {
     task.value = {
@@ -61,7 +65,7 @@
           : defaultTypeOfRepeat.value,
       dueTime: `${time.hours}:${time.minutes}`,
       dueDate: calendarStore.selectedDate,
-      workspace: "default",
+      workspace: currentWorkspace.value,
     };
 
     if (task.value !== null) emit("update:task", task.value);
