@@ -22,18 +22,16 @@ export const useTasksStore = defineStore("tasks", {
   },
 
   getters: {
-    tasksForSelectedDate: (state) => {
+    filteredTasks: (state) => {
       const calendarStore = useCalendarStore();
-      return state.tasks.filter(
-        (task) => task.dueDate === calendarStore.selectedDate,
-      );
-    },
-
-    tasksForSelectedWorkspace: (state) => {
       const workspacesStore = useWorkspacesStore();
-      return state.tasks.filter(
-        (task) => task.workspace === workspacesStore.currentWorkspace,
+      let result: Task[] = [];
+      result = state.tasks.filter(
+        (task) =>
+          task.dueDate === calendarStore.selectedDate &&
+          task.workspace === workspacesStore.currentWorkspace,
       );
+      return result;
     },
   },
 

@@ -7,7 +7,7 @@
   import { useTasksStore, type Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { addTask, type AddTask } from "@/utils/addtask";
-  import { PlusCircleIcon } from "@heroicons/vue/20/solid";
+  import { FolderPlusIcon, PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref, TransitionGroup } from "vue";
 
@@ -37,19 +37,15 @@
     }
   };
 
-  const tasksStore = useTasksStore();
-
   const valuesForAddTask: AddTask = {
     id: ref<number>(0),
     task: ref<Task | null>(null),
   };
 
   addTask(valuesForAddTask);
+  const tasksStore = useTasksStore();
 
-  const filteredTasks = computed(
-    () =>
-      tasksStore.tasksForSelectedDate || tasksStore.tasksForSelectedWorkspace,
-  );
+  const filteredTasks = computed(() => tasksStore.filteredTasks);
 
   const workspacesStore = useWorkspacesStore();
   const { currentWorkspace } = storeToRefs(workspacesStore);
@@ -119,12 +115,16 @@
   >
     <div class="flex flex-col gap-8">
       <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
-      <RegularButton
-        v-for="workspace of workspacesStore.getWorkspaces"
-        :active="true"
-        class="w-full rounded-none px-4 py-2"
-        :label="workspace"
-      />
+      <div class="flex flex-col">
+        <RegularButton
+          v-for="workspace of workspacesStore.getWorkspaces"
+          :active="workspace === currentWorkspace"
+          class="w-full rounded-none px-4 py-2 shadow-none"
+          :label="workspace"
+          @click="currentWorkspace = workspace"
+        />
+        <RegularButton :icon="FolderPlusIcon" :customIconSize="6" />
+      </div>
     </div>
   </aside>
 </template>
