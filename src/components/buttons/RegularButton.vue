@@ -7,6 +7,7 @@
     active?: boolean;
     border?: boolean;
     customIconSize?: number;
+    withoutPaddingsForIcon?: boolean;
   }>();
 </script>
 
@@ -26,13 +27,18 @@
   </button>
   <button
     v-else-if="props.icon && !props.label"
-    class="relative z-10 flex flex-row items-center justify-center px-4 py-2 leading-6 transition-all duration-300"
+    class="relative z-10 flex flex-row p- items-center justify-center leading-6 transition-all duration-300"
+    :class="withoutPaddingsForIcon ? 'p-0' : 'px-4 py-2'"
   >
     <component
       v-if="props.icon"
       :is="props.icon"
       class="text-[#8276FF] transition-all duration-300 hover:scale-125"
-      :class="customIconSize ? 'size-' + customIconSize : 'size-8'"
+      :class="
+        customIconSize && typeof customIconSize === 'number'
+          ? 'size-' + customIconSize
+          : 'size-8'
+      "
     />
   </button>
 </template>
