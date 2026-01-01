@@ -97,7 +97,7 @@
     >
       <Messages v-for="task of filteredTasks" :task="task" :key="task.id" />
     </TransitionGroup>
-    <div class="flex flex-row items-end gap-10">
+    <div class="flex flex-row place-items-end-safe gap-10">
       <ChatInput
         class="w-full"
         :id="valuesForAddTask.id.value"
@@ -107,6 +107,7 @@
       <RegularButton
         :icon="PlusCircleIcon"
         @click="addTask(valuesForAddTask)"
+        :without-paddings-for-icon="true"
       />
     </div>
   </main>

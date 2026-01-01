@@ -18,19 +18,25 @@ export const useTasksStore = defineStore("tasks", {
   state: () => {
     return {
       tasks: [] as Task[],
+      removedTasks: [] as Task[],
+      completedTasks: [] as Task[],
     };
   },
 
   getters: {
-    filteredTasks: (state) => {
+    filteredTasks: (state): Task[] => {
       const calendarStore = useCalendarStore();
       const workspacesStore = useWorkspacesStore();
       let result: Task[] = [];
       result = state.tasks.filter(
         (task) =>
           task.dueDate === calendarStore.selectedDate &&
-          task.workspace === workspacesStore.currentWorkspace,
+          (workspacesStore.currentWorkspace === "All tasks" ||
+            task.workspace === workspacesStore.currentWorkspace),
       );
+      let mapped = result.map((el) => el.dueTime);
+      mapped.sort();
+      result = mapped;
       return result;
     },
   },
@@ -41,6 +47,12 @@ export const useTasksStore = defineStore("tasks", {
     },
 
     removeTask(id: number): void {
+      this.removedTasks = this.tasks.filter((task: Task) => id === task.id);
+      this.tasks = this.tasks.filter((task: Task) => id !== task.id);
+    },
+
+    completeTask(id: number): void {
+      this.completedTasks = this.tasks.filter((task: Task) => id === task.id);
       this.tasks = this.tasks.filter((task: Task) => id !== task.id);
     },
   },
