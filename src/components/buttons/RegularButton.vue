@@ -14,7 +14,7 @@
 <template>
   <button
     v-if="props.label"
-    class="relative z-10 flex flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-6 text-nowrap transition-all duration-300"
+    class="relative z-10 flex cursor-pointer flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-6 text-nowrap transition-all duration-300"
     :class="[
       props.border && 'border border-[#8276FF]',
       props.active
@@ -27,7 +27,7 @@
   </button>
   <button
     v-else-if="props.icon && !props.label"
-    class="relative z-10 flex flex-row p- items-center justify-center leading-6 transition-all duration-300"
+    class="relative z-10 flex cursor-pointer flex-row items-center justify-center leading-6 transition-all duration-300"
     :class="withoutPaddingsForIcon ? 'p-0' : 'px-4 py-2'"
   >
     <component

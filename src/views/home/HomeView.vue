@@ -7,7 +7,13 @@
   import { useTasksStore, type Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { addTask, type AddTask } from "@/utils/addtask";
-  import { FolderPlusIcon, PlusCircleIcon } from "@heroicons/vue/20/solid";
+  import {
+    FolderPlusIcon,
+    PencilIcon,
+    PencilSquareIcon,
+    PlusCircleIcon,
+    TrashIcon,
+  } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref, TransitionGroup } from "vue";
 
@@ -49,6 +55,9 @@
 
   const workspacesStore = useWorkspacesStore();
   const { currentWorkspace } = storeToRefs(workspacesStore);
+
+  const showActions = ref<boolean>(false);
+  const toggleTaskActions = () => (showActions.value = !showActions.value);
 </script>
 
 <template>
@@ -90,7 +99,14 @@
         </span>
       </div>
     </div>
+    <div
+      v-if="filteredTasks.length === 0"
+      class="flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
+    >
+      <p class="w-full text-center">There are no tasks yet</p>
+    </div>
     <TransitionGroup
+      v-else
       name="tasks"
       tag="div"
       class="h-full place-content-end-safe space-y-2 overflow-y-auto"
@@ -117,14 +133,37 @@
     <div class="flex flex-col gap-8">
       <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
       <div class="flex flex-col">
-        <RegularButton
+        <div
           v-for="workspace of workspacesStore.getWorkspaces"
-          :active="workspace === currentWorkspace"
-          class="w-full rounded-none px-4 py-2 shadow-none"
-          :label="workspace"
-          @click="currentWorkspace = workspace"
-        />
-        <RegularButton :icon="FolderPlusIcon" :customIconSize="6" />
+          class="flex flex-row overflow-hidden"
+        >
+          <RegularButton
+            :active="workspace === currentWorkspace"
+            class="z-10 grow rounded-none px-4 py-2 shadow-none"
+            :label="workspace"
+            @click="currentWorkspace = workspace"
+          />
+          <div
+            class="z-20 flex grow-0 flex-row place-items-center transition-all duration-300"
+            :class="showActions ? 'w-10' : 'w-0'"
+          >
+            <TrashIcon class="size-5" />
+            <PencilIcon class="size-5" />
+          </div>
+        </div>
+        <div class="flex flex-row justify-evenly py-2">
+          <RegularButton
+            :icon="FolderPlusIcon"
+            :customIconSize="5"
+            :without-paddings-for-icon="true"
+          />
+          <RegularButton
+            :icon="PencilSquareIcon"
+            :custom-icon-size="5"
+            @click="toggleTaskActions"
+            :without-paddings-for-icon="true"
+          />
+        </div>
       </div>
     </div>
   </aside>

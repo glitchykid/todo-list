@@ -36,7 +36,6 @@ export const useTasksStore = defineStore("tasks", {
       );
       let mapped = result.map((el) => el.dueTime);
       mapped.sort();
-      result = mapped;
       return result;
     },
   },
