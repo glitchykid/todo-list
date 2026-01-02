@@ -108,6 +108,7 @@ import { storeToRefs } from "pinia";
           v-if="showTime"
           @toggle-time="showTime = $event"
           @take-hours-and-minutes="handleTime"
+          @keyup.enter="showTime = false"
         />
       </div>
     </div>
