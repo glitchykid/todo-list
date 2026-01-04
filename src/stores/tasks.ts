@@ -42,7 +42,6 @@ export const useTasksStore = defineStore("tasks", {
 
         firstArr.forEach((v, i) => {
           if (Number(v) > Number(secondArr[i])) result = -1;
-          else if (Number(v) > Number(secondArr[i])) result = -1;
         });
 
         return result;
