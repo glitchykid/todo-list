@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import TimeInput from "@/components/inputs/TimeInput.vue";
+  import TimeInput from "@/components/atoms/AtomTimeInput.vue";
   import { ref, watch } from "vue";
 
   const emit = defineEmits<{
@@ -30,7 +30,7 @@
       @click="emit('toggle-time', false)"
     />
     <div
-      class="absolute justify-items-center items-center mb-2 bottom-full gap-4 rounded-lg p-4 left-1/2 -translate-x-1/2 shadow-lg shadow-[#8276FF]/50 z-40 flex flex-row bg-white"
+      class="absolute bottom-full left-1/2 z-40 mb-2 flex -translate-x-1/2 flex-row items-center justify-items-center gap-4 rounded-lg bg-white p-4 shadow-lg shadow-[#8276FF]/50"
     >
       <TimeInput placeholder="hh" :max="23" v-model="hours" />
       <span>:</span>

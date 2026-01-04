@@ -2,7 +2,8 @@ import { createPinia } from "pinia";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
-import "./assets/tailwind.css";
+import "./assets/styles/animations.css";
+import "./assets/styles/tailwind.css";
 import { appRoutes } from "./routes/routes";
 
 const app = createApp(App);

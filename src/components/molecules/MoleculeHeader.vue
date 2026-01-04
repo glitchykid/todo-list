@@ -1,6 +1,6 @@
 <script setup lang="ts">
+  import LinkButton from "@/components/atoms/AtomLinkButton.vue";
   import { appRoutes } from "@/routes/routes";
-  import LinkButton from "./buttons/LinkButton.vue";
 
   type LinkState = "base" | "active" | "inactive";
 

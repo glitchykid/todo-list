@@ -19,13 +19,3 @@ span,
 p {
   @apply select-none;
 }
-
-.tasks-enter-active,
-.tasks-leave-active {
-  transition: opacity 250ms ease;
-}
-
-.tasks-enter-from,
-.tasks-leave-to {
-  opacity: 0;
-}

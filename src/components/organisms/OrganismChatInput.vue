@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import RegularButton from "@/components/buttons/RegularButton.vue";
-  import Repeatable from "@/components/Repeatable.vue";
-  import Time from "@/components/Time.vue";
+  import RegularButton from "@/components/atoms/AtomRegularButton.vue";
+  import Repeatable from "@/components/atoms/AtomRepeatable.vue";
+  import Time from "@/components/molecules/MoleculeTime.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { type Task } from "@/stores/tasks";
-import { useWorkspacesStore } from "@/stores/workspaces";
+  import { useWorkspacesStore } from "@/stores/workspaces";
   import { addTask, type AddTask } from "@/utils/addtask";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
-import { storeToRefs } from "pinia";
+  import { storeToRefs } from "pinia";
   import { reactive, ref, watchEffect } from "vue";
 
   const showTime = ref<boolean>(false);

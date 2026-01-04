@@ -1,0 +1,13 @@
+.tasks-enter-active,
+.tasks-leave-active,
+.workspaces-enter-active,
+.workspaces-leave-active {
+  transition: opacity 250ms ease;
+}
+
+.tasks-enter-from,
+.tasks-leave-to,
+.workspaces-enter-from,
+.workspaces-leave-to {
+  opacity: 0;
+}

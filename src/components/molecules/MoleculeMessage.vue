@@ -42,20 +42,20 @@
         <span>{{ props.task.dueTime }}</span>
       </div>
       <div
-        class="bg-[#92D6F3] text-[#314D59]"
+        class="cursor-pointer bg-[#92D6F3] text-[#314D59] transition-colors duration-300 hover:bg-[#a8e5ff]"
         :class="styles.onlyIcon"
         v-if="props.task.repeatable"
       >
         <ArrowLongRightIcon class="size-5" />
       </div>
       <div
-        class="bg-[#8CE98C] text-[#274F27] transition-colors duration-300 hover:bg-[#aeffae]"
+        class="cursor-pointer bg-[#8CE98C] text-[#274F27] transition-colors duration-300 hover:bg-[#aeffae]"
         :class="styles.onlyIcon"
       >
         <CheckIcon class="size-5" />
       </div>
       <div
-        class="transition-color bg-[#E27575] text-[#4F2929] duration-300 hover:bg-[#ffa3a3]"
+        class="cursor-pointer bg-[#E27575] text-[#4F2929] transition-colors duration-300 hover:bg-[#ffa3a3]"
         :class="styles.onlyIcon"
         @click="tasksStore.removeTask(task.id)"
       >
