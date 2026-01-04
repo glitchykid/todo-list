@@ -45,15 +45,17 @@
           class="flex flex-row overflow-hidden"
         >
           <AtomRegularButton
-            v-if="choosenWorkspaceForRename !== workspace"
+            v-if="
+              choosenWorkspaceForRename !== workspace ||
+              !showInputForChangeWorkspaceTitle
+            "
             :active="workspace === currentWorkspace"
             class="z-10 w-full rounded-none px-4 py-2 shadow-none"
             :label="workspace"
             @click="currentWorkspace = workspace"
           />
           <input
-            v-if="
-              workspace !== 'All tasks' &&
+            v-else-if="
               showInputForChangeWorkspaceTitle &&
               choosenWorkspaceForRename === workspace
             "
