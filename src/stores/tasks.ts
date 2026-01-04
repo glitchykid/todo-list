@@ -34,8 +34,19 @@ export const useTasksStore = defineStore("tasks", {
           (workspacesStore.currentWorkspace === "All tasks" ||
             task.workspace === workspacesStore.currentWorkspace),
       );
-      let mapped = result.map((el) => el.dueTime);
-      mapped.sort();
+      result.sort((a, b) => {
+        const firstArr: string[] = a.dueTime.split(":");
+        const secondArr: string[] = b.dueTime.split(":");
+
+        let result = 0;
+
+        firstArr.forEach((v, i) => {
+          if (Number(v) > Number(secondArr[i])) result = -1;
+          else if (Number(v) > Number(secondArr[i])) result = -1;
+        });
+
+        return result;
+      });
       return result;
     },
   },

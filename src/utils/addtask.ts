@@ -15,5 +15,4 @@ export const addTask = (valuesForAddTask: AddTask): void => {
     return;
   tasksStore.addTask(valuesForAddTask.task.value);
   valuesForAddTask.id.value++;
-  console.log(valuesForAddTask.task.value.id);
 };
