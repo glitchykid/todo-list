@@ -34,8 +34,8 @@
 
 <template>
   <div class="flex w-full flex-col gap-8">
-    <h6 class="text-center text-[#D0CCFF]">
-      {{ currentWorkspace }}
+    <h6 class="text-center text-[#D0CCFF] truncate min-w-0">
+      {{ currentWorkspace.name }}
     </h6>
     <div class="flex flex-row items-center justify-between gap-8">
       <div class="flex flex-row gap-8">

@@ -8,13 +8,14 @@
     border?: boolean;
     customIconSize?: number;
     withoutPaddingsForIcon?: boolean;
+    noTruncate?: boolean;
   }>();
 </script>
 
 <template>
   <button
     v-if="props.label"
-    class="relative z-10 flex cursor-pointer flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-6 text-nowrap transition-all duration-300"
+    class="relative z-10 flex min-w-0 cursor-pointer flex-row items-center justify-center gap-2 rounded-lg px-4 py-2 text-center leading-6 text-nowrap transition-all duration-300"
     :class="[
       props.border && 'border border-[#8276FF]',
       props.active
@@ -23,7 +24,7 @@
     ]"
   >
     <component v-if="props.icon" :is="props.icon" class="size-5" />
-    <slot>{{ props.label }}</slot>
+    <span :class="!props.noTruncate && 'truncate'">{{ props.label }}</span>
   </button>
   <button
     v-else-if="props.icon && !props.label"

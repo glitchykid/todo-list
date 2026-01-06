@@ -252,6 +252,7 @@
             :name="cell.displayDay"
             class="h-9 w-9"
             @click="selectDay(cell.date)"
+            :no-truncate="true"
           />
           <span
             v-else

@@ -2,10 +2,10 @@
   import RegularButton from "@/components/atoms/AtomRegularButton.vue";
   import Repeatable from "@/components/atoms/AtomRepeatable.vue";
   import Time from "@/components/molecules/MoleculeTime.vue";
+  import { useAddTask, type AddTask } from "@/composables/useAddTask";
   import { useCalendarStore } from "@/stores/calendar";
   import { type Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
-  import { useAddTask, type AddTask } from "@/composables/useAddTask";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { reactive, ref, watchEffect } from "vue";
@@ -65,7 +65,7 @@
           : defaultTypeOfRepeat.value,
       dueTime: `${time.hours}:${time.minutes}`,
       dueDate: calendarStore.selectedDate,
-      workspace: currentWorkspace.value,
+      workspace: currentWorkspace.value.id,
     };
 
     if (task.value !== null) emit("update:task", task.value);
