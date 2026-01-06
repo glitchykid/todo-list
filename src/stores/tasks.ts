@@ -11,7 +11,7 @@ export interface Task {
   repeatable: boolean | string;
   dueTime: string;
   dueDate: string;
-  workspace: string;
+  workspace: number;
 }
 
 export const useTasksStore = defineStore("tasks", {
@@ -31,8 +31,9 @@ export const useTasksStore = defineStore("tasks", {
       result = state.tasks.filter(
         (task) =>
           task.dueDate === calendarStore.selectedDate &&
-          (workspacesStore.currentWorkspace === "All tasks" ||
-            task.workspace === workspacesStore.currentWorkspace),
+          (workspacesStore.currentWorkspace.id ===
+            workspacesStore.workspaces[0]?.id ||
+            task.workspace === workspacesStore.currentWorkspace.id),
       );
       result.sort((a, b) => {
         const firstArr: string[] = a.dueTime.split(":");

@@ -1,32 +1,65 @@
 import { defineStore } from "pinia";
 
-export type Workspace = string[];
+export type WorkspaceId = number;
+
+export type Workspace = {
+  id: WorkspaceId;
+  name: string;
+};
 
 export const useWorkspacesStore = defineStore("workspaces", {
   state: () => {
-    const defaultWorkspace: string = "All tasks";
-    const defaultWorkspaces: Workspace = [defaultWorkspace, "Personal", "Work"];
+    let id: WorkspaceId = 0;
+    const defaultWorkspace: Workspace = { id: id++, name: "All tasks" };
+    const defaultWorkspaces: Workspace[] = [
+      defaultWorkspace,
+      { id: id++, name: "Personal" },
+      { id: id++, name: "Work" },
+    ];
 
     return {
-      workspaces: defaultWorkspaces as Workspace,
-      currentWorkspace: defaultWorkspace,
+      workspaces: defaultWorkspaces as Workspace[],
+      currentWorkspace: defaultWorkspace as Workspace,
+      id: id as WorkspaceId,
     };
   },
 
   getters: {
-    getWorkspaces: (state): Workspace => {
+    getWorkspaces: (state): Workspace[] => {
       return state.workspaces;
     },
   },
 
   actions: {
-    addWorkspace(newWorkspace: string) {
-      this.workspaces.push(newWorkspace);
+    addWorkspace(newWorkspace: string): number {
+      let result = 0;
+      newWorkspace = newWorkspace.trim();
+      if (
+        this.workspaces.every(
+          (el) => el.name.toLowerCase() !== newWorkspace.toLowerCase(),
+        )
+      )
+        result = -1;
+      result === 0 &&
+        this.workspaces.push({ id: this.id++, name: newWorkspace });
+      return result;
     },
 
-    removeWorkspace(workspace: string) {
+    updateWorkspaceName(
+      newWorkspaceName: InputEvent,
+      workspaceId: WorkspaceId,
+    ) {
+      let cleaned: string = (newWorkspaceName.target as HTMLInputElement).value;
+      cleaned = cleaned.trim();
+      const workspaceToChange: Workspace | undefined = this.workspaces.find(
+        (el) => el.id === workspaceId,
+      );
+      if (workspaceToChange) workspaceToChange.name = cleaned;
+    },
+
+    removeWorkspace(id: WorkspaceId) {
       this.workspaces = this.workspaces.filter(
-        (currentWorkspace: string) => workspace !== currentWorkspace,
+        (currentWorkspace: Workspace) => id !== currentWorkspace.id,
       );
     },
   },

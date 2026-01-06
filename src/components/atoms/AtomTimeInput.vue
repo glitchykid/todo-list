@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { removeAllExceptNumbers } from "@/utils/stringprocess";
   import { ref, watch } from "vue";
 
   interface Props {
@@ -23,7 +24,7 @@
 
   const sanitize = (e: Event) => {
     const el = e.target as HTMLInputElement;
-    let cleaned = el.value.replace(/[^0-9]/g, "");
+    let cleaned = removeAllExceptNumbers(el.value);
     if (Number(cleaned) > props.max) cleaned = String(props.max);
     el.value = cleaned;
     value.value = cleaned;
@@ -37,6 +38,6 @@
     type="text"
     v-model="value"
     @input="sanitize"
-    class="px-4 py-3 text-center flex flex-row min-w-15 w-full border border-[#8276FF] rounded-lg outline-none"
+    class="flex w-full min-w-15 flex-row rounded-lg border border-[#8276FF] px-4 py-3 text-center outline-none"
   />
 </template>

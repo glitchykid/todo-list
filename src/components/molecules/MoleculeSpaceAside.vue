@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useTasksStore } from "@/stores/tasks";
-  import { useWorkspacesStore } from "@/stores/workspaces";
+  import { useWorkspacesStore, type WorkspaceId } from "@/stores/workspaces";
   import {
     FolderPlusIcon,
     PencilIcon,
@@ -20,18 +20,8 @@
   const toggleTaskActions = (): boolean =>
     (showActions.value = !showActions.value);
 
-  interface RenameWorkspace {
-    newName: string;
-    isActive: boolean;
-  }
-
-  const renameWorkspace: RenameWorkspace = {
-    newName: "",
-    isActive: false,
-  };
-
   const showInputForChangeWorkspaceTitle = ref<boolean>(false);
-  const choosenWorkspaceForRename = ref<string>("");
+  const choosenWorkspaceForRename = ref<WorkspaceId>(0);
 </script>
 
 <template>
@@ -41,28 +31,38 @@
       <TransitionGroup name="workspaces">
         <div
           v-for="workspace of workspacesStore.getWorkspaces"
-          :key="workspace"
+          :key="workspace.id"
           class="flex flex-row overflow-hidden"
         >
           <AtomRegularButton
             v-if="
-              choosenWorkspaceForRename !== workspace ||
+              choosenWorkspaceForRename !== workspace.id ||
               !showInputForChangeWorkspaceTitle
             "
-            :active="workspace === currentWorkspace"
-            class="z-10 w-full rounded-none px-4 py-2 shadow-none"
-            :label="workspace"
+            :active="workspace.id === currentWorkspace.id"
+            class="z-10 w-full max-w-full rounded-none px-4 py-2 shadow-none select-none"
+            :label="workspace.name"
             @click="currentWorkspace = workspace"
           />
           <input
             v-else-if="
               showInputForChangeWorkspaceTitle &&
-              choosenWorkspaceForRename === workspace
+              choosenWorkspaceForRename === workspace.id
             "
-            class="w-full border"
+            type="text"
+            :value="workspace.name"
+            @input="
+              workspacesStore.updateWorkspaceName(
+                $event,
+                choosenWorkspaceForRename,
+              )
+            "
+            @keyup.enter="showInputForChangeWorkspaceTitle = false"
+            class="w-full border-t border-b px-4 text-center outline-none"
+            maxlength="30"
           />
           <div
-            v-if="workspace !== 'All tasks'"
+            v-if="workspace.name !== workspacesStore.workspaces[0]?.name"
             class="z-20 flex cursor-pointer flex-row place-items-center transition-all duration-300 ease-out"
             :class="showActions ? 'max-w-1/2' : 'max-w-0'"
           >
@@ -71,11 +71,11 @@
               @click="
                 () => {
                   tasksStore.tasks.forEach((task) => {
-                    task.workspace === workspace &&
+                    task.workspace === workspace.id &&
                       tasksStore.removeTask(task.id);
                   });
-                  currentWorkspace = 'All tasks';
-                  workspacesStore.removeWorkspace(workspace);
+                  currentWorkspace.name = 'All tasks';
+                  workspacesStore.removeWorkspace(workspace.id);
                 }
               "
             >
@@ -86,9 +86,9 @@
               @click="
                 ((showInputForChangeWorkspaceTitle =
                   !showInputForChangeWorkspaceTitle),
-                (choosenWorkspaceForRename = workspace))
+                (choosenWorkspaceForRename = workspace.id))
               "
-              :class="choosenWorkspaceForRename === workspace"
+              :class="choosenWorkspaceForRename === workspace.id"
             >
               <PencilIcon class="size-5" />
             </div>
@@ -104,7 +104,12 @@
         <AtomRegularButton
           :icon="PencilSquareIcon"
           :custom-icon-size="5"
-          @click="toggleTaskActions"
+          @click="
+            () => {
+              toggleTaskActions();
+              showInputForChangeWorkspaceTitle = false;
+            }
+          "
           :without-paddings-for-icon="true"
         />
       </div>
