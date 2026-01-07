@@ -31,18 +31,9 @@ export const useWorkspacesStore = defineStore("workspaces", {
   },
 
   actions: {
-    addWorkspace(newWorkspace: string): number {
-      let result = 0;
+    addWorkspace(newWorkspace: string): void {
       newWorkspace = newWorkspace.trim();
-      if (
-        this.workspaces.every(
-          (el) => el.name.toLowerCase() !== newWorkspace.toLowerCase(),
-        )
-      )
-        result = -1;
-      result === 0 &&
-        this.workspaces.push({ id: this.id++, name: newWorkspace });
-      return result;
+      this.workspaces.push({ id: this.id++, name: newWorkspace });
     },
 
     updateWorkspaceName(

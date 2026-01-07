@@ -2,6 +2,7 @@
   import { useTasksStore } from "@/stores/tasks";
   import { useWorkspacesStore, type WorkspaceId } from "@/stores/workspaces";
   import {
+    CheckIcon,
     FolderPlusIcon,
     PencilIcon,
     PencilSquareIcon,
@@ -22,10 +23,19 @@
 
   const showInputForChangeWorkspaceTitle = ref<boolean>(false);
   const choosenWorkspaceForRename = ref<WorkspaceId>(0);
+
+  const checkSpaceInput = (e: InputEvent): boolean => {
+    let result: boolean = true;
+    const newWorkspaceName: string = (e.target as HTMLInputElement).value;
+    if (newWorkspaceName !== "")
+      workspacesStore.updateWorkspaceName(e, choosenWorkspaceForRename.value);
+    else result = false;
+    return result;
+  };
 </script>
 
 <template>
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-8 overflow-y-auto">
     <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
     <div class="flex flex-col">
       <TransitionGroup name="workspaces">
@@ -51,14 +61,9 @@
             "
             type="text"
             :value="workspace.name"
-            @input="
-              workspacesStore.updateWorkspaceName(
-                $event,
-                choosenWorkspaceForRename,
-              )
-            "
+            @input="checkSpaceInput"
             @keyup.enter="showInputForChangeWorkspaceTitle = false"
-            class="w-full border-t border-b px-4 text-center outline-none"
+            class="w-full border-t border-b border-[#C9D7ED] px-4 text-center text-[#3E3D4D] outline-none"
             maxlength="30"
           />
           <div
@@ -82,15 +87,28 @@
               <TrashIcon class="size-5" />
             </div>
             <div
+              v-if="
+                showInputForChangeWorkspaceTitle === false ||
+                choosenWorkspaceForRename !== workspace.id
+              "
               class="flex shrink-0 items-center bg-[#92D6F3] p-2.5 text-[#314D59] transition-colors duration-300 hover:bg-[#a8e5ff]"
               @click="
-                ((showInputForChangeWorkspaceTitle =
-                  !showInputForChangeWorkspaceTitle),
+                ((showInputForChangeWorkspaceTitle = true),
                 (choosenWorkspaceForRename = workspace.id))
               "
               :class="choosenWorkspaceForRename === workspace.id"
             >
               <PencilIcon class="size-5" />
+            </div>
+            <div
+              v-else-if="
+                showInputForChangeWorkspaceTitle === true &&
+                choosenWorkspaceForRename === workspace.id
+              "
+              class="shrink-0 cursor-pointer items-center bg-[#8CE98C] p-2.5 text-[#274F27] transition-colors duration-300 hover:bg-[#aeffae]"
+              @click="showInputForChangeWorkspaceTitle = false"
+            >
+              <CheckIcon class="size-5" />
             </div>
           </div>
         </div>
@@ -100,6 +118,8 @@
           :icon="FolderPlusIcon"
           :customIconSize="5"
           :without-paddings-for-icon="true"
+          @click="workspacesStore.addWorkspace('New space')"
+          ;
         />
         <AtomRegularButton
           :icon="PencilSquareIcon"
