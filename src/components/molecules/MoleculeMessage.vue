@@ -51,6 +51,7 @@
       <div
         class="cursor-pointer bg-[#8CE98C] text-[#274F27] transition-colors duration-300 hover:bg-[#aeffae]"
         :class="styles.onlyIcon"
+        @click="tasksStore.completeTask(task.id)"
       >
         <CheckIcon class="size-5" />
       </div>
