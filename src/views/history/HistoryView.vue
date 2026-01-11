@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import MoleculeHistoryHeader from "@/components/molecules/MoleculeFilter.vue";
-import MoleculeTaskInfo from "@/components/molecules/MoleculeTaskInfo.vue";
+  import MoleculeTaskInfo from "@/components/molecules/MoleculeTaskInfo.vue";
   import MainWindow from "@/components/templates/MainWindow.vue";
   import { useTasksStore } from "@/stores/tasks";
   import { storeToRefs } from "pinia";
