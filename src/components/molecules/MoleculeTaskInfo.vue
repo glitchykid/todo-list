@@ -22,19 +22,7 @@
       :key="completeTask.id"
       class="flex flex-row gap-2"
     >
-      <span v-for="(value, key) in completeTask" :key="key">
-        {{
-          key !== "id" &&
-          key !== "repeatable" &&
-          key !== "completed" &&
-          key !== "workspace"
-            ? value
-            : key === "workspace" ?
-              workspacesStore.workspaces[
-                workspacesStore.getWorkspaces.findIndex((el) => el.id === value)
-              ]?.name : null
-        }}
-      </span>
+      <span v-for="(value, key) in completeTask" :key="key"></span>
     </span>
     <input type="checkbox" class="accent-[#8276FF]" />
   </section>

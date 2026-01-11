@@ -4,8 +4,6 @@ import HomeView from "@/views/home/HomeView.vue";
 import { HomeIcon, NewspaperIcon, TrashIcon } from "@heroicons/vue/20/solid";
 import type { Component } from "vue";
 
-export type Icon = "HomeIcon" | "NewspaperIcon" | "TrashIcon";
-
 interface AppRoute {
   path: string;
   name: string;
