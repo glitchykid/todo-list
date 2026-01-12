@@ -1,14 +1,6 @@
 <script setup lang="ts">
   import LinkButton from "@/components/atoms/AtomLinkButton.vue";
   import { appRoutes } from "@/routes/routes";
-
-  type LinkState = "base" | "active" | "inactive";
-
-  const headerButtonStyle: Record<LinkState, string> = {
-    base: "py-2 rounded-lg items-center transition-all duration-300 ease-in-out flex flex-row gap-2 leading-6",
-    active: "bg-[#8276FF] text-[#EAEDF2] px-4 shadow-lg shadow-[#8276FF]/50",
-    inactive: "hover:bg-[#D0CCFF] text-[#8276FF] hover:px-4",
-  } as const;
 </script>
 
 <template>
@@ -22,9 +14,9 @@
         v-for="link in appRoutes"
         :key="link.name"
         :to="link.path"
-        :class="headerButtonStyle.base"
-        :active-class="headerButtonStyle.active"
-        :inactive-class="headerButtonStyle.inactive"
+        class="flex flex-row items-center gap-2 rounded-lg py-2 leading-6 text-[#8276FF] transition-all duration-300 ease-in-out"
+        activeClass="bg-[#8276FF] text-[#EAEDF2] px-4 shadow-lg shadow-[#8276FF]/50"
+        inactiveClass="hover:bg-[#D0CCFF] hover:px-4"
       >
         <component :is="link.icon" class="size-5" />
         {{ link.label }}</LinkButton

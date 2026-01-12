@@ -119,7 +119,6 @@
           :customIconSize="5"
           :without-paddings-for-icon="true"
           @click="workspacesStore.addWorkspace('New space')"
-          ;
         />
         <AtomRegularButton
           :icon="PencilSquareIcon"
