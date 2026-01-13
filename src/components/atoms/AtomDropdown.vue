@@ -1,23 +1,17 @@
 <script lang="ts" setup>
   import { ChevronDownIcon } from "@heroicons/vue/20/solid";
-  import { ref, watch } from "vue";
+  import { ref } from "vue";
 
   const props = defineProps<{
     values: string[];
-    default: string;
   }>();
 
-  const emit = defineEmits<(e: "update:default", v: string) => void>();
+  const defaultValue = defineModel<string, "trim">("defaultValue", {
+    required: true,
+  });
 
   const isOpen = ref<boolean>(false);
-  const selected = ref<string>(props.default ?? props.values[0] ?? "");
-
-  watch(
-    () => props.default,
-    (v) => {
-      if (v !== undefined && v !== selected.value) selected.value = v;
-    },
-  );
+  const selected = ref<string>(defaultValue.value ?? props.values[0] ?? "");
 
   const toogleDropdown = () => {
     isOpen.value = !isOpen.value;
@@ -25,7 +19,7 @@
 
   const changeValue = (value: string): void => {
     selected.value = value;
-    emit("update:default", value);
+    defaultValue.value = value;
     isOpen.value = false;
   };
 </script>
