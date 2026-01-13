@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import Dropdown from "@/components/atoms/AtomDropdown.vue";
+  import AtomDropdown from "@/components/atoms/AtomDropdown.vue";
   import RegularButton from "@/components/atoms/AtomRegularButton.vue";
   import { currentLocale, locales } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";
@@ -223,15 +223,15 @@
       ]"
     >
       <div class="flex flex-row justify-between gap-8">
-        <Dropdown
-          :default="currentMonth"
+        <AtomDropdown
+          :default-value="currentMonth"
           :values="monthNames"
-          @update:default="setMonthByName"
+          @update:default-value="($event) => setMonthByName($event)"
         />
-        <Dropdown
-          :default="currentYear"
+        <AtomDropdown
+          :default-value="currentYear"
           :values="yearLabels"
-          @update:default="setYearByLabel"
+          @update:default-value="($event) => setYearByLabel($event)"
         />
       </div>
       <div class="grid grid-cols-7 justify-items-center font-bold">
