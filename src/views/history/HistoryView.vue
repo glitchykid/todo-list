@@ -11,6 +11,8 @@
   const isThereTasks = ref<boolean>(
     completedTasks.value.length > 0 ? true : false,
   );
+  const isThereCheckedTask = ref<boolean>(false);
+  const isSelectAll = ref<boolean>(false);
 </script>
 
 <template>
@@ -20,19 +22,20 @@
     <section class="flex flex-row place-content-end gap-2 text-center">
       <span
         class="text-[#3E3D4D]/50"
-        :class="isThereTasks && 'cursor-pointer text-[#8276FF]'"
+        :class="isThereCheckedTask && 'cursor-pointer text-[#8276FF]'"
       >
         Remove
       </span>
       <span
         class="text-[#3E3D4D]/50"
-        :class="isThereTasks && 'cursor-pointer text-[#8276FF]'"
+        :class="isThereCheckedTask && 'cursor-pointer text-[#8276FF]'"
       >
         Recovery
       </span>
       <span
         class="text-[#3E3D4D]/50"
         :class="isThereTasks && 'cursor-pointer text-[#8276FF]'"
+        @click="if (isThereTasks) isSelectAll = !isSelectAll;"
       >
         Select all
       </span>
@@ -43,6 +46,11 @@
     >
       <p class="w-full text-center">There are no history yet</p>
     </div>
-    <MoleculeTaskInfo v-else type="history" />
+    <MoleculeTaskInfo
+      v-else
+      type="history"
+      v-model="isThereCheckedTask"
+      v-model:select-all="isSelectAll"
+    />
   </MainWindow>
 </template>

@@ -1,18 +1,15 @@
 import { useTasksStore, type Task } from "@/stores/tasks";
-import type { Ref } from "vue";
 
 export type AddTask = {
-  id: Ref<number>;
-  task: Ref<Task | null>;
+  id: number;
+  task: Task | null;
 };
 
-export const useAddTask = (valuesForAddTask: AddTask): void => {
+export const useAddTask = (valuesForAddTask: AddTask): AddTask | boolean => {
   const tasksStore = useTasksStore();
-  if (
-    valuesForAddTask.task.value === null ||
-    valuesForAddTask.task.value.title === ""
-  )
-    return;
-  tasksStore.addTask(valuesForAddTask.task.value);
-  valuesForAddTask.id.value++;
+  if (valuesForAddTask.task === null || valuesForAddTask.task.title === "")
+    return false;
+  tasksStore.addTask(valuesForAddTask.task);
+  valuesForAddTask.id++;
+  return valuesForAddTask;
 };

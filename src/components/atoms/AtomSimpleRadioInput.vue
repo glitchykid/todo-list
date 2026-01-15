@@ -15,7 +15,7 @@
 
 <template>
   <div class="flex flex-row gap-2">
-    <label :for="props.id">{{ props.value }}</label>
+    <label :for="props.id" class="text-nowrap">{{ props.value }}</label>
     <input
       type="radio"
       :id="props.id"

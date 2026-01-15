@@ -41,13 +41,13 @@
 
 <template>
   <div
-    class="flex h-fit flex-row items-center justify-between border-t border-b border-[#C9D7ED] py-4 text-[#3E3D4D]"
+    class="flex h-fit flex-row items-center justify-between gap-10 border-t border-b border-[#C9D7ED] py-4 text-[#3E3D4D]"
   >
     <div class="flex h-fit flex-col items-end gap-2">
       <AtomSimpleTextInput
         v-for="textInput in textInputs"
         :key="textInput.id"
-        class="flex flex-row items-center gap-2"
+        class="flex flex-row items-center gap-2 text-nowrap"
         :placehodler="textInput.placeholder"
       >
         <label>
