@@ -17,14 +17,29 @@
   const { completedTasks } = storeToRefs(tasksStore);
   const workspacesStore = useWorkspacesStore();
   const checkedTasks = ref<string[]>([]);
-
   const selectAll = defineModel<boolean>("selectAll", { required: true });
   const isThereCheckedTask = defineModel<boolean>();
 
-  watch(checkedTasks, (newCheckedTasks) => {
-    if (newCheckedTasks.length > 0 && newCheckedTasks)
-      isThereCheckedTask.value = true;
+  watch(checkedTasks, (newValue) => {
+    if (newValue.length > 0) isThereCheckedTask.value = true;
     else isThereCheckedTask.value = false;
+  });
+
+  watch(selectAll, () => {
+    if (checkedTasks.value.length >= completedTasks.value.length) {
+      checkedTasks.value = [];
+      isThereCheckedTask.value = false;
+    } else {
+      isThereCheckedTask.value = true;
+      completedTasks.value.forEach((el) => {
+        const isThereNoTheSameTask: boolean = checkedTasks.value.every(
+          (el2) => el2 !== String(el.id),
+        );
+        if (isThereNoTheSameTask) {
+          checkedTasks.value.push(String(el.id));
+        }
+      });
+    }
   });
 </script>
 
@@ -52,10 +67,8 @@
         <span class="w-full text-center">{{ completeTask.completedOn }}</span>
         <AtomSimpleCheckbox
           :id="String(completeTask.id)"
-          :title="completeTask.title"
           class="ml-auto w-fit accent-[#8276FF]"
           v-model:checked-tasks="checkedTasks"
-          :select-all="selectAll"
         />
       </div>
     </div>
