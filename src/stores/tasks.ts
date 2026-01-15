@@ -8,6 +8,7 @@ export interface Task {
   id: number;
   title: string;
   completed: boolean;
+  completedOn: string;
   repeatable: boolean | string;
   dueTime: string;
   dueDate: string;
@@ -53,17 +54,28 @@ export const useTasksStore = defineStore("tasks", {
 
   actions: {
     addTask(task: Task): void {
+      console.log(task.id);
       this.tasks.push(task);
     },
 
-    removeTask(id: number): void {
-      this.removedTasks = this.tasks.filter((task: Task) => id === task.id);
-      this.tasks = this.tasks.filter((task: Task) => id !== task.id);
+    removeTask(id: number): boolean {
+      let functionResult: boolean = true;
+      const i = this.tasks.findIndex((el) => el.id === id);
+      if (this.tasks[i]) {
+        this.removedTasks.push(this.tasks[i]);
+        this.tasks = this.tasks.filter((el) => el.id !== id);
+      } else functionResult = false;
+      return functionResult;
     },
 
-    completeTask(id: number): void {
-      this.completedTasks = this.tasks.filter((task: Task) => id === task.id);
-      this.tasks = this.tasks.filter((task: Task) => id !== task.id);
+    completeTask(id: number): boolean {
+      let functionResult: boolean = true;
+      const i = this.tasks.findIndex((el) => el.id === id);
+      if (this.tasks[i]) {
+        this.completedTasks.push(this.tasks[i]);
+        this.tasks = this.tasks.filter((el) => el.id !== id);
+      } else functionResult = false;
+      return functionResult;
     },
   },
 });

@@ -2,7 +2,8 @@
   import RegularButton from "@/components/atoms/AtomRegularButton.vue";
   import Repeatable from "@/components/atoms/AtomRepeatable.vue";
   import Time from "@/components/molecules/MoleculeTime.vue";
-  import { useAddTask, type AddTask } from "@/composables/useAddTask";
+  import { useAddTask, type AddTask } from "@/composables/useAddTask.ts";
+  import { currentLocale } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";
   import { type Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
@@ -15,10 +16,10 @@
 
   const defaultTypeOfRepeat = ref<string>("none");
 
-  interface Time {
+  type Time = {
     hours: string;
     minutes: string;
-  }
+  };
 
   const props = defineProps<{
     id: number;
@@ -59,6 +60,10 @@
       id: props.id,
       title: taskTitle.value,
       completed: false,
+      completedOn: new Intl.DateTimeFormat(currentLocale, {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(new Date()),
       repeatable:
         defaultTypeOfRepeat.value === "none"
           ? false
@@ -78,7 +83,7 @@
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
-      @keyup.enter="(useAddTask(props.valuesForAddTask), (taskTitle = ''))"
+      @keyup.enter="useAddTask(props.valuesForAddTask)"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
