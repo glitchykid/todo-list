@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import MoleculeHistoryHeader from "@/components/molecules/MoleculeFilter.vue";
+  import MoleculeFilter from "@/components/molecules/MoleculeFilter.vue";
   import MoleculeTaskInfo from "@/components/molecules/MoleculeTaskInfo.vue";
   import MainWindow from "@/components/templates/MainWindow.vue";
   import { useTasksStore } from "@/stores/tasks";
@@ -18,7 +18,7 @@
 <template>
   <MainWindow>
     <h6 class="text-center text-[#D0CCFF]">Bin</h6>
-    <MoleculeHistoryHeader />
+    <MoleculeFilter />
     <section class="flex flex-row place-content-end gap-2 text-center">
       <span
         class="text-[#3E3D4D]/50"

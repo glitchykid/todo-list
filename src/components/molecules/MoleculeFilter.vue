@@ -8,6 +8,11 @@
     value: string;
   };
 
+  export type ForFiltering = {
+    space: string;
+    task: string;
+  };
+
   const radioInputs: RadioInput[] = [
     {
       id: "regularTasks",
@@ -37,6 +42,14 @@
       placeholder: "Enter a space name",
     },
   ];
+
+  const forFiltering = ref<ForFiltering>({
+    space: "",
+    task: "",
+  });
+  const emit = defineEmits<{
+    update: [filtering: ForFiltering];
+  }>();
 </script>
 
 <template>
@@ -45,13 +58,21 @@
   >
     <div class="flex h-fit flex-col items-end gap-2">
       <AtomSimpleTextInput
-        v-for="textInput in textInputs"
-        :key="textInput.id"
         class="flex flex-row items-center gap-2 text-nowrap"
-        :placehodler="textInput.placeholder"
+        :placehodler="textInputs[0]!.placeholder"
+        @update="forFiltering.space = $event"
       >
         <label>
-          {{ textInput.description }}
+          {{ textInputs[0]!.description }}
+        </label>
+      </AtomSimpleTextInput>
+      <AtomSimpleTextInput
+        class="flex flex-row items-center gap-2 text-nowrap"
+        :placehodler="textInputs[1]!.placeholder"
+        @update="forFiltering.task = $event"
+      >
+        <label>
+          {{ textInputs[1]!.description }}
         </label>
       </AtomSimpleTextInput>
     </div>
