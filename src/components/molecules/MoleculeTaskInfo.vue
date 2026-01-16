@@ -11,6 +11,10 @@
 
   const props = defineProps<{
     type: Type;
+    forFiltering: {
+      space: string;
+      task: string;
+    };
   }>();
 
   const tasksStore = useTasksStore();
@@ -41,6 +45,15 @@
       });
     }
   });
+
+  watch(
+    () => props.forFiltering.task,
+    (newValue) => {
+      completedTasks.value = completedTasks.value.filter(
+        (el) => el.title === newValue,
+      );
+    },
+  );
 </script>
 
 <template>

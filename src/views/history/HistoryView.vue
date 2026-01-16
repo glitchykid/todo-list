@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  import MoleculeHistoryHeader from "@/components/molecules/MoleculeFilter.vue";
+  import MoleculeFilter, {
+    type ForFiltering,
+  } from "@/components/molecules/MoleculeFilter.vue";
   import MoleculeTaskInfo from "@/components/molecules/MoleculeTaskInfo.vue";
   import MainWindow from "@/components/templates/MainWindow.vue";
   import { useTasksStore } from "@/stores/tasks";
@@ -13,12 +15,16 @@
   );
   const isThereCheckedTask = ref<boolean>(false);
   const isSelectAll = ref<boolean>(false);
+  const forFiltering = ref<ForFiltering>({
+    space: "",
+    task: "",
+  });
 </script>
 
 <template>
   <MainWindow>
     <h6 class="text-center text-[#D0CCFF]">History</h6>
-    <MoleculeHistoryHeader />
+    <MoleculeFilter @update="forFiltering = $event" />
     <section class="flex flex-row place-content-end gap-2 text-center">
       <span
         class="text-[#3E3D4D]/50"
@@ -51,6 +57,7 @@
       type="history"
       v-model="isThereCheckedTask"
       v-model:select-all="isSelectAll"
+      :for-filtering="forFiltering"
     />
   </MainWindow>
 </template>
