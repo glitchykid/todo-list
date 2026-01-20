@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { ref, watchEffect } from "vue";
-
   const props = withDefaults(
     defineProps<{
       placehodler?: string;
@@ -10,14 +8,7 @@
     },
   );
 
-  const emit = defineEmits<{
-    update: [filterByString: string];
-  }>();
-
-  const stringForFiltering = ref<string>("");
-  watchEffect(() => {
-    emit("update", stringForFiltering.value);
-  });
+  const filter = defineModel<string, "trim">("filter");
 </script>
 
 <template>
@@ -27,7 +18,7 @@
       type="text"
       class="h-9 rounded-lg border border-[#8276FF] px-4 outline-none"
       :placeholder="props.placehodler"
-      v-model="stringForFiltering"
+      v-model="filter"
     />
   </div>
 </template>

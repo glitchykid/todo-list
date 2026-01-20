@@ -8,11 +8,6 @@
     value: string;
   };
 
-  export type ForFiltering = {
-    space: string;
-    task: string;
-  };
-
   const radioInputs: RadioInput[] = [
     {
       id: "regularTasks",
@@ -27,9 +22,11 @@
       value: "Show all",
     },
   ] as const;
-  const picked = ref<string>("Show all");
+
+  const picked = defineModel<string>("picked", { required: true });
 
   const idTextInput = ref<number>(0);
+
   const textInputs = [
     {
       id: idTextInput.value++,
@@ -43,13 +40,8 @@
     },
   ];
 
-  const forFiltering = ref<ForFiltering>({
-    space: "",
-    task: "",
-  });
-  const emit = defineEmits<{
-    update: [filtering: ForFiltering];
-  }>();
+  const taskFilter = defineModel<string>("taskFilter");
+  const spaceFilter = defineModel<string>("spaceFilter");
 </script>
 
 <template>
@@ -60,7 +52,7 @@
       <AtomSimpleTextInput
         class="flex flex-row items-center gap-2 text-nowrap"
         :placehodler="textInputs[0]!.placeholder"
-        @update="forFiltering.space = $event"
+        v-model:filter="taskFilter"
       >
         <label>
           {{ textInputs[0]!.description }}
@@ -69,7 +61,7 @@
       <AtomSimpleTextInput
         class="flex flex-row items-center gap-2 text-nowrap"
         :placehodler="textInputs[1]!.placeholder"
-        @update="forFiltering.task = $event"
+        v-model:filter="spaceFilter"
       >
         <label>
           {{ textInputs[1]!.description }}
