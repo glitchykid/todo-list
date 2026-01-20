@@ -1,3 +1,4 @@
+import type { Type } from "@/components/molecules/MoleculeTaskInfo.vue";
 import { useCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
 import { useWorkspacesStore } from "./workspaces";
@@ -54,7 +55,6 @@ export const useTasksStore = defineStore("tasks", {
 
   actions: {
     addTask(task: Task): void {
-      console.log(task.id);
       this.tasks.push(task);
     },
 
@@ -76,6 +76,24 @@ export const useTasksStore = defineStore("tasks", {
         this.tasks = this.tasks.filter((el) => el.id !== id);
       } else functionResult = false;
       return functionResult;
+    },
+
+    /**
+     * Removes task from task array that depend on type.
+     */
+    purgeTask(type: Type, id: string): void {
+      switch (type) {
+        case "history":
+          this.completedTasks = this.completedTasks.filter(
+            (value) => value.id !== Number(id),
+          );
+          break;
+        case "bin":
+          this.removedTasks = this.removedTasks.filter(
+            (value) => value.id !== Number(id),
+          );
+          break;
+      }
     },
   },
 });

@@ -25,8 +25,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
   },
 
   getters: {
-    getWorkspaces: (state): Workspace[] => {
-      return state.workspaces;
+    getWorkspaceById(state) {
+      return (workspaceId: number) =>
+        state.workspaces.find((el) => el.id === workspaceId);
+    },
+
+    getWorkspaceByName(state) {
+      return (workspaceName: string) =>
+        state.workspaces.find((el) => el.name === workspaceName);
     },
   },
 

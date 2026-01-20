@@ -1,16 +1,19 @@
 <script setup lang="ts">
+  import { filteringTasks } from "@/composables/useFilteringTasks";
+  import type { Task } from "@/stores/tasks";
   import { useTasksStore } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { toLocaleDate } from "@/utils/isodateconverter";
   import { ArrowPathIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
-  import { ref, watch } from "vue";
+  import { computed, watch } from "vue";
   import AtomSimpleCheckbox from "../atoms/AtomSimpleCheckbox.vue";
 
-  type Type = "history" | "bin";
+  export type Type = "history" | "bin";
 
   const props = defineProps<{
     type: Type;
+    whichTypeOfRadioButtonWasPicked: string;
     forFiltering: {
       space: string;
       task: string;
@@ -18,68 +21,90 @@
   }>();
 
   const tasksStore = useTasksStore();
-  const { completedTasks } = storeToRefs(tasksStore);
   const workspacesStore = useWorkspacesStore();
-  const checkedTasks = ref<string[]>([]);
-  const selectAll = defineModel<boolean>("selectAll", { required: true });
-  const isThereCheckedTask = defineModel<boolean>();
+  const { completedTasks, removedTasks } = storeToRefs(tasksStore);
+  const filteredTasks = computed(() => {
+    let result: Task[] = [];
+    switch (props.type) {
+      case "history":
+        result = filteringTasks(props.forFiltering, completedTasks.value);
+        if (props.whichTypeOfRadioButtonWasPicked === "Repeatable tasks")
+          result = result.filter((task) => task.repeatable);
+        else if (props.whichTypeOfRadioButtonWasPicked === "Regular tasks")
+          result = result.filter((task) => !task.repeatable);
+        break;
+      case "bin":
+        result = filteringTasks(props.forFiltering, removedTasks.value);
+        break;
+      default:
+        result = tasksStore.tasks;
+    }
+    return result;
+  });
 
-  watch(checkedTasks, (newValue) => {
-    if (newValue.length > 0) isThereCheckedTask.value = true;
-    else isThereCheckedTask.value = false;
+  const selectAll = defineModel<boolean>("selectAll", { required: true });
+  const checkedTasks = defineModel<string[]>("checkedTasks", {
+    required: true,
   });
 
   watch(selectAll, () => {
-    if (checkedTasks.value.length >= completedTasks.value.length) {
-      checkedTasks.value = [];
-      isThereCheckedTask.value = false;
-    } else {
-      isThereCheckedTask.value = true;
-      completedTasks.value.forEach((el) => {
-        const isThereNoTheSameTask: boolean = checkedTasks.value.every(
-          (el2) => el2 !== String(el.id),
-        );
-        if (isThereNoTheSameTask) {
-          checkedTasks.value.push(String(el.id));
+    switch (props.type) {
+      case "history":
+        if (checkedTasks.value.length >= completedTasks.value.length) {
+          checkedTasks.value = [];
+        } else {
+          completedTasks.value.forEach((el) => {
+            const isThereNoTheSameTask: boolean = checkedTasks.value.every(
+              (el2) => el2 !== String(el.id),
+            );
+            if (isThereNoTheSameTask) {
+              checkedTasks.value.push(String(el.id));
+            }
+          });
         }
-      });
+        break;
+      case "bin":
+        if (checkedTasks.value.length >= removedTasks.value.length) {
+          checkedTasks.value = [];
+        } else {
+          removedTasks.value.forEach((el) => {
+            const isThereNoTheSameTask: boolean = checkedTasks.value.every(
+              (el2) => el2 !== String(el.id),
+            );
+            if (isThereNoTheSameTask) {
+              checkedTasks.value.push(String(el.id));
+            }
+          });
+        }
+        break;
     }
   });
-
-  watch(
-    () => props.forFiltering.task,
-    (newValue) => {
-      completedTasks.value = completedTasks.value.filter(
-        (el) => el.title === newValue,
-      );
-    },
-  );
 </script>
 
 <template>
   <div class="flex w-auto flex-row items-center">
-    <div v-if="props.type === 'history'" class="flex w-full flex-col gap-2">
+    <div class="flex w-full flex-col gap-2">
       <div
-        v-for="completeTask in completedTasks"
-        :key="completeTask.id"
+        v-for="filteredTask in filteredTasks"
+        :key="filteredTask.id"
         class="flex h-10 flex-row items-center border-l-2 border-l-[#8276FF]"
       >
         <div class="flex w-full flex-row justify-center gap-2.5">
-          <span class="font-bold">{{ completeTask.title }}</span>
+          <span class="font-bold">{{ filteredTask.title }}</span>
           <ArrowPathIcon
-            v-if="completeTask.repeatable"
+            v-if="filteredTask.repeatable"
             class="size-5 text-[#D0CCFF]"
           />
         </div>
         <span class="w-full text-center">{{
-          workspacesStore.workspaces[completeTask.workspace]!.name
+          workspacesStore.workspaces[filteredTask.workspace]!.name
         }}</span>
         <span class="w-full text-center">{{
-          toLocaleDate(completeTask.dueDate, completeTask.dueTime)
+          toLocaleDate(filteredTask.dueDate, filteredTask.dueTime)
         }}</span>
-        <span class="w-full text-center">{{ completeTask.completedOn }}</span>
+        <span class="w-full text-center">{{ filteredTask.completedOn }}</span>
         <AtomSimpleCheckbox
-          :id="String(completeTask.id)"
+          :id="String(filteredTask.id)"
           class="ml-auto w-fit accent-[#8276FF]"
           v-model:checked-tasks="checkedTasks"
         />

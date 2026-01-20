@@ -40,7 +40,7 @@
     <div class="flex flex-col">
       <TransitionGroup name="workspaces">
         <div
-          v-for="workspace of workspacesStore.getWorkspaces"
+          v-for="workspace of workspacesStore.workspaces"
           :key="workspace.id"
           class="flex flex-row overflow-hidden"
         >
