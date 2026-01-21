@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useTasksStore } from "./tasks";
 
 export type WorkspaceId = number;
 
@@ -39,6 +40,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
   actions: {
     addWorkspace(newWorkspace: string): void {
       newWorkspace = newWorkspace.trim();
+      newWorkspace += ` ${this.id - 2}`;
       this.workspaces.push({ id: this.id++, name: newWorkspace });
     },
 
@@ -58,6 +60,15 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.workspaces = this.workspaces.filter(
         (currentWorkspace: Workspace) => id !== currentWorkspace.id,
       );
+      const tasksStore = useTasksStore();
+      tasksStore.tasks = tasksStore.tasks.filter((el) => el.workspace !== id);
+      tasksStore.completedTasks = tasksStore.completedTasks.filter(
+        (el) => el.workspace !== id,
+      );
+      tasksStore.removedTasks = tasksStore.removedTasks.filter(
+        (el) => el.workspace !== id,
+      );
+      this.currentWorkspace = this.workspaces[0]!;
     },
   },
 });
