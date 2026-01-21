@@ -79,7 +79,6 @@
                     task.workspace === workspace.id &&
                       tasksStore.removeTask(task.id);
                   });
-                  currentWorkspace.name = 'All tasks';
                   workspacesStore.removeWorkspace(workspace.id);
                 }
               "
