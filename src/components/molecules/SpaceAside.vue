@@ -10,7 +10,7 @@
   } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { ref } from "vue";
-  import AtomRegularButton from "../atoms/AtomRegularButton.vue";
+  import RegularButton from "../atoms/RegularButton.vue";
 
   const tasksStore = useTasksStore();
   const workspacesStore = useWorkspacesStore();
@@ -44,7 +44,7 @@
           :key="workspace.id"
           class="flex flex-row overflow-hidden"
         >
-          <AtomRegularButton
+          <RegularButton
             v-if="
               choosenWorkspaceForRename !== workspace.id ||
               !showInputForChangeWorkspaceTitle
@@ -113,13 +113,13 @@
         </div>
       </TransitionGroup>
       <div class="flex flex-row justify-center gap-4 py-2">
-        <AtomRegularButton
+        <RegularButton
           :icon="FolderPlusIcon"
           :customIconSize="5"
           :without-paddings-for-icon="true"
           @click="workspacesStore.addWorkspace('New space')"
         />
-        <AtomRegularButton
+        <RegularButton
           :icon="PencilSquareIcon"
           :custom-icon-size="5"
           @click="

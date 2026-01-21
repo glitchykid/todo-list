@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import RegularButton from "@/components/atoms/AtomRegularButton.vue";
-  import Repeatable from "@/components/atoms/AtomRepeatable.vue";
-  import Time from "@/components/molecules/MoleculeTime.vue";
+  import RegularButton from "@/components/atoms/RegularButton.vue";
+  import Repeatable from "@/components/atoms/Repeatable.vue";
+  import Time from "@/components/molecules/Time.vue";
   import { useAddTask, type AddTask } from "@/composables/useAddTask.ts";
   import { currentLocale } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";

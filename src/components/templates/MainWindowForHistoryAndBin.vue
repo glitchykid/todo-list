@@ -1,9 +1,9 @@
 -
 <script setup lang="ts">
-  import MoleculeFilter from "@/components/molecules/MoleculeFilter.vue";
+  import MoleculeFilter from "@/components/molecules/Filter.vue";
   import MoleculeTaskInfo, {
     type Type,
-  } from "@/components/molecules/MoleculeTaskInfo.vue";
+  } from "@/components/molecules/TaskInfo.vue";
   import { useTasksStore } from "@/stores/tasks";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";

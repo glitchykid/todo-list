@@ -3,8 +3,8 @@
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
-  import AtomRegularButton from "../atoms/AtomRegularButton.vue";
-  import MoleculeCalendar from "../molecules/MoleculeCalendar.vue";
+  import RegularButton from "../atoms/RegularButton.vue";
+  import Calendar from "../molecules/Calendar.vue";
 
   const quickButtons = [
     { name: "today", label: "Today" },
@@ -39,7 +39,7 @@
     </h6>
     <div class="flex flex-row items-center justify-between gap-8">
       <div class="flex flex-row gap-8">
-        <AtomRegularButton
+        <RegularButton
           v-for="button in quickButtons"
           :key="button.name"
           :label="button.label"
@@ -49,14 +49,14 @@
           class="px-4 py-2"
         />
         <div class="relative">
-          <AtomRegularButton
+          <RegularButton
             label="Select a date..."
             :active="isSelectActive"
             :border="true"
             class="px-4 py-2"
             @click="toggleCalendar"
           />
-          <MoleculeCalendar
+          <Calendar
             v-if="showCalendar"
             position="bottom"
             @toggle-calendar="showCalendar = $event"

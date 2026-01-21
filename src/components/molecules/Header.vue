@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import LinkButton from "@/components/atoms/AtomLinkButton.vue";
+  import LinkButton from "@/components/atoms/LinkButton.vue";
   import { appRoutes } from "@/routes/routes";
 </script>
 
