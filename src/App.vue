@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import Header from "@/components/molecules/MoleculeHeader.vue";
+  import Header from "@/components/molecules/Header.vue";
 </script>
 
 <template>

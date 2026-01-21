@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import AtomDropdown from "@/components/atoms/AtomDropdown.vue";
-  import RegularButton from "@/components/atoms/AtomRegularButton.vue";
+  import AtomDropdown from "@/components/atoms/Dropdown.vue";
+  import RegularButton from "@/components/atoms/RegularButton.vue";
   import { currentLocale, locales } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";
   import { storeToRefs } from "pinia";

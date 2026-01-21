@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useTasksStore } from "@/stores/tasks";
   import { computed, TransitionGroup } from "vue";
-  import MoleculeMessage from "../molecules/MoleculeMessage.vue";
+  import Message from "../molecules/Message.vue";
 
   const tasksStore = useTasksStore();
   const filteredTasks = computed(() => tasksStore.filteredTasks);
@@ -20,7 +20,7 @@
     tag="div"
     class="h-full place-content-end-safe space-y-2 overflow-y-auto"
   >
-    <MoleculeMessage
+    <Message
       v-for="task of filteredTasks"
       :task="task"
       :key="task.id"

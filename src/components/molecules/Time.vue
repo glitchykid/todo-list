@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import TimeInput from "@/components/atoms/AtomTimeInput.vue";
+  import TimeInput from "@/components/atoms/TimeInput.vue";
   import { ref, watch } from "vue";
 
   const emit = defineEmits<{

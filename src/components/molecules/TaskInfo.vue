@@ -7,7 +7,7 @@
   import { ArrowPathIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref, watch } from "vue";
-  import AtomSimpleCheckbox from "../atoms/AtomSimpleCheckbox.vue";
+  import SimpleCheckbox from "../atoms/SimpleCheckbox.vue";
 
   export type Type = "history" | "bin";
 
@@ -158,7 +158,7 @@
         }}</span>
         <span class="w-full">{{ filteredTask.completedOn }}</span>
         <div class="absolute h-fit w-full">
-          <AtomSimpleCheckbox
+          <SimpleCheckbox
             :id="String(filteredTask.id)"
             class="ml-auto flex accent-[#8276FF]"
             v-model:checked-tasks="checkedTasks"
