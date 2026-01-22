@@ -121,11 +121,9 @@
   </div>
   <TaskInfo
     v-else
-    :type="props.type"
     v-model:checked-tasks="checkedTasks"
     :sorting-options="sortingOptions"
     :active-sorting-option="activeSortingOption"
     :filtered-tasks="filteredTasks"
-    :select-all="isSelectAll"
   />
 </template>

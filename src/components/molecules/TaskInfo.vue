@@ -9,11 +9,9 @@
   export type Type = "history" | "bin";
 
   const props = defineProps<{
-    type: Type;
     filteredTasks: Task[];
     sortingOptions: SortingOption[];
     activeSortingOption: SortingOption;
-    selectAll: boolean;
   }>();
 
   const workspacesStore = useWorkspacesStore();
