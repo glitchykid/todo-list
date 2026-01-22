@@ -1,121 +1,25 @@
 <script setup lang="ts">
-  import { filteringTasks } from "@/composables/useFilteringTasks";
   import type { Task } from "@/stores/tasks";
-  import { useTasksStore } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { toLocaleDate } from "@/utils/isodateconverter";
   import { ArrowPathIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
-  import { storeToRefs } from "pinia";
-  import { computed, ref, watch } from "vue";
   import SimpleCheckbox from "../atoms/SimpleCheckbox.vue";
+  import type { SortingOption } from "../templates/MainWindowForHistoryAndBin.vue";
 
   export type Type = "history" | "bin";
 
   const props = defineProps<{
     type: Type;
-    whichTypeOfRadioButtonWasPicked: string;
-    forFiltering: {
-      space: string;
-      task: string;
-    };
+    filteredTasks: Task[];
+    sortingOptions: SortingOption[];
+    activeSortingOption: SortingOption;
+    selectAll: boolean;
   }>();
 
-  const tasksStore = useTasksStore();
   const workspacesStore = useWorkspacesStore();
-  const { completedTasks, removedTasks } = storeToRefs(tasksStore);
-  const filteredTasks = computed(() => {
-    let result: Task[] = [];
-    switch (props.type) {
-      case "history":
-        result = filteringTasks(props.forFiltering, completedTasks.value);
-        break;
-      case "bin":
-        result = filteringTasks(props.forFiltering, removedTasks.value);
-        break;
-      default:
-        result = tasksStore.tasks;
-    }
-    if (props.whichTypeOfRadioButtonWasPicked === "Repeatable tasks")
-      result = result.filter((task) => task.repeatable);
-    else if (props.whichTypeOfRadioButtonWasPicked === "Regular tasks")
-      result = result.filter((task) => !task.repeatable);
-    if (activeSortingOption.value === "Task")
-      result.sort((a, b) => {
-        if (a.title < b.title) return -1;
-        else if (a.title > b.title) return 1;
-        return 0;
-      });
-    else if (activeSortingOption.value === "Space")
-      result.sort((a, b) => {
-        const aName = workspacesStore.getWorkspaceById(a.workspace);
-        const bName = workspacesStore.getWorkspaceById(b.workspace);
-        if (aName!.name < bName!.name) return -1;
-        else if (aName!.name > bName!.name) return 1;
-        return 0;
-      });
-    else if (activeSortingOption.value === "Due date")
-      result.sort((a, b) => {
-        if (a.dueDate < b.dueDate) return -1;
-        else if (a.dueDate > b.dueDate) return 1;
-        return 0;
-      });
-    else if (activeSortingOption.value === "Completed on")
-      result.sort((a, b) => {
-        if (a.completedOn < b.completedOn) return -1;
-        else if (a.completedOn > b.completedOn) return 1;
-        return 0;
-      });
-    return result;
-  });
-
-  const selectAll = defineModel<boolean>("selectAll", { required: true });
   const checkedTasks = defineModel<string[]>("checkedTasks", {
     required: true,
   });
-
-  watch(selectAll, () => {
-    switch (props.type) {
-      case "history":
-        if (checkedTasks.value.length >= completedTasks.value.length) {
-          checkedTasks.value = [];
-        } else {
-          completedTasks.value.forEach((el) => {
-            const isThereNoTheSameTask: boolean = checkedTasks.value.every(
-              (el2) => el2 !== String(el.id),
-            );
-            if (isThereNoTheSameTask) {
-              checkedTasks.value.push(String(el.id));
-            }
-          });
-        }
-        break;
-      case "bin":
-        if (checkedTasks.value.length >= removedTasks.value.length) {
-          checkedTasks.value = [];
-        } else {
-          removedTasks.value.forEach((el) => {
-            const isThereNoTheSameTask: boolean = checkedTasks.value.every(
-              (el2) => el2 !== String(el.id),
-            );
-            if (isThereNoTheSameTask) {
-              checkedTasks.value.push(String(el.id));
-            }
-          });
-        }
-        break;
-    }
-  });
-
-  type SortingOption = "Task" | "Space" | "Due date" | "Completed on";
-
-  const sortingOptions: SortingOption[] = [
-    "Task",
-    "Space",
-    "Due date",
-    "Completed on",
-  ];
-
-  const activeSortingOption = ref<SortingOption>("Task");
 </script>
 
 <template>
