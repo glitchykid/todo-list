@@ -11,9 +11,9 @@
   const props = defineProps<{
     filteredTasks: Task[];
     sortingOptions: SortingOption[];
-    activeSortingOption: SortingOption;
   }>();
 
+  const activeSortingOption = defineModel<SortingOption>();
   const workspacesStore = useWorkspacesStore();
   const checkedTasks = defineModel<string[]>("checkedTasks", {
     required: true,
