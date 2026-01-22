@@ -1,4 +1,3 @@
--
 <script setup lang="ts">
   import MoleculeFilter from "@/components/molecules/Filter.vue";
   import TaskInfo, { type Type } from "@/components/molecules/TaskInfo.vue";
@@ -117,13 +116,19 @@
     v-if="filteredTasks.length === 0"
     class="flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
   >
-    <p class="w-full text-center">There are no {{ props.type }} yet</p>
+    <p class="w-full text-center">
+      {{
+        props.type === "history"
+          ? "You need to do more tasks"
+          : "You need to remove more tasks"
+      }}
+    </p>
   </div>
   <TaskInfo
     v-else
     v-model:checked-tasks="checkedTasks"
     :sorting-options="sortingOptions"
-    :active-sorting-option="activeSortingOption"
+    :v-model="activeSortingOption"
     :filtered-tasks="filteredTasks"
   />
 </template>

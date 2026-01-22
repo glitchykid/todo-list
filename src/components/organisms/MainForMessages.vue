@@ -12,7 +12,7 @@
     v-if="filteredTasks.length === 0"
     class="flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
   >
-    <p class="w-full text-center">There are no tasks yet</p>
+    <p class="w-full text-center">Add a task</p>
   </div>
   <TransitionGroup
     v-else
@@ -20,10 +20,6 @@
     tag="div"
     class="h-full place-content-end-safe space-y-2 overflow-y-auto"
   >
-    <Message
-      v-for="task of filteredTasks"
-      :task="task"
-      :key="task.id"
-    />
+    <Message v-for="task of filteredTasks" :task="task" :key="task.id" />
   </TransitionGroup>
 </template>
