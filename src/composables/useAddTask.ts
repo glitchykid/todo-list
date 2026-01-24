@@ -5,11 +5,9 @@ export type AddTask = {
   task: Task | null;
 };
 
-export const useAddTask = (valuesForAddTask: AddTask): AddTask | boolean => {
+export const useAddTask = (valuesForAddTask: AddTask): void => {
   const tasksStore = useTasksStore();
   if (valuesForAddTask.task === null || valuesForAddTask.task.title === "")
-    return false;
+    return;
   tasksStore.addTask(valuesForAddTask.task);
-  valuesForAddTask.id++;
-  return valuesForAddTask;
 };

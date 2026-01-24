@@ -15,7 +15,10 @@
     if (!e) return;
     valuesForAddTask.value.task = e;
   };
-  useAddTask(valuesForAddTask.value);
+  const handleAddTask = () => {
+    useAddTask(valuesForAddTask.value);
+    valuesForAddTask.value.id++;
+  };
 </script>
 
 <template>
@@ -28,7 +31,7 @@
     />
     <RegularButton
       :icon="PlusCircleIcon"
-      @click="useAddTask(valuesForAddTask)"
+      @click="handleAddTask"
       :without-paddings-for-icon="true"
     />
   </div>
