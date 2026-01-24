@@ -1,4 +1,4 @@
-import type { Type } from "@/components/molecules/MoleculeTaskInfo.vue";
+import type { Type } from "@/components/molecules/TaskInfo.vue";
 import { useCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
 import { useWorkspacesStore } from "./workspaces";
@@ -63,7 +63,7 @@ export const useTasksStore = defineStore("tasks", {
       const i = this.tasks.findIndex((el) => el.id === id);
       if (this.tasks[i]) {
         this.removedTasks.push(this.tasks[i]);
-        this.tasks = this.tasks.filter((el) => el.id !== id);
+        this.tasks.splice(i, 1);
       } else functionResult = false;
       return functionResult;
     },
@@ -71,15 +71,15 @@ export const useTasksStore = defineStore("tasks", {
     completeTask(id: number): boolean {
       let functionResult: boolean = true;
       const i = this.tasks.findIndex((el) => el.id === id);
-      if (this.tasks[i]) {
+      if (i != -1 && this.tasks[i]) {
         this.completedTasks.push(this.tasks[i]);
-        this.tasks = this.tasks.filter((el) => el.id !== id);
+        this.tasks.splice(i, 1);
       } else functionResult = false;
       return functionResult;
     },
 
     /**
-     * Removes task from task array that depend on type.
+     * Removes task from task array that depend on a type.
      */
     purgeTask(type: Type, id: string): void {
       switch (type) {
@@ -94,6 +94,26 @@ export const useTasksStore = defineStore("tasks", {
           );
           break;
       }
+    },
+
+    recoverTask(type: Type, id: string): void {
+      let task: Task | undefined;
+      let source: Task[] =
+        type === "history" ? this.completedTasks : this.removedTasks;
+      task = source.find((el) => String(el.id) === id);
+      if (!task) {
+        return;
+      }
+      if (type === "history") {
+        this.completedTasks = this.completedTasks.filter(
+          (el) => String(el.id) !== id,
+        );
+      } else {
+        this.removedTasks = this.removedTasks.filter(
+          (el) => String(el.id) !== id,
+        );
+      }
+      this.tasks.push(task);
     },
   },
 });

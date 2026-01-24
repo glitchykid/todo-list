@@ -11,7 +11,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "test": "vitest"
   },
   "dependencies": {
     "@heroicons/vue": "^2",
@@ -25,15 +26,18 @@
     "vue-router": "^4"
   },
   "devDependencies": {
+    "@pinia/testing": "^1.0.3",
     "@tsconfig/node22": "^22",
     "@types/node": "^22",
     "@vitejs/plugin-vue": "^6",
+    "@vitest/coverage-v8": "^4.0.18",
     "@vue/tsconfig": "^0",
     "npm-run-all2": "^8",
     "prettier": "^3",
     "typescript": "^5",
     "vite": "^7",
     "vite-plugin-vue-devtools": "^8",
+    "vitest": "^4.0.18",
     "vue-tsc": "^3"
   }
 }

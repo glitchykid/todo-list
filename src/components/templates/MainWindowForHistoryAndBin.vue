@@ -30,6 +30,14 @@
     });
     checkedTasks.value = [];
   };
+
+  const recoverCheckedTasks = () => {
+    checkedTasks.value.forEach((id) => {
+      tasksStore.recoverTask(props.type, id);
+    });
+    checkedTasks.value = [];
+  };
+
   const whichTypeOfRadioButtonWasPicked = ref<string>("Show all");
 
   const sortingOptions: SortingOption[] = [
@@ -101,6 +109,7 @@
     <span
       class="text-[#3E3D4D]/50"
       :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+      @click="checkedTasks.length > 0 && recoverCheckedTasks()"
     >
       Recovery
     </span>
