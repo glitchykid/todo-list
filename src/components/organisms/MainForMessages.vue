@@ -20,6 +20,6 @@
     tag="div"
     class="h-full place-content-end-safe space-y-2 overflow-y-auto"
   >
-    <Message v-for="task of filteredTasks" :task="task" :key="task.id" />
+    <Message v-for="task in filteredTasks" :task="task" :key="task.id" />
   </TransitionGroup>
 </template>

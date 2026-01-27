@@ -13,7 +13,7 @@
     sortingOptions: SortingOption[];
   }>();
 
-  const activeSortingOption = defineModel<SortingOption>();
+  const activeSortingOption = defineModel<SortingOption>("activeSortingOption");
   const workspacesStore = useWorkspacesStore();
   const checkedTasks = defineModel<string[]>("checkedTasks", {
     required: true,

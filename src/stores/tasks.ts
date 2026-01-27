@@ -1,7 +1,5 @@
 import type { Type } from "@/components/molecules/TaskInfo.vue";
-import { useCalendarStore } from "@/stores/calendar";
 import { defineStore } from "pinia";
-import { useWorkspacesStore } from "./workspaces";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
@@ -27,29 +25,7 @@ export const useTasksStore = defineStore("tasks", {
 
   getters: {
     filteredTasks: (state): Task[] => {
-      const calendarStore = useCalendarStore();
-      const workspacesStore = useWorkspacesStore();
-      let result: Task[] = [];
-      result = state.tasks.filter(
-        (task) =>
-          task.dueDate === calendarStore.selectedDate &&
-          (workspacesStore.currentWorkspace.id ===
-            workspacesStore.workspaces[0]?.id ||
-            task.workspace === workspacesStore.currentWorkspace.id),
-      );
-      result.sort((a, b) => {
-        const firstArr: string[] = a.dueTime.split(":");
-        const secondArr: string[] = b.dueTime.split(":");
-
-        let result = 0;
-
-        firstArr.forEach((v, i) => {
-          if (Number(v) > Number(secondArr[i])) result = -1;
-        });
-
-        return result;
-      });
-      return result;
+      return state.tasks;
     },
   },
 
@@ -60,8 +36,8 @@ export const useTasksStore = defineStore("tasks", {
 
     removeTask(id: number): boolean {
       let functionResult: boolean = true;
-      const i = this.tasks.findIndex((el) => el.id === id);
-      if (this.tasks[i]) {
+      const i: number = this.tasks.findIndex((el) => el.id === id);
+      if (i != -1 && this.tasks[i]) {
         this.removedTasks.push(this.tasks[i]);
         this.tasks.splice(i, 1);
       } else functionResult = false;
@@ -70,7 +46,7 @@ export const useTasksStore = defineStore("tasks", {
 
     completeTask(id: number): boolean {
       let functionResult: boolean = true;
-      const i = this.tasks.findIndex((el) => el.id === id);
+      const i: number = this.tasks.findIndex((el) => el.id === id);
       if (i != -1 && this.tasks[i]) {
         this.completedTasks.push(this.tasks[i]);
         this.tasks.splice(i, 1);
@@ -97,22 +73,14 @@ export const useTasksStore = defineStore("tasks", {
     },
 
     recoverTask(type: Type, id: string): void {
-      let task: Task | undefined;
       let source: Task[] =
         type === "history" ? this.completedTasks : this.removedTasks;
-      task = source.find((el) => String(el.id) === id);
+      const index: number = source.findIndex((el) => el.id === Number(id));
+      const task: Task | undefined = source[index];
       if (!task) {
         return;
       }
-      if (type === "history") {
-        this.completedTasks = this.completedTasks.filter(
-          (el) => String(el.id) !== id,
-        );
-      } else {
-        this.removedTasks = this.removedTasks.filter(
-          (el) => String(el.id) !== id,
-        );
-      }
+      source.splice(index, 1);
       this.tasks.push(task);
     },
   },
