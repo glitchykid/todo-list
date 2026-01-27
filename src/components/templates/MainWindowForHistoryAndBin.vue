@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import MoleculeFilter from "@/components/molecules/Filter.vue";
+  import Filter from "@/components/molecules/Filter.vue";
   import TaskInfo, { type Type } from "@/components/molecules/TaskInfo.vue";
   import { filteringTasks } from "@/composables/useFilteringTasks";
   import { useSelectAll } from "@/composables/useSelectAll";
@@ -93,7 +93,7 @@
   <h6 class="text-center text-[#D0CCFF]">
     {{ props.type.charAt(0).toUpperCase() + props.type.slice(1) }}
   </h6>
-  <MoleculeFilter
+  <Filter
     v-model:task-filter="forFiltering.task"
     v-model:space-filter="forFiltering.space"
     v-model:picked="whichTypeOfRadioButtonWasPicked"
@@ -104,7 +104,7 @@
       :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
       @click="checkedTasks.length > 0 && purgeCheckedTasks()"
     >
-      Remove
+      Purge
     </span>
     <span
       class="text-[#3E3D4D]/50"
@@ -136,8 +136,8 @@
   <TaskInfo
     v-else
     v-model:checked-tasks="checkedTasks"
-    :sorting-options="sortingOptions"
-    :v-model="activeSortingOption"
+    v-model:active-sorting-option="activeSortingOption"
     :filtered-tasks="filteredTasks"
+    :sorting-options="sortingOptions"
   />
 </template>

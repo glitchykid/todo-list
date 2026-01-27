@@ -51,14 +51,14 @@
       <div
         class="cursor-pointer bg-[#8CE98C] text-[#274F27] transition-colors duration-300 hover:bg-[#aeffae]"
         :class="styles.onlyIcon"
-        @click="tasksStore.completeTask(task.id)"
+        @click="tasksStore.completeTask(props.task.id)"
       >
         <CheckIcon class="size-5" />
       </div>
       <div
         class="cursor-pointer bg-[#E27575] text-[#4F2929] transition-colors duration-300 hover:bg-[#ffa3a3]"
         :class="styles.onlyIcon"
-        @click="tasksStore.removeTask(task.id)"
+        @click="tasksStore.removeTask(props.task.id)"
       >
         <TrashIcon class="size-5" />
       </div>
