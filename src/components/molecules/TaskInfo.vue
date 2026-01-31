@@ -15,7 +15,7 @@
 
   const activeSortingOption = defineModel<SortingOption>("activeSortingOption");
   const workspacesStore = useWorkspacesStore();
-  const checkedTasks = defineModel<string[]>("checkedTasks", {
+  const checkedTasks = defineModel<number[]>("checkedTasks", {
     required: true,
   });
 </script>

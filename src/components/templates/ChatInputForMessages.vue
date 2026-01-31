@@ -1,34 +1,25 @@
 <script setup lang="ts">
   import ChatInput from "@/components/organisms/ChatInput.vue";
-  import { useAddTask, type AddTask } from "@/composables/useAddTask.ts";
-  import type { Task } from "@/stores/tasks";
+  import { useAddTask } from "@/composables/useAddTask.ts";
+  import { type Task } from "@/stores/tasks";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
   import { ref } from "vue";
   import RegularButton from "../atoms/RegularButton.vue";
 
-  const valuesForAddTask = ref<AddTask>({
-    id: 0,
-    task: null,
-  });
+  let newTask = ref<Task>();
 
   const updateTask = (e: Task) => {
     if (!e) return;
-    valuesForAddTask.value.task = e;
+    newTask.value = e;
   };
   const handleAddTask = () => {
-    useAddTask(valuesForAddTask.value);
-    valuesForAddTask.value.id++;
+    if (newTask.value) useAddTask(newTask.value);
   };
 </script>
 
 <template>
   <div class="flex flex-row place-items-end-safe gap-10">
-    <ChatInput
-      class="w-full"
-      :id="valuesForAddTask?.id"
-      @update:task="updateTask"
-      :valuesForAddTask="valuesForAddTask"
-    />
+    <ChatInput class="w-full" @update:task="updateTask" :newTask="newTask" />
     <RegularButton
       :icon="PlusCircleIcon"
       @click="handleAddTask"

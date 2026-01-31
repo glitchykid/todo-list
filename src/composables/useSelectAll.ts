@@ -1,18 +1,18 @@
 import type { Task } from "@/stores/tasks";
 
 export const useSelectAll = (
-  checkedTasks: string[],
+  checkedTasks: number[],
   tasks: Task[],
-): string[] => {
+): number[] => {
   if (checkedTasks.length >= tasks.length) {
     checkedTasks = [];
   } else {
     tasks.forEach((el) => {
       const isThereNoTheSameTask: boolean = checkedTasks.every(
-        (el2) => el2 !== String(el.id),
+        (el2) => el2 !== el.id,
       );
       if (isThereNoTheSameTask) {
-        checkedTasks.push(String(el.id));
+        checkedTasks.push(el.id);
       }
     });
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const checkedTasks = defineModel<string[]>("checkedTasks");
+  const checkedTasks = defineModel<number[]>("checkedTasks");
 
   const props = defineProps<{
     id: string;

@@ -23,17 +23,17 @@
     space: "",
     task: "",
   });
-  const checkedTasks = ref<string[]>([]);
+  const checkedTasks = ref<number[]>([]);
   const purgeCheckedTasks = () => {
     checkedTasks.value.forEach((id) => {
-      tasksStore.purgeTask(props.type, id);
+      tasksStore.purgeTask(props.type, Number(id));
     });
     checkedTasks.value = [];
   };
 
   const recoverCheckedTasks = () => {
     checkedTasks.value.forEach((id) => {
-      tasksStore.recoverTask(props.type, id);
+      tasksStore.recoverTask(props.type, Number(id));
     });
     checkedTasks.value = [];
   };
