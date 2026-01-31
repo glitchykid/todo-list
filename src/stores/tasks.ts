@@ -75,16 +75,15 @@ export const useTasksStore = defineStore("tasks", {
     },
 
     recoverTask(type: Type, id: number): void {
-      if (type === "history") {
-        const i: number = this.completedTasks.findIndex((el) => el.id === id);
-        if (i === -1) return;
-        const task: Task | undefined = this.completedTasks[i];
-        if (!task) {
-          return;
-        }
-        this.completedTasks.splice(i, 1);
-        this.tasks.push(task);
-      }
+      const pointerToArrayOfType =
+        type === "history" ? this.completedTasks : this.removedTasks;
+      const i: number = pointerToArrayOfType.findIndex(
+        (task) => task.id === id,
+      );
+      const task: Task | undefined = pointerToArrayOfType[i];
+      if (!task) return;
+      pointerToArrayOfType.splice(i, 1);
+      this.tasks.push(task);
     },
   },
 });
