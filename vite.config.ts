@@ -16,12 +16,6 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       enabled: true,
-      include: ["src/**/*.{ts,tsx}"],
-      exclude: [
-        "src/main.ts",
-        "src/locales/*.{ts,tsx}",
-        "src/routes/*.{ts,tsx}",
-      ],
     },
   },
 });

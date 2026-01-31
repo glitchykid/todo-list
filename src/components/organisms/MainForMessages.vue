@@ -4,12 +4,12 @@
   import Message from "../molecules/Message.vue";
 
   const tasksStore = useTasksStore();
-  const filteredTasks = computed(() => tasksStore.filteredTasks);
+  const tasks = computed(() => tasksStore.getTasks);
 </script>
 
 <template>
   <div
-    v-if="filteredTasks.length === 0"
+    v-if="tasks.length === 0"
     class="flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
   >
     <p class="w-full text-center">Add a task</p>
@@ -20,6 +20,6 @@
     tag="div"
     class="h-full place-content-end-safe space-y-2 overflow-y-auto"
   >
-    <Message v-for="task in filteredTasks" :task="task" :key="task.id" />
+    <Message v-for="task in tasks" :task="task" :key="task.id" />
   </TransitionGroup>
 </template>

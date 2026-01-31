@@ -2,10 +2,10 @@
   import RegularButton from "@/components/atoms/RegularButton.vue";
   import Repeatable from "@/components/atoms/Repeatable.vue";
   import Time from "@/components/molecules/Time.vue";
-  import { useAddTask, type AddTask } from "@/composables/useAddTask.ts";
+  import { useAddTask } from "@/composables/useAddTask.ts";
   import { currentLocale } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";
-  import { type Task } from "@/stores/tasks";
+  import { useTasksStore, type Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
@@ -22,8 +22,7 @@
   };
 
   const props = defineProps<{
-    id: number;
-    valuesForAddTask: AddTask;
+    newTask: Task | undefined;
   }>();
 
   const time = reactive<Time>({
@@ -54,10 +53,11 @@
   const calendarStore = useCalendarStore();
   const workspacesStore = useWorkspacesStore();
   const { currentWorkspace } = storeToRefs(workspacesStore);
+  const tasksStore = useTasksStore();
 
   watchEffect(() => {
     task.value = {
-      id: props.id,
+      id: tasksStore.id,
       title: taskTitle.value,
       completed: false,
       completedOn: new Intl.DateTimeFormat(currentLocale, {
@@ -83,7 +83,7 @@
       placeholder="Enter a task"
       class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
-      @keyup.enter="useAddTask(props.valuesForAddTask)"
+      @keyup.enter="props.newTask && useAddTask(props.newTask)"
     />
     <hr class="h-px border-none bg-[#8276FF]" />
     <div class="flex h-9 flex-row">
