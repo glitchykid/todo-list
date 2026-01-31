@@ -1,5 +1,6 @@
 import type { Type } from "@/components/molecules/TaskInfo.vue";
 import { defineStore } from "pinia";
+import { useWorkspacesStore } from "./workspaces";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
@@ -26,7 +27,12 @@ export const useTasksStore = defineStore("tasks", {
 
   getters: {
     getTasks: (state): Task[] => {
-      return state.tasks;
+      const workspacesStore = useWorkspacesStore();
+      if (workspacesStore.currentWorkspace.id === 0) return state.tasks;
+      let tempTasks = [...state.tasks].filter(
+        (task) => task.workspace === workspacesStore.currentWorkspace.id,
+      );
+      return tempTasks;
     },
   },
 
