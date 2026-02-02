@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <div class="flex h-dvh flex-row gap-4 bg-[#EAEDF2] py-6 font-[Jost] lg:px-50">
+  <div
+    class="flex h-dvh flex-col-reverse bg-[#EAEDF2] font-[Jost] md:flex md:flex-row md:gap-4 md:px-50 md:py-6"
+  >
     <Header />
     <RouterView />
   </div>

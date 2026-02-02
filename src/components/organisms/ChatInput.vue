@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import RegularButton from "@/components/atoms/RegularButton.vue";
-  import Repeatable from "@/components/atoms/Repeatable.vue";
+  import Repeatable, { type Repeat } from "@/components/atoms/Repeatable.vue";
   import Time from "@/components/molecules/Time.vue";
   import { useAddTask } from "@/composables/useAddTask.ts";
   import { currentLocale } from "@/locales/locales";
@@ -14,7 +14,7 @@
   const showTime = ref<boolean>(false);
   const showTypesOfRepeat = ref<boolean>(false);
 
-  const defaultTypeOfRepeat = ref<string>("none");
+  const defaultTypeOfRepeat = ref<Repeat>("none");
 
   type Time = {
     hours: string;
@@ -52,12 +52,12 @@
   const task = ref<Task | null>(null);
   const calendarStore = useCalendarStore();
   const workspacesStore = useWorkspacesStore();
-  const { currentWorkspace } = storeToRefs(workspacesStore);
   const tasksStore = useTasksStore();
+  const { currentWorkspaceId } = storeToRefs(workspacesStore);
 
   watchEffect(() => {
     task.value = {
-      id: tasksStore.id,
+      id: tasksStore.nextId,
       title: taskTitle.value,
       completed: false,
       completedOn: new Intl.DateTimeFormat(currentLocale, {
@@ -70,7 +70,7 @@
           : defaultTypeOfRepeat.value,
       dueTime: `${time.hours}:${time.minutes}`,
       dueDate: calendarStore.selectedDate,
-      workspace: currentWorkspace.value.id,
+      workspace: currentWorkspaceId.value,
     };
 
     if (task.value !== null) emit("update:task", task.value);
@@ -85,12 +85,12 @@
       v-model="taskTitle"
       @keyup.enter="props.newTask && useAddTask(props.newTask)"
     />
-    <hr class="h-px border-none bg-[#8276FF]" />
+    <hr />
     <div class="flex h-9 flex-row">
       <div class="relative w-full rounded-bl-lg">
         <RegularButton
           :label="defaultTypeOfRepeat"
-          class="h-full w-full rounded-none rounded-bl-lg border-r"
+          class="h-full w-full rounded-none rounded-bl-lg border-r border-[#C9D7ED]"
           :icon="ArrowPathIcon"
           :active="showTypesOfRepeat"
           @click="toggleTypesOfRepeat"
@@ -98,7 +98,7 @@
         <Repeatable
           v-if="showTypesOfRepeat"
           @toggle-types-of-repeat="showTypesOfRepeat = $event"
-          v-model:defaultValue="defaultTypeOfRepeat"
+          v-model:default-value="defaultTypeOfRepeat"
         />
       </div>
       <div class="relative w-full rounded-br-lg">

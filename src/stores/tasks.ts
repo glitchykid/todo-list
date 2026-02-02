@@ -1,95 +1,168 @@
+import type { Repeat } from "@/components/atoms/Repeatable.vue";
 import type { Type } from "@/components/molecules/TaskInfo.vue";
+import { idbGet, idbSet } from "@/db/indexedDb";
+import { occursOnDate, toISODate } from "@/utils/dateLogic";
 import { defineStore } from "pinia";
+import { toRaw } from "vue";
+import { useCalendarStore } from "./calendar";
 import { useWorkspacesStore } from "./workspaces";
-
-export type DateFilter = "today" | "tomorrow" | "select";
 
 export type Task = {
   id: number;
   title: string;
   completed: boolean;
   completedOn: string;
-  repeatable: boolean | string;
+  repeatable: Repeat | false;
   dueTime: string;
   dueDate: string;
   workspace: number;
+  workspaceSnapshot?: string;
+};
+
+type SkippedTask = {
+  taskId: number;
+  date: string; // YYYY-MM-DD
+};
+
+type TaskState = {
+  nextId: number;
+  tasks: Task[];
+  removedTasks: Task[];
+  completedTasks: Task[];
+  skippedTasks: SkippedTask[];
+};
+
+const DEFAULT_STATE: TaskState = {
+  nextId: 0,
+  tasks: [],
+  removedTasks: [],
+  completedTasks: [],
+  skippedTasks: [],
 };
 
 export const useTasksStore = defineStore("tasks", {
-  state: () => {
-    return {
-      id: 0 as number,
-      tasks: [] as Task[],
-      removedTasks: [] as Task[],
-      completedTasks: [] as Task[],
-    };
-  },
+  state: () => ({ ...DEFAULT_STATE }),
 
   getters: {
-    getTasks: (state): Task[] => {
-      const workspacesStore = useWorkspacesStore();
-      if (workspacesStore.currentWorkspace.id === 0) return state.tasks;
-      let tempTasks = [...state.tasks].filter(
-        (task) => task.workspace === workspacesStore.currentWorkspace.id,
-      );
-      return tempTasks;
+    getTasks(): Task[] {
+      const workspaceStore = useWorkspacesStore();
+      const calendarStore = useCalendarStore();
+      const selectedDate = calendarStore.selectedDateAsDate;
+      const iso = toISODate(selectedDate);
+
+      return this.tasks.filter((task) => {
+        if (
+          workspaceStore.currentWorkspaceId !== 0 &&
+          task.workspace !== workspaceStore.currentWorkspaceId
+        ) {
+          return false;
+        }
+
+        const skipped = this.skippedTasks.some(
+          (s) => s.taskId === task.id && s.date === iso,
+        );
+        if (skipped) return false;
+
+        return occursOnDate(task, selectedDate);
+      });
+    },
+
+    getHistory(): Task[] {
+      return this.completedTasks;
+    },
+
+    getBin(): Task[] {
+      return this.removedTasks;
     },
   },
 
   actions: {
-    addTask(task: Task): void {
-      this.tasks.push(task);
-      this.id++;
-    },
-
-    removeTask(id: number): boolean {
-      let functionResult: boolean = true;
-      const i: number = this.tasks.findIndex((el) => el.id === id);
-      if (i !== -1 && this.tasks[i]) {
-        this.removedTasks.push(this.tasks[i]);
-        this.tasks.splice(i, 1);
-      } else functionResult = false;
-      return functionResult;
-    },
-
-    completeTask(id: number): boolean {
-      let functionResult: boolean = true;
-      const i: number = this.tasks.findIndex((task) => task.id === id);
-      if (i !== -1 && this.tasks[i]) {
-        this.completedTasks.push(this.tasks[i]);
-        this.tasks.splice(i, 1);
-      } else functionResult = false;
-      return functionResult;
-    },
-
-    /**
-     * Removes task from task array that depend on a type.
-     */
-    purgeTask(type: Type, id: number): void {
-      switch (type) {
-        case "history":
-          this.completedTasks = this.completedTasks.filter(
-            (value) => value.id !== id,
-          );
-          break;
-        case "bin":
-          this.removedTasks = this.removedTasks.filter(
-            (value) => value.id !== id,
-          );
-          break;
+    async hydrate() {
+      const stored = await idbGet<TaskState>("tasks", "state");
+      if (stored) {
+        this.$patch(stored);
       }
     },
 
-    recoverTask(type: Type, id: number): void {
-      const pointerToArrayOfType =
+    async persist() {
+      await idbSet("tasks", "state", {
+        id: this.nextId,
+        tasks: toRaw(this.tasks),
+        removedTasks: toRaw(this.removedTasks),
+        completedTasks: toRaw(this.completedTasks),
+        skippedTasks: toRaw(this.skippedTasks),
+      });
+    },
+
+    async skipTask(taskId: number, date: Date): Promise<void> {
+      const key = toISODate(date);
+      if (
+        !this.skippedTasks.some((s) => s.taskId === taskId && s.date === key)
+      ) {
+        this.skippedTasks.push({ taskId, date: key });
+      }
+      await this.persist();
+    },
+
+    async addTask(task: Omit<Task, "id">): Promise<void> {
+      this.tasks.push({
+        ...task,
+        id: this.nextId++,
+      });
+      await this.persist();
+    },
+
+    async removeTask(id: number): Promise<boolean> {
+      const i = this.tasks.findIndex((t) => t.id === id);
+      if (i === -1 || !this.tasks[i]) return false;
+      const wsStore = useWorkspacesStore();
+      const task: Task = {
+        ...this.tasks[i],
+        workspaceSnapshot:
+          wsStore.getWorkspaceById(this.tasks[i].workspace)?.name ??
+          "Deleted workspace",
+      };
+
+      this.removedTasks.push(task);
+      this.tasks.splice(i, 1);
+      await this.persist();
+      return true;
+    },
+
+    async completeTask(id: number): Promise<boolean> {
+      const i = this.tasks.findIndex((t) => t.id === id);
+      if (i === -1 || !this.tasks[i]) return false;
+      const wsStore = useWorkspacesStore();
+      const task: Task = {
+        ...this.tasks[i],
+        workspaceSnapshot:
+          wsStore.getWorkspaceById(this.tasks[i].workspace)?.name ??
+          "Deleted workspace",
+      };
+
+      this.completedTasks.push(task);
+      this.tasks.splice(i, 1);
+      await this.persist();
+      return true;
+    },
+
+    async purgeTask(type: Type, id: number): Promise<void> {
+      if (type === "history") {
+        this.completedTasks = this.completedTasks.filter((t) => t.id !== id);
+      } else {
+        this.removedTasks = this.removedTasks.filter((t) => t.id !== id);
+      }
+      await this.persist();
+    },
+
+    async recoverTask(type: Type, id: number): Promise<void> {
+      const source =
         type === "history" ? this.completedTasks : this.removedTasks;
-      const i: number = pointerToArrayOfType.findIndex(
-        (task) => task.id === id,
-      );
-      const task: Task | undefined = pointerToArrayOfType[i];
-      if (!task) return;
-      pointerToArrayOfType.splice(i, 1);
-      this.tasks.push(task);
+      const i = source.findIndex((t) => t.id === id);
+      if (i === -1 || !source[i]) return;
+      this.tasks.push(source[i]);
+      source.splice(i, 1);
+      await this.persist();
     },
   },
 });

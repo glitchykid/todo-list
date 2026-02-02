@@ -46,29 +46,31 @@
 
 <template>
   <div
-    class="flex h-fit flex-row items-center justify-between gap-10 border-t border-b border-[#C9D7ED] py-4 text-[#3E3D4D]"
+    class="flex h-fit w-full flex-row items-center justify-between gap-10 border-t border-b border-[#C9D7ED] py-4 text-[#3E3D4D]"
   >
-    <div class="flex h-fit flex-col items-end gap-2">
+    <div class="flex h-fit w-fit flex-col items-end gap-2">
       <SimpleTextInput
-        class="flex flex-row items-center gap-2 text-nowrap"
+        class="flex w-full flex-row items-center gap-2 text-nowrap md:w-auto"
         :placehodler="textInputs[0]!.placeholder"
         v-model:filter="taskFilter"
       >
-        <label>
+        <label class="hidden md:inline-block">
           {{ textInputs[0]!.description }}
         </label>
       </SimpleTextInput>
       <SimpleTextInput
-        class="flex flex-row items-center gap-2 text-nowrap"
+        class="flex w-full flex-row items-center gap-2 text-nowrap md:w-auto"
         :placehodler="textInputs[1]!.placeholder"
         v-model:filter="spaceFilter"
       >
-        <label>
+        <label class="hidden md:inline-block">
           {{ textInputs[1]!.description }}
         </label>
       </SimpleTextInput>
     </div>
-    <div class="flex h-fit flex-row items-center gap-4">
+    <div
+      class="flex h-fit flex-col items-end gap-2 md:flex-row md:items-center md:gap-4"
+    >
       <SimpleRadioInput
         v-for="radioInput in radioInputs"
         :key="radioInput.id"

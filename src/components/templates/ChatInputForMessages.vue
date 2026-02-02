@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <div class="flex flex-row place-items-end-safe gap-10">
+  <div class="flex flex-row place-items-end-safe gap-4 md:gap-10">
     <ChatInput class="w-full" @update:task="updateTask" :newTask="newTask" />
     <RegularButton
       :icon="PlusCircleIcon"

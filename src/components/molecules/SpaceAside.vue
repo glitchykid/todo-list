@@ -15,7 +15,7 @@
   const tasksStore = useTasksStore();
   const workspacesStore = useWorkspacesStore();
 
-  const { currentWorkspace } = storeToRefs(workspacesStore);
+  const { currentWorkspaceId } = storeToRefs(workspacesStore);
 
   const showActions = ref<boolean>(false);
   const toggleTaskActions = (): boolean =>
@@ -35,6 +35,7 @@
 </script>
 
 <template>
+  <!-- Desktop -->
   <div class="flex flex-col gap-8 overflow-y-auto">
     <h6 class="text-center text-[#D0CCFF]">Spaces</h6>
     <div class="flex flex-col">
@@ -49,10 +50,10 @@
               choosenWorkspaceForRename !== workspace.id ||
               !showInputForChangeWorkspaceTitle
             "
-            :active="workspace.id === currentWorkspace.id"
+            :active="workspace.id === currentWorkspaceId"
             class="z-10 w-full max-w-full rounded-none px-4 py-2 shadow-none select-none"
             :label="workspace.name"
-            @click="currentWorkspace = workspace"
+            @click="currentWorkspaceId = workspace.id"
           />
           <input
             v-else-if="

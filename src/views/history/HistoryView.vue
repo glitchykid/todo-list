@@ -1,10 +1,15 @@
 <script setup lang="ts">
-  import MainWindow from "@/components/templates/MainWindow.vue";
+  import MainWindowDesktop from "@/components/templates/MainWindowDesktop.vue";
   import MainWindowForHistoryAndBin from "@/components/templates/MainWindowForHistoryAndBin.vue";
+  import MainWindowMobile from "@/components/templates/MainWindowMobile.vue";
 </script>
 
 <template>
-  <MainWindow>
+  <MainWindowDesktop>
     <MainWindowForHistoryAndBin type="history" />
-  </MainWindow>
+  </MainWindowDesktop>
+
+  <MainWindowMobile>
+    <MainWindowForHistoryAndBin type="history" />
+  </MainWindowMobile>
 </template>

@@ -1,5 +1,6 @@
+import { idbGet, idbSet } from "@/db/indexedDb";
 import { defineStore } from "pinia";
-import { useTasksStore } from "./tasks";
+import { toRaw } from "vue";
 
 export type WorkspaceId = number;
 
@@ -8,22 +9,33 @@ export type Workspace = {
   name: string;
 };
 
-export const useWorkspacesStore = defineStore("workspaces", {
-  state: () => {
-    let id: WorkspaceId = 0;
-    const defaultWorkspace: Workspace = { id: id++, name: "All tasks" };
-    const defaultWorkspaces: Workspace[] = [
-      defaultWorkspace,
-      { id: id++, name: "Personal" },
-      { id: id++, name: "Work" },
-    ];
+type WorkspaceState = {
+  workspaces: Workspace[];
+  currentWorkspaceId: WorkspaceId;
+  nextId: WorkspaceId;
+};
 
-    return {
-      workspaces: defaultWorkspaces as Workspace[],
-      currentWorkspace: defaultWorkspace as Workspace,
-      id: id as WorkspaceId,
-    };
-  },
+const DEFAULT_STATE: WorkspaceState = {
+  nextId: 3,
+  workspaces: [
+    {
+      id: 0,
+      name: "All tasks",
+    },
+    {
+      id: 1,
+      name: "Personal",
+    },
+    {
+      id: 2,
+      name: "Work",
+    },
+  ],
+  currentWorkspaceId: 0,
+};
+
+export const useWorkspacesStore = defineStore("workspaces", {
+  state: () => ({ ...DEFAULT_STATE }),
 
   getters: {
     getWorkspaceById(state) {
@@ -35,40 +47,58 @@ export const useWorkspacesStore = defineStore("workspaces", {
       return (workspaceName: string) =>
         state.workspaces.find((el) => el.name === workspaceName);
     },
+
+    currentWorkspaceName(state): string {
+      return (
+        state.workspaces.find((w) => w.id === state.currentWorkspaceId)?.name ??
+        "Deleted workspace"
+      );
+    },
   },
 
   actions: {
-    addWorkspace(newWorkspace: string): void {
-      newWorkspace = newWorkspace.trim();
-      newWorkspace += ` ${this.id - 2}`;
-      this.workspaces.push({ id: this.id++, name: newWorkspace });
+    async hydrate() {
+      const stored = await idbGet<WorkspaceState>("workspaces", "state");
+      if (stored) {
+        this.$patch(stored);
+      }
     },
 
-    updateWorkspaceName(
+    async persist() {
+      await idbSet("workspaces", "state", {
+        id: toRaw(this.nextId),
+        workspaces: toRaw(this.workspaces),
+        currentWorkspaceId: toRaw(this.currentWorkspaceId),
+      });
+    },
+
+    async addWorkspace(newWorkspace: string): Promise<void> {
+      newWorkspace = newWorkspace.trim();
+      newWorkspace += ` ${this.nextId - 2}`;
+      this.workspaces.push({ id: this.nextId++, name: newWorkspace });
+      await this.persist();
+    },
+
+    async updateWorkspaceName(
       newWorkspaceName: InputEvent,
       workspaceId: WorkspaceId,
-    ) {
+    ): Promise<void> {
       let cleaned: string = (newWorkspaceName.target as HTMLInputElement).value;
       cleaned = cleaned.trim();
       const workspaceToChange: Workspace | undefined = this.workspaces.find(
         (el) => el.id === workspaceId,
       );
       if (workspaceToChange) workspaceToChange.name = cleaned;
+      await this.persist();
     },
 
-    removeWorkspace(id: WorkspaceId) {
+    async removeWorkspace(id: WorkspaceId): Promise<void> {
       this.workspaces = this.workspaces.filter(
         (currentWorkspace: Workspace) => id !== currentWorkspace.id,
       );
-      const tasksStore = useTasksStore();
-      tasksStore.tasks = tasksStore.tasks.filter((el) => el.workspace !== id);
-      tasksStore.completedTasks = tasksStore.completedTasks.filter(
-        (el) => el.workspace !== id,
-      );
-      tasksStore.removedTasks = tasksStore.removedTasks.filter(
-        (el) => el.workspace !== id,
-      );
-      this.currentWorkspace = this.workspaces[0]!;
+      if (!this.workspaces[0]) return;
+      this.currentWorkspaceId = this.workspaces[0].id;
+      await this.persist();
     },
   },
 });

@@ -1,20 +1,25 @@
+import { idbGet, idbSet } from "@/db/indexedDb";
 import { currentLocale } from "@/locales/locales";
-import { fromISODate, toISODate } from "@/utils/isodateconverter";
+import { fromISODate, toISODate } from "@/utils/dateLogic";
 import { defineStore } from "pinia";
+import { toRaw } from "vue";
 
 export type DateFilter = "today" | "tomorrow" | "select";
 
-export const useCalendarStore = defineStore("calendarSelect", {
-  state: () => {
-    const today = new Date();
-    const todayIso = toISODate(today);
+type CalendarState = {
+  activeFilter: DateFilter;
+  selectedDate: string;
+  calendarCursor: string;
+};
 
-    return {
-      activeFilter: "today" as DateFilter,
-      selectedDate: todayIso,
-      calendarCursor: todayIso,
-    };
-  },
+const DEFAULT_STATE: CalendarState = {
+  activeFilter: "today",
+  selectedDate: toISODate(new Date()),
+  calendarCursor: toISODate(new Date()),
+};
+
+export const useCalendarStore = defineStore("calendar", {
+  state: (): CalendarState => ({ ...DEFAULT_STATE }),
 
   getters: {
     selectedDateAsDate: (state) => fromISODate(state.selectedDate),
@@ -27,34 +32,53 @@ export const useCalendarStore = defineStore("calendarSelect", {
   },
 
   actions: {
-    selectToday(): void {
+    async hydrate() {
+      const stored = await idbGet<CalendarState>("calendar", "state");
+      if (stored) {
+        this.$patch(stored);
+      }
+    },
+
+    async persist() {
+      await idbSet("calendar", "state", {
+        activeFilter: toRaw(this.activeFilter),
+        selectedDate: toRaw(this.selectedDate),
+        calendarCursor: toRaw(this.calendarCursor),
+      });
+    },
+
+    async selectToday(): Promise<void> {
       const today = new Date();
       const iso = toISODate(today);
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "today";
+      await this.persist();
     },
 
-    selectTomorrow(): void {
+    async selectTomorrow(): Promise<void> {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const iso = toISODate(tomorrow);
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "tomorrow";
+      await this.persist();
     },
 
-    setSelectedDate(date: Date): void {
+    async setSelectedDate(date: Date): Promise<void> {
       const iso = toISODate(date);
       this.selectedDate = iso;
       this.calendarCursor = iso;
       this.activeFilter = "select";
+      await this.persist();
     },
 
-    setCalendarMonth(date: Date): void {
+    async setCalendarMonth(date: Date): Promise<void> {
       const iso = toISODate(date);
       if (this.calendarCursor === iso) return;
       this.calendarCursor = iso;
+      await this.persist();
     },
   },
 });
