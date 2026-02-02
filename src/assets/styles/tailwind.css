@@ -20,3 +20,7 @@ p,
 label {
   @apply select-none;
 }
+
+hr {
+  @apply h-px border-none bg-[#C9D7ED] md:block;
+}

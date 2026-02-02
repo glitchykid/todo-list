@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { removeAllExceptNumbers } from "@/utils/stringprocess";
+  import { removeAllExceptNumbers } from "@/utils/stringProcessing";
   import { ref, watch } from "vue";
 
   interface Props {

@@ -3,8 +3,10 @@
   import RegularButton from "@/components/atoms/RegularButton.vue";
   import { currentLocale, locales } from "@/locales/locales";
   import { useCalendarStore } from "@/stores/calendar";
+  import { useTasksStore } from "@/stores/tasks";
+  import { occursOnDate, toISODate } from "@/utils/dateLogic"; // Use your utility
   import { storeToRefs } from "pinia";
-  import { computed, ref, watch } from "vue";
+  import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
   const props = defineProps<{
     position: string;
@@ -12,7 +14,46 @@
   }>();
 
   const calendarStore = useCalendarStore();
+  const tasksStore = useTasksStore();
   const { selectedDateAsDate, calendarCursorDate } = storeToRefs(calendarStore);
+
+  const calendarRef = ref<HTMLElement>();
+
+  // Handle responsive scaling
+  const updateScale = () => {
+    if (!calendarRef.value) return;
+
+    const el = calendarRef.value;
+    const isMobile = window.innerWidth < 640;
+
+    if (isMobile) {
+      // Scale based on available space
+      const scale = Math.min(window.innerWidth / 400, 1);
+      el.style.setProperty("--mobile-scale", scale.toString());
+
+      // Adjust positioning for landscape
+      if (window.innerWidth > window.innerHeight) {
+        // Landscape mode
+        el.style.maxHeight = `${window.innerHeight * 0.9}px`;
+        el.style.width = `${Math.min(window.innerWidth * 0.8, 500)}px`;
+      } else {
+        // Portrait mode
+        el.style.maxHeight = `${window.innerHeight * 0.8}px`;
+        el.style.width = `${Math.min(window.innerWidth * 0.9, 400)}px`;
+      }
+    }
+  };
+
+  onMounted(() => {
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    window.addEventListener("orientationchange", updateScale);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener("resize", updateScale);
+    window.removeEventListener("orientationchange", updateScale);
+  });
 
   const emit = defineEmits<{
     "toggle-calendar": [value: boolean];
@@ -123,6 +164,26 @@
     return arr;
   });
 
+  // Get tasks for a specific date using your utility
+  const getTasksForDate = (date: Date): number => {
+    const isoDate = toISODate(date);
+    return tasksStore.tasks.filter((task) => task.dueDate === isoDate).length;
+  };
+
+  // Check if date has tasks
+  const hasTasks = (date: Date): boolean => {
+    const key = toISODate(date);
+
+    return tasksStore.tasks.some((task) => {
+      const skipped = tasksStore.skippedTasks.some(
+        (s) => s.taskId === task.id && s.date === key,
+      );
+      if (skipped) return false;
+
+      return occursOnDate(task, date);
+    });
+  };
+
   interface CalendarCell {
     key: number;
     displayDay: number;
@@ -211,52 +272,87 @@
 
 <template>
   <div>
+    <!-- Backdrop -->
     <div
-      class="fixed inset-0 z-30 bg-black/20"
+      class="fixed inset-0 z-80 bg-black/20"
       @click="emit('toggle-calendar', false)"
     />
+
+    <!-- Calendar Container -->
     <div
-      class="absolute left-1/2 z-40 flex -translate-x-1/2 flex-col gap-4 rounded-lg bg-white p-4 text-[#8276FF] shadow-lg shadow-[#8276FF]/50"
+      ref="calendarRef"
+      class="fixed top-1/2 left-1/2 z-100 flex w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 rounded-lg bg-white p-3 text-[#8276FF] shadow-lg shadow-[#8276FF]/50 sm:absolute sm:w-auto sm:gap-4 sm:p-4"
       :class="[
-        props.position === 'bottom' && 'top-full mt-2',
-        props.position === 'top' && 'bottom-full mb-2',
+        props.position === 'bottom' && 'sm:top-full sm:mt-2 sm:translate-y-0',
+        props.position === 'top' && 'sm:bottom-full sm:mb-2 sm:translate-y-0',
       ]"
     >
-      <div class="flex flex-row justify-between gap-8">
+      <!-- Month/Year Selectors -->
+      <div class="flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-8">
         <Dropdown
           :default-value="currentMonth"
           :values="monthNames"
           @update:default-value="($event) => setMonthByName($event)"
+          class="z-60 w-full sm:w-auto"
         />
         <Dropdown
           :default-value="currentYear"
           :values="yearLabels"
           @update:default-value="($event) => setYearByLabel($event)"
+          class="w-full sm:w-auto"
         />
       </div>
-      <div class="grid grid-cols-7 justify-items-center font-bold">
+
+      <!-- Weekday Headers -->
+      <div
+        class="grid grid-cols-7 justify-items-center gap-1 font-bold sm:gap-0"
+      >
         <span
           v-for="weekday of weekdays"
           :key="weekday"
-          class="flex h-9 w-9 items-center justify-center font-bold"
-          >{{ weekday }}</span
+          class="flex h-6 w-6 items-center justify-center text-xs sm:h-8 sm:w-8 sm:text-sm"
         >
+          {{ weekday.charAt(0) }}
+        </span>
       </div>
-      <div class="grid grid-cols-7 justify-items-center gap-y-3">
+
+      <!-- Calendar Days -->
+      <div class="grid grid-cols-7 justify-items-center gap-y-6">
         <template v-for="cell in calendarCells" :key="cell.key">
-          <RegularButton
-            v-if="cell.isCurrentMonth"
-            :active="isActiveDay(cell.date)"
-            :border="false"
-            :label="cell.displayDay"
-            :name="cell.displayDay"
-            class="h-9 w-9"
-            @click="selectDay(cell.date)"
-            :no-truncate="true"
-          />
+          <!-- Current Month Days with Tasks Indicator -->
+          <div v-if="cell.isCurrentMonth" class="relative">
+            <RegularButton
+              :active="isActiveDay(cell.date)"
+              :border="false"
+              :label="cell.displayDay.toString()"
+              :name="cell.displayDay.toString()"
+              class="text-2xs sm:text-2xs h-8 w-6 sm:h-8 sm:w-8"
+              @click="
+                () => {
+                  selectDay(cell.date);
+                  emit('toggle-calendar', false);
+                }
+              "
+              :no-truncate="true"
+              :class="{
+                'bg-[#8276FF]/15':
+                  hasTasks(cell.date) && !isActiveDay(cell.date),
+              }"
+            />
+
+            <!-- Dot indicator for tasks - Fixed positioning -->
+            <div
+              v-if="hasTasks(cell.date)"
+              class="absolute -top-0.5 -right-0.5 z-10"
+            >
+              <div class="h-2 w-2 rounded-full bg-red-500 sm:h-2.5 sm:w-2.5" />
+            </div>
+          </div>
+
+          <!-- Non-current month days -->
           <span
             v-else
-            class="flex h-9 w-9 items-center justify-center text-[#B3BCCD]"
+            class="flex h-8 w-8 items-center-safe justify-center text-xs text-[#B3BCCD]"
           >
             {{ cell.displayDay }}
           </span>

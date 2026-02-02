@@ -1,3 +1,57 @@
+<template>
+  <h6 class="text-center text-[#D0CCFF]">
+    {{ props.type.charAt(0).toUpperCase() + props.type.slice(1) }}
+  </h6>
+  <Filter
+    v-model:task-filter="forFiltering.task"
+    v-model:space-filter="forFiltering.space"
+    v-model:picked="whichTypeOfRadioButtonWasPicked"
+  />
+  <section class="flex flex-row place-content-end gap-2 text-center">
+    <span
+      class="text-[#3E3D4D]/50"
+      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+      @click="checkedTasks.length > 0 && purgeCheckedTasks()"
+    >
+      Purge
+    </span>
+    <span
+      class="text-[#3E3D4D]/50"
+      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+      @click="checkedTasks.length > 0 && recoverCheckedTasks()"
+    >
+      Recovery
+    </span>
+    <span
+      class="text-[#3E3D4D]/50"
+      :class="filteredTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+      @click="if (filteredTasks.length > 0) isSelectAll = !isSelectAll;"
+    >
+      Select all
+    </span>
+  </section>
+  <div
+    v-if="filteredTasks.length === 0"
+    class="over flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
+  >
+    <p class="w-full text-center">
+      {{
+        props.type === "history"
+          ? "You need to do more tasks"
+          : "You need to remove more tasks"
+      }}
+    </p>
+  </div>
+  <TaskInfo
+    v-else
+    v-model:checked-tasks="checkedTasks"
+    v-model:active-sorting-option="activeSortingOption"
+    :filtered-tasks="filteredTasks"
+    :sorting-options="sortingOptions"
+    class="overflow-y-auto"
+  />
+</template>
+
 <script setup lang="ts">
   import Filter from "@/components/molecules/Filter.vue";
   import TaskInfo, { type Type } from "@/components/molecules/TaskInfo.vue";
@@ -88,56 +142,3 @@
     checkedTasks.value = useSelectAll(checkedTasks.value, filteredTasks.value);
   });
 </script>
-
-<template>
-  <h6 class="text-center text-[#D0CCFF]">
-    {{ props.type.charAt(0).toUpperCase() + props.type.slice(1) }}
-  </h6>
-  <Filter
-    v-model:task-filter="forFiltering.task"
-    v-model:space-filter="forFiltering.space"
-    v-model:picked="whichTypeOfRadioButtonWasPicked"
-  />
-  <section class="flex flex-row place-content-end gap-2 text-center">
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="checkedTasks.length > 0 && purgeCheckedTasks()"
-    >
-      Purge
-    </span>
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="checkedTasks.length > 0 && recoverCheckedTasks()"
-    >
-      Recovery
-    </span>
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="filteredTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="if (filteredTasks.length > 0) isSelectAll = !isSelectAll;"
-    >
-      Select all
-    </span>
-  </section>
-  <div
-    v-if="filteredTasks.length === 0"
-    class="flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
-  >
-    <p class="w-full text-center">
-      {{
-        props.type === "history"
-          ? "You need to do more tasks"
-          : "You need to remove more tasks"
-      }}
-    </p>
-  </div>
-  <TaskInfo
-    v-else
-    v-model:checked-tasks="checkedTasks"
-    v-model:active-sorting-option="activeSortingOption"
-    :filtered-tasks="filteredTasks"
-    :sorting-options="sortingOptions"
-  />
-</template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { Task } from "@/stores/tasks";
   import { useWorkspacesStore } from "@/stores/workspaces";
-  import { toLocaleDate } from "@/utils/isodateconverter";
+  import { toLocaleDate } from "@/utils/dateLogic";
   import { ArrowPathIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
   import SimpleCheckbox from "../atoms/SimpleCheckbox.vue";
   import type { SortingOption } from "../templates/MainWindowForHistoryAndBin.vue";
@@ -21,29 +21,81 @@
 </script>
 
 <template>
-  <div class="flex w-auto flex-row items-center">
-    <div class="flex w-full flex-col gap-2">
-      <div
-        class="flex w-full flex-row items-center text-center text-[#3E3D4D]/50"
-      >
-        <div v-for="option of sortingOptions" class="w-full">
-          <div class="flex w-full flex-row justify-center gap-1 text-center">
-            <span
-              class="cursor-pointer"
-              @click="activeSortingOption = option"
-              >{{ option }}</span
-            >
-            <ChevronDownIcon
-              v-show="activeSortingOption === option"
-              class="size-5"
-            />
-          </div>
+  <div class="w-full">
+    <!-- Desktop Sorting Header -->
+    <div
+      class="hidden w-full flex-row items-center text-center text-[#3E3D4D]/50 md:flex"
+    >
+      <div v-for="option of sortingOptions" class="w-full">
+        <div class="flex w-full flex-row justify-center gap-1 text-center">
+          <span class="cursor-pointer" @click="activeSortingOption = option">{{
+            option
+          }}</span>
+          <ChevronDownIcon
+            v-show="activeSortingOption === option"
+            class="size-5"
+          />
         </div>
       </div>
+    </div>
+
+    <!-- Mobile Card Layout -->
+    <div class="flex flex-col gap-4 leading-3 text-[#3E3D4D] md:hidden">
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
-        class="relative flex h-10 flex-row items-center border-l-2 border-l-[#8276FF] text-center"
+        class="py- relative border-l border-l-[#8276FF] bg-white px-4 py-1"
+      >
+        <!-- Main content -->
+        <div class="flex flex-col gap-4">
+          <!-- Title and Checkbox row -->
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex flex-col gap-2">
+                <div class="flex flex-row gap-2">
+                  <span class="font-bold">{{ filteredTask.title }}</span>
+                  <ArrowPathIcon
+                    v-if="filteredTask.repeatable"
+                    class="size-4 text-[#D0CCFF]"
+                  />
+                </div>
+                <div>
+                  {{ filteredTask.workspaceSnapshot ?? "Deleted workspace" }}
+                </div>
+              </div>
+            </div>
+            <SimpleCheckbox
+              :id="String(filteredTask.id)"
+              class="accent-[#8276FF]"
+              v-model:checked-tasks="checkedTasks"
+            />
+          </div>
+
+          <!-- Date and time info -->
+          <div class="flex flex-row justify-between text-[#000000]/50">
+            <div class="flex flex-col gap-2">
+              <div>Due date</div>
+              <div>Completed on</div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div>
+                {{ toLocaleDate(filteredTask.dueDate, filteredTask.dueTime) }}
+              </div>
+              <div>
+                {{ filteredTask.completedOn }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Table Layout -->
+    <div class="hidden w-full flex-col gap-2 text-[#3E3D4D] md:flex">
+      <div
+        v-for="filteredTask in filteredTasks"
+        :key="filteredTask.id"
+        class="relative flex h-10 flex-row items-center border-l border-l-[#8276FF] text-center"
       >
         <div class="flex w-full flex-row justify-center gap-2.5">
           <span class="font-bold">{{ filteredTask.title }}</span>
@@ -53,7 +105,7 @@
           />
         </div>
         <span class="w-full">{{
-          workspacesStore.workspaces[filteredTask.workspace]!.name
+          filteredTask.workspaceSnapshot ?? "Deleted workspace"
         }}</span>
         <span class="w-full">{{
           toLocaleDate(filteredTask.dueDate, filteredTask.dueTime)
