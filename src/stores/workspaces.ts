@@ -66,7 +66,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
     async persist() {
       await idbSet("workspaces", "state", {
-        id: toRaw(this.nextId),
+        nextId: toRaw(this.nextId),
         workspaces: toRaw(this.workspaces),
         currentWorkspaceId: toRaw(this.currentWorkspaceId),
       });
@@ -93,10 +93,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async removeWorkspace(id: WorkspaceId): Promise<void> {
-      this.workspaces = this.workspaces.filter(
-        (currentWorkspace: Workspace) => id !== currentWorkspace.id,
-      );
+      const next = this.workspaces
+        .filter((ws) => ws.id !== id)
+        .map((ws) => ({ ...ws }));
+
+      this.workspaces = next;
+
       if (!this.workspaces[0]) return;
+
       this.currentWorkspaceId = this.workspaces[0].id;
       await this.persist();
     },

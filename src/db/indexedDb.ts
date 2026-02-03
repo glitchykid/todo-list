@@ -51,6 +51,8 @@ export async function idbSet<T>(
   value: T,
 ): Promise<void> {
   const db = await openDB();
+  console.log("Saving to IDB:", value);
+
   return new Promise((resolve, reject) => {
     const tx = db.transaction(store, "readwrite");
     tx.objectStore(store).put(value, key);
