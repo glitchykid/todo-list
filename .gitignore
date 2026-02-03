@@ -31,6 +31,7 @@ coverage
 
 # Vue directories and files
 node_modules
+.vite
 
 # Temporary
 README.md
