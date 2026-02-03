@@ -16,16 +16,16 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2",
-    "@tailwindcss/vite": "^4",
-    "@vue/typescript-plugin": "^3",
     "pinia": "^3",
-    "prettier-plugin-organize-imports": "^4",
-    "prettier-plugin-tailwindcss": "^0",
-    "tailwindcss": "^4",
     "vue": "^3",
     "vue-router": "^4"
   },
   "devDependencies": {
+    "@vue/typescript-plugin": "^3",
+    "prettier-plugin-organize-imports": "^4",
+    "prettier-plugin-tailwindcss": "^0",
+    "tailwindcss": "^4",
+    "@tailwindcss/vite": "^4",
     "@pinia/testing": "^1.0.3",
     "@tsconfig/node22": "^22",
     "@types/node": "^22",
