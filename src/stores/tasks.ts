@@ -86,7 +86,7 @@ export const useTasksStore = defineStore("tasks", {
 
     async persist() {
       await idbSet("tasks", "state", {
-        id: this.nextId,
+        nextId: toRaw(this.nextId),
         tasks: toRaw(this.tasks),
         removedTasks: toRaw(this.removedTasks),
         completedTasks: toRaw(this.completedTasks),
