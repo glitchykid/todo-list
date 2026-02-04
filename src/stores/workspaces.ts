@@ -1,4 +1,4 @@
-import { idbGet, idbSet } from "@/db/indexedDb";
+import { loadState, saveState } from "@/services/persistence";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 
@@ -15,7 +15,7 @@ type WorkspaceState = {
   nextId: WorkspaceId;
 };
 
-const DEFAULT_STATE: WorkspaceState = {
+const createDefaultState = (): WorkspaceState => ({
   nextId: 3,
   workspaces: [
     {
@@ -30,12 +30,12 @@ const DEFAULT_STATE: WorkspaceState = {
       id: 2,
       name: "Work",
     },
-  ],
+  ].map((workspace) => ({ ...workspace })),
   currentWorkspaceId: 0,
-};
+});
 
 export const useWorkspacesStore = defineStore("workspaces", {
-  state: () => ({ ...DEFAULT_STATE }),
+  state: (): WorkspaceState => createDefaultState(),
 
   getters: {
     getWorkspaceById(state) {
@@ -58,14 +58,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
   actions: {
     async hydrate() {
-      const stored = await idbGet<WorkspaceState>("workspaces", "state");
+      const stored = await loadState<WorkspaceState>("workspaces");
       if (stored) {
         this.$patch(stored);
       }
     },
 
     async persist() {
-      await idbSet("workspaces", "state", {
+      await saveState("workspaces", {
         nextId: toRaw(this.nextId),
         workspaces: toRaw(this.workspaces),
         currentWorkspaceId: toRaw(this.currentWorkspaceId),

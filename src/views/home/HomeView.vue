@@ -11,35 +11,34 @@
 </script>
 
 <template>
-  <!-- Desktop: Use MainWindow with original layout -->
+  <!-- Desktop -->
   <MainWindowDesktop>
     <HeaderForMessages />
     <MainForMessages />
     <ChatInputForMessages />
   </MainWindowDesktop>
 
-  <!-- Mobile: Custom layout with fixed header and input -->
+  <!-- Mobile -->
   <MainWindowMobile>
-    <!-- Fixed Header -->
-    <div class="shrink-0 bg-white">
+    <template #header>
       <HeaderForMessages v-model:toggle-aside="toggleAside" />
-    </div>
-    <!-- Scrollable Messages Area -->
+    </template>
+
     <div class="flex-1 overflow-y-hidden bg-white">
       <MainForMessages />
     </div>
-    <!-- Fixed Input -->
-    <div class="shrink-0 bg-white">
+
+    <template #footer>
       <ChatInputForMessages />
-    </div>
-    <div
-      class="fixed inset-0 z-80 bg-black/20 transition-all duration-300 ease-in-out md:hidden"
-      :class="
-        toggleAside ? 'pointer-events-auto' : 'pointer-events-none opacity-0'
-      "
-      @click="toggleAside = false"
-    />
+    </template>
   </MainWindowMobile>
+
+  <!-- Mobile overlay -->
+  <div
+    class="fixed inset-0 z-80 bg-black/20 transition-all duration-300 ease-in-out md:hidden"
+    :class="toggleAside ? 'pointer-events-auto' : 'pointer-events-none opacity-0'"
+    @click="toggleAside = false"
+  />
 
   <!-- Sidebar (Desktop only) -->
   <aside
@@ -48,9 +47,9 @@
     <SpaceAside />
   </aside>
 
-  <!-- Sidebar <Mobile only) -->
+  <!-- Sidebar (Mobile) -->
   <aside
-    class="absolute z-100 flex h-full w-[60%] flex-col bg-white py-8 transition-transform duration-300 ease-in-out md:hidden"
+    class="fixed inset-y-0 left-0 z-100 flex h-full w-[70%] max-w-[22rem] flex-col overflow-y-auto bg-white py-6 transition-transform duration-300 ease-in-out md:hidden"
     :class="toggleAside ? 'translate-x-0' : '-translate-x-full'"
   >
     <SpaceAside />
