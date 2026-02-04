@@ -93,7 +93,7 @@
     <div class="relative shrink-0">
       <!-- Mobile: icon-only -->
       <RegularButton
-        class="md:hidden h-8 w-8"
+        class="h-8 w-8 md:hidden"
         :icon="ArrowPathIcon"
         :active="showTypesOfRepeat"
         :without-paddings-for-icon="true"
@@ -119,7 +119,7 @@
     <div class="relative shrink-0">
       <!-- Mobile: icon-only -->
       <RegularButton
-        class="md:hidden h-8 w-8"
+        class="h-8 w-8 md:hidden"
         :icon="ClockIcon"
         :active="showTime"
         :without-paddings-for-icon="true"

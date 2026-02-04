@@ -30,7 +30,7 @@
       @click="emit('toggle-time', false)"
     />
     <div
-      class="absolute bottom-full left-1/2 z-40 mb-2 flex -translate-x-1/2 flex-row items-center justify-items-center gap-4 rounded-lg bg-white p-4 shadow-lg shadow-[#8276FF]/50"
+      class="absolute bottom-full left-1/2 z-40 mb-2 flex -translate-x-6/7 flex-row items-center justify-items-center gap-4 rounded-lg bg-white p-4 shadow-lg shadow-[#8276FF]/50 md:-translate-x-1/2"
     >
       <TimeInput placeholder="hh" :max="23" v-model="hours" />
       <span>:</span>

@@ -29,7 +29,7 @@
       @click="emit('toggle-types-of-repeat', false)"
     />
     <div
-      class="absolute bottom-full left-1/2 z-40 mb-2 flex max-h-60 w-full max-w-34 -translate-x-1/2 flex-col overflow-auto rounded-lg bg-white shadow-lg shadow-[#8276FF]/50"
+      class="absolute bottom-full left-1/2 z-40 mb-2 flex max-h-60 w-50 max-w-34 -translate-x-1/2 flex-col overflow-auto rounded-lg bg-white shadow-lg shadow-[#8276FF]/50"
     >
       <span
         v-for="type in typesOfRepeat"
