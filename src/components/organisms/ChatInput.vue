@@ -80,11 +80,11 @@
 <template>
   <!-- Compact task creator: single-row input + controls -->
   <div
-    class="flex items-center gap-2 rounded-lg border border-[#8276FF] bg-white px-2 py-1"
+    class="flex items-center gap-1 rounded-lg border border-[#8276FF] bg-white px-1 py-1"
   >
     <input
       placeholder="Enter a task"
-      class="h-8 w-full flex-1 bg-transparent px-2 text-[#3E3D4D] outline-none"
+      class="r-px-1 h-8 w-full flex-1 bg-transparent px-2 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
       @keyup.enter="props.newTask && useAddTask(props.newTask)"
     />
