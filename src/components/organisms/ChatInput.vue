@@ -78,44 +78,68 @@
 </script>
 
 <template>
-  <div class="rounded-lg border border-[#8276FF]">
+  <!-- Compact task creator: single-row input + controls -->
+  <div
+    class="flex items-center gap-2 rounded-lg border border-[#8276FF] bg-white px-2 py-1"
+  >
     <input
       placeholder="Enter a task"
-      class="h-9 w-full px-4 text-[#3E3D4D] outline-none"
+      class="h-8 w-full flex-1 bg-transparent px-2 text-[#3E3D4D] outline-none"
       v-model="taskTitle"
       @keyup.enter="props.newTask && useAddTask(props.newTask)"
     />
-    <hr />
-    <div class="flex h-9 flex-row">
-      <div class="relative w-full rounded-bl-lg">
-        <RegularButton
-          :label="defaultTypeOfRepeat"
-          class="h-full w-full rounded-none rounded-bl-lg border-r border-[#C9D7ED]"
-          :icon="ArrowPathIcon"
-          :active="showTypesOfRepeat"
-          @click="toggleTypesOfRepeat"
-        />
-        <Repeatable
-          v-if="showTypesOfRepeat"
-          @toggle-types-of-repeat="showTypesOfRepeat = $event"
-          v-model:default-value="defaultTypeOfRepeat"
-        />
-      </div>
-      <div class="relative w-full rounded-br-lg">
-        <RegularButton
-          :label="`${time.hours}:${time.minutes}`"
-          class="h-full w-full rounded-none rounded-br-lg"
-          :icon="ClockIcon"
-          :active="showTime"
-          @click="toggleTime"
-        />
-        <Time
-          v-if="showTime"
-          @toggle-time="showTime = $event"
-          @take-hours-and-minutes="handleTime"
-          @keyup.enter="showTime = false"
-        />
-      </div>
+
+    <!-- Repeat control -->
+    <div class="relative shrink-0">
+      <!-- Mobile: icon-only -->
+      <RegularButton
+        class="md:hidden h-8 w-8"
+        :icon="ArrowPathIcon"
+        :active="showTypesOfRepeat"
+        :without-paddings-for-icon="true"
+        :customIconSize="4"
+        @click="toggleTypesOfRepeat"
+      />
+      <!-- Desktop: icon + label -->
+      <RegularButton
+        class="hidden h-9 items-center md:flex"
+        :label="defaultTypeOfRepeat"
+        :icon="ArrowPathIcon"
+        :active="showTypesOfRepeat"
+        @click="toggleTypesOfRepeat"
+      />
+      <Repeatable
+        v-if="showTypesOfRepeat"
+        @toggle-types-of-repeat="showTypesOfRepeat = $event"
+        v-model:default-value="defaultTypeOfRepeat"
+      />
+    </div>
+
+    <!-- Time control -->
+    <div class="relative shrink-0">
+      <!-- Mobile: icon-only -->
+      <RegularButton
+        class="md:hidden h-8 w-8"
+        :icon="ClockIcon"
+        :active="showTime"
+        :without-paddings-for-icon="true"
+        :customIconSize="4"
+        @click="toggleTime"
+      />
+      <!-- Desktop: icon + label -->
+      <RegularButton
+        class="hidden h-9 items-center md:flex"
+        :label="`${time.hours}:${time.minutes}`"
+        :icon="ClockIcon"
+        :active="showTime"
+        @click="toggleTime"
+      />
+      <Time
+        v-if="showTime"
+        @toggle-time="showTime = $event"
+        @take-hours-and-minutes="handleTime"
+        @keyup.enter="showTime = false"
+      />
     </div>
   </div>
 </template>

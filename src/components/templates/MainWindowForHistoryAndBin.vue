@@ -1,55 +1,77 @@
 <template>
-  <h6 class="text-center text-[#D0CCFF]">
-    {{ props.type.charAt(0).toUpperCase() + props.type.slice(1) }}
-  </h6>
-  <Filter
-    v-model:task-filter="forFiltering.task"
-    v-model:space-filter="forFiltering.space"
-    v-model:picked="whichTypeOfRadioButtonWasPicked"
-  />
-  <section class="flex flex-row place-content-end gap-2 text-center">
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="checkedTasks.length > 0 && purgeCheckedTasks()"
-    >
-      Purge
-    </span>
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="checkedTasks.length > 0 && recoverCheckedTasks()"
-    >
-      Recovery
-    </span>
-    <span
-      class="text-[#3E3D4D]/50"
-      :class="filteredTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
-      @click="if (filteredTasks.length > 0) isSelectAll = !isSelectAll;"
-    >
-      Select all
-    </span>
-  </section>
-  <div
-    v-if="filteredTasks.length === 0"
-    class="over flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
+  <slot
+    name="header"
+    :type="props.type"
+    :filters="forFiltering"
+    :which-type="whichTypeOfRadioButtonWasPicked"
   >
-    <p class="w-full text-center">
-      {{
-        props.type === "history"
-          ? "You need to do more tasks"
-          : "You need to remove more tasks"
-      }}
-    </p>
-  </div>
-  <TaskInfo
-    v-else
-    v-model:checked-tasks="checkedTasks"
-    v-model:active-sorting-option="activeSortingOption"
+    <h6 class="text-center text-[#D0CCFF]">
+      {{ title }}
+    </h6>
+    <Filter
+      v-model:task-filter="forFiltering.task"
+      v-model:space-filter="forFiltering.space"
+      v-model:picked="whichTypeOfRadioButtonWasPicked"
+    />
+  </slot>
+
+  <slot
+    name="actions"
+    :checked-tasks="checkedTasks"
     :filtered-tasks="filteredTasks"
+    :toggle-select-all="toggleSelectAll"
+    :purge="purgeCheckedTasks"
+    :recover="recoverCheckedTasks"
+  >
+    <section class="flex flex-row place-content-end gap-2 text-center">
+      <span
+        class="text-[#3E3D4D]/50"
+        :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+        @click="checkedTasks.length > 0 && purgeCheckedTasks()"
+      >
+        Purge
+      </span>
+      <span
+        class="text-[#3E3D4D]/50"
+        :class="checkedTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+        @click="checkedTasks.length > 0 && recoverCheckedTasks()"
+      >
+        Recovery
+      </span>
+      <span
+        class="text-[#3E3D4D]/50"
+        :class="filteredTasks.length > 0 && 'cursor-pointer text-[#8276FF]'"
+        @click="toggleSelectAll"
+      >
+        Select all
+      </span>
+    </section>
+  </slot>
+
+  <slot
+    name="body"
+    :filtered-tasks="filteredTasks"
+    :checked-tasks="checkedTasks"
+    :active-sorting-option="activeSortingOption"
     :sorting-options="sortingOptions"
-    class="overflow-y-auto"
-  />
+  >
+    <div
+      v-if="filteredTasks.length === 0"
+      class="over flex h-full w-full items-center text-5xl font-extrabold text-[#D0CCFF]"
+    >
+      <p class="w-full text-center">
+        {{ emptyMessage }}
+      </p>
+    </div>
+    <TaskInfo
+      v-else
+      v-model:checked-tasks="checkedTasks"
+      v-model:active-sorting-option="activeSortingOption"
+      :filtered-tasks="filteredTasks"
+      :sorting-options="sortingOptions"
+      class="overflow-y-auto"
+    />
+  </slot>
 </template>
 
 <script setup lang="ts">
@@ -73,24 +95,38 @@
 
   const { completedTasks, removedTasks } = storeToRefs(tasksStore);
 
+  /**
+   * Local UI state (filters, selection, sorting) is intentionally kept here,
+   * not in Pinia, because it’s view-specific and should reset per view mount.
+   */
   const forFiltering = ref<{ space: string; task: string }>({
     space: "",
     task: "",
   });
   const checkedTasks = ref<number[]>([]);
-  const purgeCheckedTasks = () => {
-    checkedTasks.value.forEach((id) => {
-      tasksStore.purgeTask(props.type, Number(id));
-    });
-    checkedTasks.value = [];
-  };
+const title = computed(
+  () => props.type.charAt(0).toUpperCase() + props.type.slice(1),
+);
 
-  const recoverCheckedTasks = () => {
-    checkedTasks.value.forEach((id) => {
-      tasksStore.recoverTask(props.type, Number(id));
-    });
-    checkedTasks.value = [];
-  };
+const emptyMessage = computed(() =>
+  props.type === "history"
+    ? "You need to do more tasks"
+    : "You need to remove more tasks",
+);
+
+const purgeCheckedTasks = () => {
+  checkedTasks.value.forEach((id) => {
+    tasksStore.purgeTask(props.type, Number(id));
+  });
+  checkedTasks.value = [];
+};
+
+const recoverCheckedTasks = () => {
+  checkedTasks.value.forEach((id) => {
+    tasksStore.recoverTask(props.type, Number(id));
+  });
+  checkedTasks.value = [];
+};
 
   const whichTypeOfRadioButtonWasPicked = ref<string>("Show all");
 
@@ -137,6 +173,12 @@
   });
 
   const isSelectAll = ref<boolean>(false);
+
+  const toggleSelectAll = () => {
+    if (filteredTasks.value.length > 0) {
+      isSelectAll.value = !isSelectAll.value;
+    }
+  };
 
   watch(isSelectAll, () => {
     checkedTasks.value = useSelectAll(checkedTasks.value, filteredTasks.value);

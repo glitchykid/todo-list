@@ -1,6 +1,6 @@
-import { idbGet, idbSet } from "@/db/indexedDb";
 import { currentLocale } from "@/locales/locales";
 import { fromISODate, toISODate } from "@/utils/dateLogic";
+import { loadState, saveState } from "@/services/persistence";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 
@@ -33,14 +33,14 @@ export const useCalendarStore = defineStore("calendar", {
 
   actions: {
     async hydrate() {
-      const stored = await idbGet<CalendarState>("calendar", "state");
+      const stored = await loadState<CalendarState>("calendar");
       if (stored) {
         this.$patch(stored);
       }
     },
 
     async persist() {
-      await idbSet("calendar", "state", {
+      await saveState("calendar", {
         activeFilter: toRaw(this.activeFilter),
         selectedDate: toRaw(this.selectedDate),
         calendarCursor: toRaw(this.calendarCursor),

@@ -29,8 +29,12 @@ export function occursOnDate(
   task: Pick<Task, "dueDate" | "repeatable">,
   date: Date,
 ): boolean {
-  const start = stripTime(new Date(task.dueDate));
+  const start = stripTime(fromISODate(task.dueDate));
   const target = stripTime(date);
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(target.getTime())) {
+    return false;
+  }
 
   if (target < start) return false;
 
@@ -74,13 +78,40 @@ export function fromISODate(iso: string): Date {
  */
 export function toLocaleDate(date: string, time: string): string | boolean {
   const [yearPart, monthPart, dayPart] = date.split("-");
+  if (!yearPart || !monthPart || !dayPart) return false;
+
   const year = Number(yearPart);
-  const month = Number(monthPart) || 1;
-  const day = Number(dayPart) || 1;
+  const month = Number(monthPart);
+  const day = Number(dayPart);
   const [hourPart, minutePart] = time.split(":");
   const hours = Number(hourPart);
   const minutes = Number(minutePart);
+
+  const partsValid =
+    Number.isInteger(year) &&
+    Number.isInteger(month) &&
+    Number.isInteger(day) &&
+    Number.isInteger(hours) &&
+    Number.isInteger(minutes) &&
+    month >= 1 &&
+    month <= 12 &&
+    day >= 1 &&
+    day <= 31 &&
+    hours >= 0 &&
+    hours <= 23 &&
+    minutes >= 0 &&
+    minutes <= 59;
+
+  if (!partsValid) return false;
+
   const result = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+  const utcDateMatchesInput =
+    result.getUTCFullYear() === year &&
+    result.getUTCMonth() === month - 1 &&
+    result.getUTCDate() === day;
+
+  if (!utcDateMatchesInput) return false;
+
   return new Intl.DateTimeFormat(currentLocale, {
     dateStyle: "short",
     timeStyle: "short",

@@ -1,7 +1,7 @@
 import type { Repeat } from "@/components/atoms/Repeatable.vue";
 import type { Type } from "@/components/molecules/TaskInfo.vue";
-import { idbGet, idbSet } from "@/db/indexedDb";
 import { occursOnDate, toISODate } from "@/utils/dateLogic";
+import { loadState, saveState } from "@/services/persistence";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 import { useCalendarStore } from "./calendar";
@@ -32,16 +32,16 @@ type TaskState = {
   skippedTasks: SkippedTask[];
 };
 
-const DEFAULT_STATE: TaskState = {
+const createDefaultState = (): TaskState => ({
   nextId: 0,
   tasks: [],
   removedTasks: [],
   completedTasks: [],
   skippedTasks: [],
-};
+});
 
 export const useTasksStore = defineStore("tasks", {
-  state: () => ({ ...DEFAULT_STATE }),
+  state: (): TaskState => createDefaultState(),
 
   getters: {
     getTasks(): Task[] {
@@ -50,6 +50,7 @@ export const useTasksStore = defineStore("tasks", {
       const selectedDate = calendarStore.selectedDateAsDate;
       const iso = toISODate(selectedDate);
 
+      // Tasks are scoped by workspace, per-day occurrence, and skip list.
       return this.tasks.filter((task) => {
         if (
           workspaceStore.currentWorkspaceId !== 0 &&
@@ -78,14 +79,16 @@ export const useTasksStore = defineStore("tasks", {
 
   actions: {
     async hydrate() {
-      const stored = await idbGet<TaskState>("tasks", "state");
+      // Rehydrate state from persistent storage; noop if nothing was stored.
+      const stored = await loadState<TaskState>("tasks");
       if (stored) {
         this.$patch(stored);
       }
     },
 
     async persist() {
-      await idbSet("tasks", "state", {
+      // Store a raw snapshot; callers keep mutations in-memory until persisted.
+      await saveState("tasks", {
         nextId: toRaw(this.nextId),
         tasks: toRaw(this.tasks),
         removedTasks: toRaw(this.removedTasks),
