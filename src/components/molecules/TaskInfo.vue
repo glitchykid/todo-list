@@ -42,19 +42,23 @@
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
-        class="py- relative border-l border-l-[#8276FF] bg-white px-4 py-1"
+        class="relative border-l border-l-[#8276FF] bg-white px-4 py-1"
       >
         <!-- Main content -->
         <div class="flex flex-col gap-4">
           <!-- Title and Checkbox row -->
-          <div class="flex items-center justify-between">
+          <div class="flex items-start justify-between gap-3">
             <div>
-              <div class="flex flex-col gap-2">
-                <div class="flex flex-row gap-2">
-                  <span class="font-bold">{{ filteredTask.title }}</span>
+              <div class="flex flex-col justify-center gap-1.5">
+                <div
+                  class="flex w-fit flex-row items-start justify-between gap-2"
+                >
+                  <span class="font-bold break-all">{{
+                    filteredTask.title
+                  }}</span>
                   <ArrowPathIcon
                     v-if="filteredTask.repeatable"
-                    class="size-4 text-[#D0CCFF]"
+                    class="size-4 shrink-0 text-[#D0CCFF]"
                   />
                 </div>
                 <div>
