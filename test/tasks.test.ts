@@ -1,9 +1,9 @@
+import { loadState, saveState } from "@/services/persistence";
 import { useCalendarStore } from "@/stores/calendar";
 import { useTasksStore, type Task } from "@/stores/tasks";
 import { useWorkspacesStore } from "@/stores/workspaces";
 import { createPinia, setActivePinia, type Pinia } from "pinia";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { loadState, saveState } from "@/services/persistence";
 
 vi.mock("@/services/persistence", () => ({
   loadState: vi.fn().mockResolvedValue(undefined),
@@ -68,9 +68,7 @@ describe("Task Store", () => {
     if (!secondTask) throw new Error("Expected second task to exist");
 
     await tasksStore.skipTask(secondTask.id, calendarStore.selectedDateAsDate);
-    tasksStore.skippedTasks = [
-      { taskId: secondTask.id, date: todayIso },
-    ];
+    tasksStore.skippedTasks = [{ taskId: secondTask.id, date: todayIso }];
 
     workspaceStore.currentWorkspaceId = 0;
     const visibleTasks = tasksStore.getTasks;

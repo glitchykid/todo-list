@@ -104,29 +104,29 @@
     task: "",
   });
   const checkedTasks = ref<number[]>([]);
-const title = computed(
-  () => props.type.charAt(0).toUpperCase() + props.type.slice(1),
-);
+  const title = computed(
+    () => props.type.charAt(0).toUpperCase() + props.type.slice(1),
+  );
 
-const emptyMessage = computed(() =>
-  props.type === "history"
-    ? "You need to do more tasks"
-    : "You need to remove more tasks",
-);
+  const emptyMessage = computed(() =>
+    props.type === "history"
+      ? "You need to do more tasks"
+      : "You need to remove more tasks",
+  );
 
-const purgeCheckedTasks = () => {
-  checkedTasks.value.forEach((id) => {
-    tasksStore.purgeTask(props.type, Number(id));
-  });
-  checkedTasks.value = [];
-};
+  const purgeCheckedTasks = () => {
+    checkedTasks.value.forEach((id) => {
+      tasksStore.purgeTask(props.type, Number(id));
+    });
+    checkedTasks.value = [];
+  };
 
-const recoverCheckedTasks = () => {
-  checkedTasks.value.forEach((id) => {
-    tasksStore.recoverTask(props.type, Number(id));
-  });
-  checkedTasks.value = [];
-};
+  const recoverCheckedTasks = () => {
+    checkedTasks.value.forEach((id) => {
+      tasksStore.recoverTask(props.type, Number(id));
+    });
+    checkedTasks.value = [];
+  };
 
   const whichTypeOfRadioButtonWasPicked = ref<string>("Show all");
 

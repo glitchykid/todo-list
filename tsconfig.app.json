@@ -5,7 +5,7 @@
     "src/**/*",
     "src/**/*.vue",
     "vitest.config.ts",
-    "test",
+    "test"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
@@ -14,7 +14,7 @@
     "target": "ES6",
 
     "paths": {
-      "@/*": ["./src/*"],
-    },
-  },
+      "@/*": ["./src/*"]
+    }
+  }
 }

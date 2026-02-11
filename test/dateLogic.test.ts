@@ -1,8 +1,8 @@
 import { type Task } from "@/stores/tasks";
 import {
+  fromISODate,
   occursOnDate,
   toISODate,
-  fromISODate,
   toLocaleDate,
 } from "@/utils/dateLogic";
 import { describe, expect, it } from "vitest";

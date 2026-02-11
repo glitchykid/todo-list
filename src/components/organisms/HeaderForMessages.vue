@@ -114,7 +114,11 @@
   import RegularButton from "@/components/atoms/RegularButton.vue";
   import { useCalendarStore } from "@/stores/calendar";
   import { useWorkspacesStore } from "@/stores/workspaces";
-  import { Bars3Icon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/20/solid";
+  import {
+    Bars3Icon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+  } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
   import { computed, ref } from "vue";
   import Calendar from "../molecules/Calendar.vue";

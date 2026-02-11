@@ -1,7 +1,7 @@
 import type { Repeat } from "@/components/atoms/Repeatable.vue";
 import type { Type } from "@/components/molecules/TaskInfo.vue";
-import { occursOnDate, toISODate } from "@/utils/dateLogic";
 import { loadState, saveState } from "@/services/persistence";
+import { occursOnDate, toISODate } from "@/utils/dateLogic";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 import { useCalendarStore } from "./calendar";
