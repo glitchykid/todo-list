@@ -1,9 +1,11 @@
 <template>
   <div class="w-full overflow-hidden border-l border-l-[#8276FF]">
-    <div class="flex items-start justify-between rounded-2xl bg-white px-4">
+    <div
+      class="flex w-full items-start justify-between gap-4 rounded-2xl bg-white px-4"
+    >
       <!-- Task info -->
-      <div class="flex-1">
-        <h3 class="mb-2.5 text-[16px] font-bold text-[#3E3D4D]">
+      <div class="w-full flex-1">
+        <h3 class="mb-2.5 text-[16px] font-bold break-all text-[#3E3D4D]">
           {{ task.title }}
         </h3>
         <div class="flex items-center gap-1.5">
@@ -30,19 +32,19 @@
         <button
           v-if="task.repeatable"
           @click="skipTask"
-          class="rounded-full bg-[#92D6F3] p-1.5 text-[#314D59] transition-colors duration-200 hover:bg-[#92D6F3]/50 md:p-2.5"
+          class="cursor-pointer rounded-full bg-[#92D6F3] p-1.5 text-[#314D59] transition-colors duration-200 hover:bg-[#92D6F3]/50 md:p-2.5"
         >
           <ArrowLongRightIcon class="size-3 md:size-4" />
         </button>
         <button
           @click="completeTask"
-          class="rounded-full bg-[#8CE98C] p-1.5 text-[#274F27] transition-colors duration-200 hover:bg-[#8CE98C]/50 md:p-2.5"
+          class="cursor-pointer rounded-full bg-[#8CE98C] p-1.5 text-[#274F27] transition-colors duration-200 hover:bg-[#8CE98C]/50 md:p-2.5"
         >
           <CheckIcon class="size-3 md:size-4" />
         </button>
         <button
           @click="removeTask"
-          class="rounded-full bg-[#E27575] p-1.5 text-[#4F2929] transition-colors duration-200 hover:bg-[#E27575]/50 md:p-2.5"
+          class="cursor-pointer rounded-full bg-[#E27575] p-1.5 text-[#4F2929] transition-colors duration-200 hover:bg-[#E27575]/50 md:p-2.5"
         >
           <TrashIcon class="size-3 md:size-4" />
         </button>

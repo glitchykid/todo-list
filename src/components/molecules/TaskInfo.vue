@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type { Task } from "@/stores/tasks";
-  import { useWorkspacesStore } from "@/stores/workspaces";
   import { toLocaleDate } from "@/utils/dateLogic";
   import { ArrowPathIcon, ChevronDownIcon } from "@heroicons/vue/20/solid";
   import SimpleCheckbox from "../atoms/SimpleCheckbox.vue";
@@ -14,7 +13,6 @@
   }>();
 
   const activeSortingOption = defineModel<SortingOption>("activeSortingOption");
-  const workspacesStore = useWorkspacesStore();
   const checkedTasks = defineModel<number[]>("checkedTasks", {
     required: true,
   });
@@ -95,13 +93,13 @@
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
-        class="relative flex h-10 flex-row items-center border-l border-l-[#8276FF] text-center"
+        class="relative flex flex-row items-center border-l border-l-[#8276FF] text-center"
       >
-        <div class="flex w-full flex-row justify-center gap-2.5">
-          <span class="font-bold">{{ filteredTask.title }}</span>
+        <div class="flex w-full flex-row items-center justify-center">
+          <span class="px-4 font-bold break-all">{{ filteredTask.title }}</span>
           <ArrowPathIcon
             v-if="filteredTask.repeatable"
-            class="size-5 text-[#D0CCFF]"
+            class="size-5 w-fit shrink-0 text-[#D0CCFF]"
           />
         </div>
         <span class="w-full">{{

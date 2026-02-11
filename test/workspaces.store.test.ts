@@ -1,5 +1,5 @@
 import { loadState, saveState } from "@/services/persistence";
-import { type Workspace, useWorkspacesStore } from "@/stores/workspaces";
+import { useWorkspacesStore, type Workspace } from "@/stores/workspaces";
 import { createPinia, setActivePinia, type Pinia } from "pinia";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

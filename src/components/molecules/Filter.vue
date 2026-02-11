@@ -52,7 +52,9 @@
 <template>
   <div class="w-full text-[#3E3D4D]">
     <!-- Mobile-only collapse header -->
-    <div class="flex items-center justify-between border-t border-b border-[#C9D7ED] py-3 md:hidden">
+    <div
+      class="flex items-center justify-between border-t border-b border-[#C9D7ED] py-3 md:hidden"
+    >
       <span class="text-sm font-semibold text-[#8276FF]">Filters</span>
       <RegularButton
         :icon="isMobileOpen ? ChevronUpIcon : ChevronDownIcon"
@@ -102,7 +104,7 @@
 
     <!-- Desktop-only: always visible -->
     <div
-      class="hidden md:flex h-fit w-full flex-row items-center justify-between gap-10 border-t border-b border-[#C9D7ED] py-4"
+      class="hidden h-fit w-full flex-row items-center justify-between gap-10 border-t border-b border-[#C9D7ED] py-4 md:flex"
     >
       <div class="flex h-fit w-fit flex-col items-end gap-2">
         <SimpleTextInput
@@ -124,7 +126,9 @@
           </label>
         </SimpleTextInput>
       </div>
-      <div class="flex h-fit flex-col items-end gap-2 md:flex-row md:items-center md:gap-4">
+      <div
+        class="flex h-fit flex-col items-end gap-2 md:flex-row md:items-center md:gap-4"
+      >
         <SimpleRadioInput
           v-for="radioInput in radioInputs"
           :key="radioInput.id"
