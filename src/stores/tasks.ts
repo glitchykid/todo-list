@@ -1,5 +1,7 @@
-import type { Repeat } from "@/components/atoms/Repeatable.vue";
-import type { Type } from "@/components/molecules/TaskInfo.vue";
+import type { TaskArchiveScope } from "@/domain/tasks/archive-scope";
+import type { TaskRepeatRule } from "@/domain/tasks/repeat";
+import { isTaskTitleEmpty, normalizeTaskTitle } from "@/domain/tasks/title";
+import { currentLocale } from "@/locales/locales";
 import { loadState, saveState } from "@/services/persistence";
 import { occursOnDate, toISODate } from "@/utils/dateLogic";
 import { defineStore } from "pinia";
@@ -12,12 +14,14 @@ export type Task = {
   title: string;
   completed: boolean;
   completedOn: string;
-  repeatable: Repeat | false;
+  repeatable: TaskRepeatRule | false;
   dueTime: string;
   dueDate: string;
   workspace: number;
   workspaceSnapshot?: string;
 };
+
+export type TaskDraft = Omit<Task, "id">;
 
 type SkippedTask = {
   taskId: number;
@@ -107,12 +111,16 @@ export const useTasksStore = defineStore("tasks", {
       await this.persist();
     },
 
-    async addTask(task: Omit<Task, "id">): Promise<void> {
+    async addTask(task: TaskDraft): Promise<boolean> {
+      if (isTaskTitleEmpty(task.title)) return false;
+
       this.tasks.push({
         ...task,
+        title: normalizeTaskTitle(task.title),
         id: this.nextId++,
       });
       await this.persist();
+      return true;
     },
 
     async removeTask(id: number): Promise<boolean> {
@@ -136,8 +144,14 @@ export const useTasksStore = defineStore("tasks", {
       const i = this.tasks.findIndex((t) => t.id === id);
       if (i === -1 || !this.tasks[i]) return false;
       const wsStore = useWorkspacesStore();
+      const completedOn = new Intl.DateTimeFormat(currentLocale, {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(new Date());
       const task: Task = {
         ...this.tasks[i],
+        completed: true,
+        completedOn,
         workspaceSnapshot:
           wsStore.getWorkspaceById(this.tasks[i].workspace)?.name ??
           "Deleted workspace",
@@ -149,7 +163,32 @@ export const useTasksStore = defineStore("tasks", {
       return true;
     },
 
-    async purgeTask(type: Type, id: number): Promise<void> {
+    async archiveWorkspaceTasks(
+      workspaceId: number,
+      workspaceSnapshot?: string,
+    ): Promise<number> {
+      const wsStore = useWorkspacesStore();
+      const snapshot =
+        workspaceSnapshot ??
+        wsStore.getWorkspaceById(workspaceId)?.name ??
+        "Deleted workspace";
+
+      const tasksToArchive = this.tasks
+        .filter((task) => task.workspace === workspaceId)
+        .map((task) => ({
+          ...task,
+          workspaceSnapshot: snapshot,
+        }));
+
+      if (tasksToArchive.length === 0) return 0;
+
+      this.removedTasks.push(...tasksToArchive);
+      this.tasks = this.tasks.filter((task) => task.workspace !== workspaceId);
+      await this.persist();
+      return tasksToArchive.length;
+    },
+
+    async purgeTask(type: TaskArchiveScope, id: number): Promise<void> {
       if (type === "history") {
         this.completedTasks = this.completedTasks.filter((t) => t.id !== id);
       } else {
@@ -158,12 +197,22 @@ export const useTasksStore = defineStore("tasks", {
       await this.persist();
     },
 
-    async recoverTask(type: Type, id: number): Promise<void> {
+    async recoverTask(type: TaskArchiveScope, id: number): Promise<void> {
       const source =
         type === "history" ? this.completedTasks : this.removedTasks;
       const i = source.findIndex((t) => t.id === id);
       if (i === -1 || !source[i]) return;
-      this.tasks.push(source[i]);
+      const taskToRecover: Task =
+        type === "history"
+          ? {
+              ...source[i],
+              completed: false,
+              completedOn: "",
+              workspaceSnapshot: undefined,
+            }
+          : { ...source[i], workspaceSnapshot: undefined };
+
+      this.tasks.push(taskToRecover);
       source.splice(i, 1);
       await this.persist();
     },

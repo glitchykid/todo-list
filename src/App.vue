@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import Header from "@/components/molecules/Header.vue";
+  import PrimaryNavigation from "@/components/composites/PrimaryNavigation.vue";
 </script>
 
 <template>
   <div
-    class="flex h-dvh flex-col-reverse bg-[#EAEDF2] font-[Jost] md:flex md:flex-row md:justify-center md:gap-4 md:px-50 md:py-6"
+    class="mx-auto flex h-dvh w-full max-w-[1600px] flex-col-reverse gap-4 px-4 py-4 md:flex-row md:justify-center md:gap-6 md:px-8 md:py-6"
   >
-    <Header />
+    <PrimaryNavigation />
     <RouterView />
   </div>
 </template>

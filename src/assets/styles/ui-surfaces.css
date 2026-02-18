@@ -1,0 +1,13 @@
+@layer components {
+  .app-panel {
+    @apply rounded-2xl border border-[var(--color-border)];
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+    backdrop-filter: blur(14px) saturate(120%);
+  }
+
+  .app-title-muted {
+    @apply text-[var(--color-text-muted)];
+  }
+}
+

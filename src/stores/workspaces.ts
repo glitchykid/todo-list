@@ -73,18 +73,26 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async addWorkspace(newWorkspace: string): Promise<void> {
-      newWorkspace = newWorkspace.trim();
-      newWorkspace += ` ${this.nextId - 2}`;
-      this.workspaces.push({ id: this.nextId++, name: newWorkspace });
+      const baseName = newWorkspace.trim() || "New space";
+      let candidate = baseName;
+      let suffix = 1;
+
+      while (this.workspaces.some((workspace) => workspace.name === candidate)) {
+        candidate = `${baseName} ${suffix++}`;
+      }
+
+      this.workspaces.push({ id: this.nextId++, name: candidate });
       await this.persist();
     },
 
     async updateWorkspaceName(
-      newWorkspaceName: InputEvent,
       workspaceId: WorkspaceId,
+      newWorkspaceName: string,
     ): Promise<void> {
-      let cleaned: string = (newWorkspaceName.target as HTMLInputElement).value;
+      let cleaned: string = newWorkspaceName;
       cleaned = cleaned.trim();
+      if (!cleaned) return;
+
       const workspaceToChange: Workspace | undefined = this.workspaces.find(
         (el) => el.id === workspaceId,
       );
@@ -93,6 +101,9 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async removeWorkspace(id: WorkspaceId): Promise<void> {
+      if (id === 0) return;
+      if (!this.workspaces.some((workspace) => workspace.id === id)) return;
+
       const next = this.workspaces
         .filter((ws) => ws.id !== id)
         .map((ws) => ({ ...ws }));

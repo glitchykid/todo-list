@@ -54,6 +54,15 @@ describe("Task Store", () => {
     expect(saveState).toHaveBeenCalledTimes(2);
   });
 
+  it("rejects empty task titles after normalization", async () => {
+    const tasksStore = useTasksStore(pinia);
+    const added = await tasksStore.addTask(buildTaskInput({ title: "   " }));
+
+    expect(added).toBe(false);
+    expect(tasksStore.tasks).toHaveLength(0);
+    expect(saveState).not.toHaveBeenCalled();
+  });
+
   it("returns only tasks for the selected date while honoring skips", async () => {
     const tasksStore = useTasksStore(pinia);
 
@@ -125,15 +134,45 @@ describe("Task Store", () => {
       "Finish me",
       "Leave completed",
     ]);
+    expect(tasksStore.getHistory.every((task) => task.completed)).toBe(true);
+    expect(tasksStore.getHistory[0]?.completedOn).not.toBe("");
+    expect(tasksStore.getHistory[1]?.completedOn).not.toBe("");
 
     await tasksStore.recoverTask("history", firstId);
     expect(tasksStore.getHistory.map((t) => t.title)).toEqual([
       "Leave completed",
     ]);
     expect(tasksStore.getTasks.map((t) => t.title)).toEqual(["Finish me"]);
+    expect(tasksStore.tasks.find((t) => t.id === firstId)?.completed).toBe(
+      false,
+    );
+    expect(tasksStore.tasks.find((t) => t.id === firstId)?.completedOn).toBe(
+      "",
+    );
 
     await tasksStore.purgeTask("history", secondId);
     expect(tasksStore.getHistory).toHaveLength(0);
+  });
+
+  it("archives every task from a workspace in one operation", async () => {
+    const tasksStore = useTasksStore(pinia);
+    await tasksStore.addTask(buildTaskInput({ title: "A", workspace: 1 }));
+    await tasksStore.addTask(buildTaskInput({ title: "B", workspace: 1 }));
+    await tasksStore.addTask(buildTaskInput({ title: "C", workspace: 2 }));
+
+    const archived = await tasksStore.archiveWorkspaceTasks(1, "Personal");
+
+    expect(archived).toBe(2);
+    expect(tasksStore.tasks.map((task) => task.title)).toEqual(["C"]);
+    expect(tasksStore.removedTasks.map((task) => task.title)).toEqual([
+      "A",
+      "B",
+    ]);
+    expect(
+      tasksStore.removedTasks.every(
+        (task) => task.workspaceSnapshot === "Personal",
+      ),
+    ).toBe(true);
   });
 
   it("hydrates state from IndexedDB snapshot", async () => {

@@ -1,7 +1,6 @@
-import { useTasksStore, type Task } from "@/stores/tasks";
+import { useTasksStore, type TaskDraft } from "@/stores/tasks";
 
-export const useAddTask = (task: Task): void => {
+export const useAddTask = async (task: TaskDraft): Promise<boolean> => {
   const tasksStore = useTasksStore();
-  if (task.title === "") return;
-  tasksStore.addTask(task);
+  return tasksStore.addTask(task);
 };

@@ -1,4 +1,5 @@
 import { appRoutes } from "@/routes/routes";
+import { initializeTheme } from "@/composables/useTheme";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -11,6 +12,8 @@ import { useTasksStore } from "./stores/tasks";
 import { useWorkspacesStore } from "./stores/workspaces";
 
 async function bootstrap() {
+  initializeTheme();
+
   const app = createApp(App);
 
   const routes = appRoutes.map(({ component, path }) => ({

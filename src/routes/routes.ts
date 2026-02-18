@@ -1,6 +1,6 @@
-import BinView from "@/views/bin/BinView.vue";
-import HistoryView from "@/views/history/HistoryView.vue";
-import HomeView from "@/views/home/HomeView.vue";
+import TaskBinView from "@/views/bin/TaskBinView.vue";
+import TaskHistoryView from "@/views/history/TaskHistoryView.vue";
+import TaskBoardView from "@/views/home/TaskBoardView.vue";
 import { HomeIcon, NewspaperIcon, TrashIcon } from "@heroicons/vue/20/solid";
 import type { Component } from "vue";
 
@@ -18,20 +18,20 @@ export const appRoutes: AppRoute[] = [
     name: "home",
     label: "Home",
     icon: HomeIcon,
-    component: HomeView,
+    component: TaskBoardView,
   },
   {
     path: "/history",
     name: "history",
     label: "History",
     icon: NewspaperIcon,
-    component: HistoryView,
+    component: TaskHistoryView,
   },
   {
     path: "/bin",
     name: "bin",
     label: "Bin",
     icon: TrashIcon,
-    component: BinView,
+    component: TaskBinView,
   },
 ];

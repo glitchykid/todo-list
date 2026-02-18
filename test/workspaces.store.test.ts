@@ -21,20 +21,20 @@ describe("Workspaces Store", () => {
   it("adds workspaces with incremental ids and persists", async () => {
     const store = useWorkspacesStore(pinia);
     await store.addWorkspace("New workspace");
+    await store.addWorkspace("New workspace");
 
     const added = store.workspaces.find((w) => w.id === 3);
-    expect(added?.name).toBe("New workspace 1");
-    expect(store.nextId).toBe(4);
-    expect(saveState).toHaveBeenCalledTimes(1);
+    const addedDuplicate = store.workspaces.find((w) => w.id === 4);
+    expect(added?.name).toBe("New workspace");
+    expect(addedDuplicate?.name).toBe("New workspace 1");
+    expect(store.nextId).toBe(5);
+    expect(saveState).toHaveBeenCalledTimes(2);
   });
 
   it("updates workspace name and persists changes", async () => {
     const store = useWorkspacesStore(pinia);
-    const input = {
-      target: { value: "Renamed" },
-    } as unknown as InputEvent;
 
-    await store.updateWorkspaceName(input, 1);
+    await store.updateWorkspaceName(1, "Renamed");
 
     expect(store.getWorkspaceById(1)?.name).toBe("Renamed");
     expect(saveState).toHaveBeenCalledTimes(1);

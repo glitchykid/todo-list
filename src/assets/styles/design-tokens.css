@@ -1,0 +1,123 @@
+@layer base {
+  :root {
+    color-scheme: light;
+    --color-bg: #f6eef2;
+    --color-bg-elevated: #f1e7ed;
+    --color-surface: rgba(249, 241, 246, 0.86);
+    --color-surface-raised: rgba(251, 245, 249, 0.92);
+    --color-text: #4a3d50;
+    --color-text-muted: #6d6173;
+    --color-border: rgba(133, 101, 140, 0.24);
+    --color-primary: #8341b8;
+    --color-primary-hover: #e9d7f0;
+    --color-primary-active: #742fa8;
+    --color-on-primary: #f9f2fd;
+    --color-heading: var(--color-text);
+    --color-button-active-text: #7d5f90;
+    --color-button-hover-text: #876e98;
+    --color-danger: #b24a67;
+    --color-danger-text: #fdeff4;
+    --color-warning: #a65076;
+    --color-warning-text: #fdeef4;
+    --color-success: #8f4ca8;
+    --color-success-text: #f6ecfb;
+    --color-info: #9a4c71;
+    --color-info-text: #fdeff5;
+    --color-overlay: rgba(15, 19, 26, 0.38);
+    --ring-focus: #9750c4;
+    --glow-accent: rgba(156, 84, 205, 0.1);
+    --glow-secondary: rgba(206, 82, 122, 0.08);
+    --app-background:
+      radial-gradient(
+        circle at 12% 15%,
+        var(--glow-accent) 0%,
+        transparent 46%
+      ),
+      radial-gradient(
+        circle at 88% 0%,
+        var(--glow-secondary) 0%,
+        transparent 38%
+      ),
+      linear-gradient(
+        145deg,
+        var(--color-bg) 0%,
+        var(--color-bg-elevated) 55%,
+        var(--color-bg) 100%
+      );
+    --shadow-panel: 0 26px 58px -44px rgba(44, 28, 45, 0.48);
+    --shadow-soft: 0 10px 24px -20px rgba(42, 27, 43, 0.3);
+    --motion-micro: 170ms;
+    --motion-panel: 230ms;
+    --ease-standard: cubic-bezier(0.2, 0.7, 0.18, 1);
+    --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-bg: #171018;
+    --color-bg-elevated: #1d1420;
+    --color-surface: rgba(37, 27, 40, 0.9);
+    --color-surface-raised: rgba(42, 31, 46, 0.94);
+    --color-text: #dfcfdf;
+    --color-text-muted: #b79fba;
+    --color-border: rgba(168, 126, 181, 0.24);
+    --color-primary: #ba79e4;
+    --color-primary-hover: #3a2a40;
+    --color-primary-active: #cb9aef;
+    --color-on-primary: #26152c;
+    --color-heading: var(--color-text);
+    --color-button-active-text: #e6d3ef;
+    --color-button-hover-text: #efdef7;
+    --color-danger: #d06b83;
+    --color-danger-text: #2b0f18;
+    --color-warning: #bd5f87;
+    --color-warning-text: #2d111c;
+    --color-success: #a66cc8;
+    --color-success-text: #251328;
+    --color-info: #b76689;
+    --color-info-text: #2a101b;
+    --color-overlay: rgba(8, 4, 10, 0.66);
+    --ring-focus: #c99de7;
+    --glow-accent: rgba(182, 108, 234, 0.05);
+    --glow-secondary: rgba(215, 97, 141, 0.04);
+    --app-background: var(--color-bg);
+    --shadow-panel: 0 28px 62px -44px rgba(0, 0, 0, 0.8);
+    --shadow-soft: 0 10px 24px -18px rgba(2, 5, 8, 0.72);
+  }
+
+  body {
+    @apply text-[var(--color-text)] antialiased;
+    font-family: "Jost", sans-serif;
+    background: var(--app-background);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+
+  button,
+  input,
+  select,
+  a {
+    @apply focus-visible:ring-2 focus-visible:ring-[var(--ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] focus-visible:outline-none;
+  }
+
+  input,
+  textarea,
+  select {
+    border: 1px solid transparent;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: transparent;
+  }
+
+  * {
+    scrollbar-width: none;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
