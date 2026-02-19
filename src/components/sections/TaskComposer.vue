@@ -93,7 +93,7 @@
     <input
       id="task-title-input"
       placeholder="Enter a task"
-      class="h-11 w-full flex-1 rounded-xl border border-transparent bg-transparent px-2 text-[var(--color-text)] focus:border-transparent focus:outline-none focus-visible:border-transparent focus-visible:ring-0"
+      class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-2 text-[var(--color-text)] focus:border-transparent focus:outline-none focus-visible:border-transparent focus-visible:ring-0"
       v-model="taskTitle"
       @keyup.enter="emit('submit')"
     />

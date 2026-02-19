@@ -5,6 +5,7 @@
     --color-bg-elevated: #f1e7ed;
     --color-surface: rgba(249, 241, 246, 0.86);
     --color-surface-raised: rgba(251, 245, 249, 0.92);
+    --color-control-surface: var(--color-surface-raised);
     --color-text: #4a3d50;
     --color-text-muted: #6d6173;
     --color-border: rgba(133, 101, 140, 0.24);
@@ -58,6 +59,7 @@
     --color-bg-elevated: #1d1420;
     --color-surface: rgba(37, 27, 40, 0.9);
     --color-surface-raised: rgba(42, 31, 46, 0.94);
+    --color-control-surface: var(--color-surface-raised);
     --color-text: #dfcfdf;
     --color-text-muted: #b79fba;
     --color-border: rgba(168, 126, 181, 0.24);
@@ -98,6 +100,13 @@
   select,
   a {
     @apply focus-visible:ring-2 focus-visible:ring-[var(--ring-focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)] focus-visible:outline-none;
+  }
+
+  button,
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    background-color: var(--color-control-surface);
   }
 
   input,

@@ -44,7 +44,7 @@
 
   <!-- Sidebar (Desktop only) -->
   <aside
-    class="app-panel hidden py-8 md:flex md:h-full md:w-50 md:min-w-50 md:flex-col"
+    class="app-panel hidden rounded-none py-8 md:flex md:h-full md:w-50 md:min-w-50 md:flex-col"
   >
     <WorkspacePanel />
   </aside>

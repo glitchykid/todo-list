@@ -16,7 +16,7 @@
     <slot></slot>
     <input
       type="text"
-      class="h-11 w-full rounded-xl border border-[var(--color-border)] bg-transparent px-4 text-[var(--color-text)]"
+      class="h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-[var(--color-text)]"
       :placeholder="props.placeholder"
       v-model="filter"
     />

@@ -33,7 +33,7 @@
       :class="
         isOpen
           ? 'border border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-          : 'text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]'
+          : 'bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]'
       "
       class="flex min-h-11 min-w-38 cursor-pointer flex-row items-center justify-between gap-4 rounded-xl border border-[var(--color-border)] px-3 py-2 text-left transition-colors"
       @click="toggleDropdown"
@@ -54,7 +54,7 @@
           :class="
             selected === value
               ? 'bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-              : 'text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]'
+              : 'bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]'
           "
           class="min-h-11 w-full cursor-pointer py-2 text-center transition-colors"
           @click="changeValue(value)"

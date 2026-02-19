@@ -33,7 +33,7 @@
           :class="
             activeSortingOption === option
               ? 'border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] shadow-[var(--shadow-soft)]'
-              : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary-active)] hover:text-[var(--color-button-hover-text)]'
+              : 'border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary-active)] hover:text-[var(--color-button-hover-text)]'
           "
           @click="activeSortingOption = option"
         >
@@ -45,7 +45,7 @@
         </button>
       </div>
       <label
-        class="mx-auto flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-200 hover:border-[var(--color-primary-active)]"
+        class="mx-auto flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] transition-colors duration-200 hover:border-[var(--color-primary-active)]"
       >
         <input
           type="checkbox"

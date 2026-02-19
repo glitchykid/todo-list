@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mobile-shell mobile-shell-compact-gap app-panel flex h-full flex-1 flex-col gap-4 overflow-hidden border-0 md:hidden"
+    class="mobile-shell mobile-shell-compact-gap app-panel flex h-full flex-1 flex-col gap-4 overflow-hidden rounded-none border-0 md:hidden"
   >
     <header v-if="$slots.header" class="shrink-0">
       <slot name="header" />

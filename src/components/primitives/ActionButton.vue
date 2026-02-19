@@ -36,7 +36,7 @@
       props.border && 'border border-[var(--color-border)]',
       props.active
         ? 'border border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]',
+        : 'bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]',
     ]"
   >
     <component v-if="props.icon" :is="props.icon" class="size-5" />
@@ -52,7 +52,7 @@
       props.withoutPaddingsForIcon ? 'p-0' : 'px-4 py-2',
       props.active
         ? 'border border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]',
+        : 'bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-primary-hover)] hover:text-[var(--color-button-hover-text)]',
     ]"
   >
     <component

@@ -27,7 +27,7 @@
     <section class="flex flex-row place-content-end gap-2 text-center">
       <button
         type="button"
-        class="min-h-11 cursor-pointer rounded-xl px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         :class="
           checkedTaskIds.length > 0 &&
           'text-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'
@@ -39,7 +39,7 @@
       </button>
       <button
         type="button"
-        class="min-h-11 cursor-pointer rounded-xl px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         :class="
           checkedTaskIds.length > 0 &&
           'text-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'

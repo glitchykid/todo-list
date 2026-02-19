@@ -18,10 +18,10 @@
 </script>
 
 <template>
-  <div class="flex flex-row gap-2">
+  <div class="flex flex-row items-center gap-2">
     <label
       :for="props.id"
-      class="text-xs text-nowrap text-[var(--color-text-muted)]/85"
+      class="inline-flex items-center text-xs text-nowrap text-[var(--color-text-muted)]/85"
     >
       {{ props.value }}
     </label>
