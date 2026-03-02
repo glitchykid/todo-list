@@ -16,22 +16,25 @@
       </div>
 
       <!-- Mobile Layout -->
-      <div class="app-card flex flex-col gap-3 p-3 md:hidden">
-        <hr />
-        <div class="flex items-center justify-between">
-          <span class="text-sm font-semibold tracking-wide text-[var(--color-text-muted)]">
+      <div class="app-disclosure md:hidden">
+        <div class="app-disclosure-header">
+          <span class="app-disclosure-title">
             Date
           </span>
           <ActionButton
             :icon="isMobileDatePanelOpen ? ChevronUpIcon : ChevronDownIcon"
             aria-label="Toggle date filters"
+            class="h-11 w-11"
             :without-paddings-for-icon="true"
             @click="toggleMobileDatePanel"
           />
         </div>
 
         <Transition name="expand">
-          <div v-if="isMobileDatePanelOpen" class="flex flex-col gap-4">
+          <div
+            v-if="isMobileDatePanelOpen"
+            class="app-disclosure-body flex flex-col gap-4"
+          >
             <div class="grid grid-cols-2 gap-4">
               <ActionButton
                 v-for="button in quickButtons.slice(0, 2)"
@@ -72,7 +75,6 @@
             </div>
           </div>
         </Transition>
-        <hr />
       </div>
 
       <!-- Desktop Layout -->

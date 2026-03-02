@@ -45,49 +45,50 @@
 
 <template>
   <div class="w-full text-[var(--color-text)]">
-    <div
-      class="flex items-center justify-between border-t border-b border-[var(--color-border)] py-3 md:hidden"
-    >
-      <span class="text-sm font-semibold tracking-wide text-[var(--color-text-muted)]">
-        Filters
-      </span>
-      <ActionButton
-        :icon="isMobileOpen ? ChevronUpIcon : ChevronDownIcon"
-        aria-label="Toggle filters"
-        :without-paddings-for-icon="true"
-        @click="isMobileOpen = !isMobileOpen"
-      />
-    </div>
-
-    <div
-      v-show="isMobileOpen"
-      class="flex h-fit w-full flex-col gap-4 border-b border-[var(--color-border)] py-4 md:hidden"
-    >
-      <div class="flex h-fit w-full flex-col gap-2">
-        <TextField
-          class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
-          label="Task name"
-          :placeholder="textInputs[0]!.placeholder"
-          v-model:filter="taskFilter"
-        />
-        <TextField
-          class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
-          label="Space name"
-          :placeholder="textInputs[1]!.placeholder"
-          v-model:filter="spaceFilter"
+    <div class="app-disclosure md:hidden">
+      <div class="app-disclosure-header">
+        <span class="app-disclosure-title">Filters</span>
+        <ActionButton
+          :icon="isMobileOpen ? ChevronUpIcon : ChevronDownIcon"
+          aria-label="Toggle filters"
+          class="h-11 w-11"
+          :without-paddings-for-icon="true"
+          @click="isMobileOpen = !isMobileOpen"
         />
       </div>
-      <fieldset class="flex h-fit flex-wrap items-start gap-2">
-        <legend class="sr-only">Task type</legend>
-        <RadioField
-          v-for="radioInput in radioInputs"
-          :key="radioInput.id"
-          :id="radioInput.id"
-          :value="radioInput.value"
-          :picked="picked"
-          @pick="picked = $event"
-        />
-      </fieldset>
+
+      <Transition name="expand">
+        <div
+          v-if="isMobileOpen"
+          class="app-disclosure-body flex h-fit w-full flex-col gap-4"
+        >
+          <div class="flex h-fit w-full flex-col gap-2">
+            <TextField
+              class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+              label="Task name"
+              :placeholder="textInputs[0]!.placeholder"
+              v-model:filter="taskFilter"
+            />
+            <TextField
+              class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+              label="Space name"
+              :placeholder="textInputs[1]!.placeholder"
+              v-model:filter="spaceFilter"
+            />
+          </div>
+          <fieldset class="flex h-fit flex-wrap items-start gap-2">
+            <legend class="sr-only">Task type</legend>
+            <RadioField
+              v-for="radioInput in radioInputs"
+              :key="radioInput.id"
+              :id="radioInput.id"
+              :value="radioInput.value"
+              :picked="picked"
+              @pick="picked = $event"
+            />
+          </fieldset>
+        </div>
+      </Transition>
     </div>
 
     <div

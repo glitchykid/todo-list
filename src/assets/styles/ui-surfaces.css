@@ -36,4 +36,25 @@
   .app-title-muted {
     color: var(--color-text-muted);
   }
+
+  .app-disclosure {
+    @apply rounded-2xl border;
+    border-color: var(--color-border);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .app-disclosure-header {
+    @apply flex items-center justify-between gap-2 px-3 py-3;
+  }
+
+  .app-disclosure-title {
+    @apply text-sm font-semibold tracking-wide;
+    color: var(--color-text-muted);
+  }
+
+  .app-disclosure-body {
+    @apply border-t px-3 py-3;
+    border-color: var(--color-border);
+  }
 }
