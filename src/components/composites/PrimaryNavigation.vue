@@ -24,7 +24,7 @@
       aria-label="Primary"
     >
       <div
-        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:grid-cols-1 md:gap-2"
+        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:flex-none md:grid-cols-1 md:auto-rows-min md:content-start md:gap-2"
       >
         <AppLink
           v-for="link in appRoutes"
