@@ -2,7 +2,7 @@
   <main
     class="mobile-shell-edge app-panel flex h-full min-h-0 flex-1 flex-col gap-0 overflow-hidden rounded-none border-0 shadow-none md:hidden"
   >
-    <header v-if="$slots.header" class="shrink-0 px-3 pt-2">
+    <header v-if="$slots.header" class="shrink-0 px-3 pt-2 pb-2">
       <slot name="header" />
     </header>
 
