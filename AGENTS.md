@@ -1,59 +1,83 @@
-# Repository Guidelines
+# AGENTS.md
 
-## Project Structure & Module Organization
-- `src/` holds the Vue 3 app.
-- `src/components/primitives/` low-level UI inputs/buttons/links.
-- `src/components/composites/` reusable composed UI blocks.
-- `src/components/sections/` screen sections with local orchestration.
-- `src/components/layouts/` shell/layout wrappers.
-- `src/application/` view-model/use-case logic for presentation flows.
-- `src/domain/` pure domain types/validation/business rules.
-- `src/stores/` Pinia persistence/state boundaries; no imports from `src/components/`.
-- `src/routes/` router setup; `src/services/` API/data access; `src/utils/` helpers.
-- `src/assets/styles/` split by responsibility (`design-tokens.css`, `ui-surfaces.css`, `layout-utilities.css`, `typography.css`).
-- `public/` for files served as-is.
-- `test/` contains Vitest specs like `tasks.test.ts` and `workspaces.store.test.ts`.
+## Контекст проекта
+- Проект: `todo-list` (SPA) на `Vue 3 + TypeScript`.
+- Состояние: `Pinia`.
+- Роутинг: `Vue Router`.
+- Стили: `Tailwind CSS v4` + токены/utility CSS.
+- Сборка: `Vite`.
+- Тесты фронтенда: `Vitest`.
 
-## Build, Test, and Development Commands
-- `npm run dev` starts the Vite dev server on port 5173.
-- `npm run build` runs `vue-tsc --build` and then `vite build`.
-- `npm run build-only` runs the Vite production build without type-checking.
-- `npm run type-check` runs TypeScript type checking via `vue-tsc`.
-- `npm test` runs Vitest in watch/interactive mode.
-- `docker compose up` runs a Node 24 Alpine container and exposes `5173` for local dev.
+## Цель этого файла
+Этот документ задает единые правила для ИИ-агентов, которые вносят изменения в проект.
 
-## Coding Style & Naming Conventions
-- Use TypeScript, Vue SFCs, and Tailwind CSS classes.
-- Formatting is handled by Prettier with `prettier-plugin-organize-imports` and `prettier-plugin-tailwindcss`.
-- Indent script and style blocks in `.vue` files (see `vueIndentScriptAndStyle` in `.prettierrc`).
-- Use descriptive PascalCase component names by role, e.g. `TaskBoardHeader.vue`, `ArchiveManagementPanel.vue`.
-- Name composables by behavior (`useArchiveManagementView.ts`, `useWorkspacePanelView.ts`).
-- Keep domain/application/stores decoupled from presentation component types.
+## Профессиональное поведение ИИ
+- ИИ должен действовать как профессиональный программист с большим практическим опытом.
+- Решения должны быть инженерно обоснованными: сначала корректность, затем читаемость, затем расширяемость.
+- Любые изменения должны быть аккуратными, минимально необходимыми и безопасными для текущего поведения приложения.
+- При выборе между несколькими подходами предпочитай тот, который проще сопровождать командой в долгосрочной перспективе.
 
-## Testing Guidelines
-- Testing framework: Vitest.
-- Place tests in `test/` with `.test.ts` naming, e.g. `dateLogic.test.ts`.
-- Run all tests with `npm test`; run a single file with `npm test -- test/tasks.test.ts`.
+## Обязательные инженерные принципы
+- `SOLID`: разделяй ответственность, вводи абстракции только при реальной необходимости.
+- `DRY`: не дублируй бизнес-логику и UI-паттерны.
+- `KISS`: выбирай самое простое рабочее решение.
+- `YAGNI`: не добавляй функциональность, которая не требуется текущей задачей.
+- `TDD`: для нетривиальной логики сначала тест, затем реализация, затем рефакторинг.
 
-## Commit & Pull Request Guidelines
-- Commit history uses short, scoped messages, often with a prefix like `fix:`, `chore:`, or `add:`.
-- Keep subjects concise and focused on one change; avoid mixing formatting and logic in a single commit.
-- PRs should include a clear summary, steps to validate, and screenshots for UI changes.
-- Link relevant issues or TODOs when applicable.
+## Архитектурные правила (frontend)
+- Соблюдай текущие слои:
+  - `src/domain` - чистая доменная логика, без зависимостей от Vue/Pinia/UI.
+  - `src/application` - orchestration/use-case логика для представления.
+  - `src/stores` - границы состояния и персистентности.
+  - `src/components` - презентационный слой.
+- Не нарушай направленность зависимостей между слоями.
+- Доменная логика не должна переезжать в компоненты.
+- Состояние и побочные эффекты должны быть изолированы и предсказуемы.
 
-## Design & UX Rules (from `forAI/DESIGN_GUIDLINES.md`)
-- Follow the 8pt spacing system, consistent grid alignment, and 44×44 minimum tap targets.
-- Use clear hierarchy, accessible contrast (WCAG AA), and visible focus states.
-- Always define loading/empty/error states and provide recovery actions.
-- Motion should explain state changes, be subtle, and respect reduced motion.
+## Правила тестирования (TDD)
+- Для новой бизнес-логики:
+  1. Добавь/обнови падающий тест.
+  2. Внеси минимальное изменение, чтобы тест прошел.
+  3. Проведи рефакторинг без изменения поведения.
+- Для исправления бага: сначала тест, воспроизводящий баг.
+- Не объединяй в одном изменении одновременно рефакторинг и новую функциональность без необходимости.
+- Перед завершением задачи обязательно прогоняй релевантные тесты.
 
-## Engineering Rules (from `forAI/ENGINEERING_RULES.md`)
-- Prioritize correctness → clarity → changeability; keep logic simple and explainable.
-- Keep side effects at boundaries; favor small, single-purpose functions.
-- Use TDD mindset for domain logic; add regression tests for bug fixes.
-- Validate inputs, avoid leaking secrets, and keep error messages actionable.
-- Keep formatting consistent and update docs when contracts change.
+## UI/UX и доступность (обязательно)
+- Делай интерфейс понятным и консистентным на desktop и mobile.
+- Используй семантическую HTML-разметку и корректную иерархию заголовков.
+- Все интерактивные элементы должны быть доступны с клавиатуры.
+- Для форм обязательны связки `label` + control, понятные тексты ошибок и состояний.
+- Видимый `focus` обязателен, нельзя убирать его без доступной замены.
+- Соблюдай контрастность на уровне не ниже `WCAG AA`.
+- Не полагайся только на цвет для передачи смысла.
+- Учитывай `prefers-reduced-motion` для анимаций.
+- Для каждого экрана учитывай состояния: `loading`, `empty`, `error`, `success`.
+- Размеры touch-целей на мобильных должны быть удобными для нажатия.
 
-## Configuration Notes
-- Node.js version target is `^24` (see `package.json` engines).
-- Environment typing lives in `env.d.ts`; Vite config is in `vite.config.ts`.
+## Код-стайл и изменения
+- Предпочитай маленькие, локальные и проверяемые изменения.
+- Не добавляй зависимости без явной причины.
+- Избегай "магических" значений, дублирования и неявных сайд-эффектов.
+- Сохраняй существующие соглашения по именованию и структуре файлов.
+- Документируй только нетривиальные решения короткими комментариями.
+
+## Git Workflow (обязательно)
+- После завершения изменений ИИ должен сделать `git add`, `git commit` и `git push`.
+- Формат сообщений коммитов строго по `Conventional Commits`.
+- Рекомендуемые типы: `feat`, `fix`, `refactor`, `style`, `test`, `docs`, `chore`.
+- Формат заголовка: `<type>(<scope>): <summary>`.
+- Примеры:
+  - `feat(ui): improve task board navigation and filters`
+  - `fix(tasks): correct repeat rule handling`
+  - `docs(agents): define commit and push workflow`
+
+## Чеклист перед завершением задачи
+- Изменение соответствует `SOLID/DRY/KISS/YAGNI`.
+- Покрытие тестами добавлено или обновлено (по TDD).
+- Не нарушены архитектурные границы слоев.
+- UI/UX и доступность проверены для затронутых экранов.
+- Для фронтенда успешно выполнены:
+  - `npm run type-check`
+  - `npm test`
+  - `npm run build`
