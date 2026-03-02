@@ -1,25 +1,26 @@
 .tasks-enter-active,
-.tasks-leave-active,
-.tasks-move {
+.tasks-leave-active {
   transition:
     transform var(--motion-panel) var(--ease-standard),
     opacity var(--motion-panel) var(--ease-standard);
 }
 
+.tasks-move {
+  transition: transform var(--motion-panel) var(--ease-standard);
+}
+
 .tasks-enter-from {
   opacity: 0;
-  transform: translateY(14px) scale(0.985);
+  transform: translateY(8px) scale(0.99);
 }
 
 .tasks-leave-to {
   opacity: 0;
-  transform: translateY(-10px) scale(0.98);
+  transform: scale(0.985);
 }
 
 .tasks-leave-active {
-  position: absolute;
-  left: 0;
-  right: 0;
+  pointer-events: none;
 }
 
 .workspaces-enter-active,
