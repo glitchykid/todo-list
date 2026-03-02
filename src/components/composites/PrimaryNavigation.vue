@@ -10,7 +10,7 @@
 
 <template>
   <header
-    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-2xl border px-2 py-2 md:relative md:h-full md:w-60 md:min-w-60 md:flex-col md:gap-5 md:rounded-[1.85rem] md:px-4 md:py-5"
+    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-2xl border px-2 py-2 md:relative md:h-full md:w-60 md:min-w-60 md:self-stretch md:flex-col md:gap-5 md:rounded-[1.85rem] md:px-4 md:py-5"
   >
     <h5
       class="app-section-title hidden text-center !text-[1.55rem] md:inline-block"
