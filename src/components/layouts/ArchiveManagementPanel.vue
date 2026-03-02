@@ -5,7 +5,7 @@
     :filters="filters"
     :which-type="activeTaskTypeFilter"
   >
-    <h6 class="text-center !text-[var(--color-heading)]">
+    <h6 class="app-section-title text-center">
       {{ title }}
     </h6>
     <ArchiveFiltersPanel

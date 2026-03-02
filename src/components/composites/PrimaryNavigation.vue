@@ -13,7 +13,7 @@
     class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-2xl border px-2 py-2 md:relative md:h-full md:w-60 md:min-w-60 md:flex-col md:gap-5 md:rounded-[1.85rem] md:px-4 md:py-5"
   >
     <h5
-      class="hidden text-center text-[1.65rem] font-semibold tracking-tight text-[var(--color-text-muted)] md:inline-block"
+      class="app-section-title hidden text-center !text-[1.55rem] md:inline-block"
     >
       TODO LIST
     </h5>
@@ -31,11 +31,11 @@
           :key="link.name"
           :to="link.path"
           class="flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-2 text-center transition-colors md:w-full md:flex-row md:justify-start md:gap-3 md:px-3"
-          activeClass="border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]"
+          activeClass="border-[var(--color-border)] bg-[var(--color-control-hover)] text-[var(--color-heading)]"
           inactiveClass="border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
         >
-          <component :is="link.icon" class="size-6 md:size-5" />
-          <span class="text-[0.8rem] leading-4 font-semibold md:text-[0.95rem]">
+          <component :is="link.icon" class="size-5" />
+          <span class="text-[0.8rem] leading-4 font-medium md:text-[0.95rem]">
             {{ link.label }}
           </span>
         </AppLink>

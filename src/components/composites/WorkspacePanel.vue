@@ -26,7 +26,7 @@
 <template>
   <div class="flex h-full min-h-0 flex-col gap-6">
     <h6
-      class="text-center !text-[1.35rem] !leading-8 !font-semibold !text-[var(--color-heading)]"
+      class="app-section-title text-center !text-[1.35rem]"
     >
       Spaces
     </h6>

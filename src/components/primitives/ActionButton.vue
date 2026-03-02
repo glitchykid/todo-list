@@ -28,7 +28,7 @@
 
   const stateClasses = computed(() =>
     props.active
-      ? "bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]"
+      ? "bg-[var(--color-primary-hover)] text-[var(--color-heading)]"
       : isBordered.value
         ? "bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
         : "bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]",

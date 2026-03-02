@@ -29,3 +29,11 @@
     background: var(--color-border);
   }
 }
+
+@layer components {
+  .app-section-title {
+    @apply text-[1.3rem] leading-8 font-semibold tracking-tight;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+  }
+}

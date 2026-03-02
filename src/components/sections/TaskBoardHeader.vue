@@ -9,7 +9,7 @@
           @click="toggleAside = true"
         />
         <h6
-          class="w-full min-w-0 truncate text-right !text-[1.45rem] !leading-8 !font-semibold !text-[var(--color-heading)] md:text-center"
+          class="app-section-title w-full min-w-0 truncate text-right !text-[1.4rem] md:text-center"
         >
           {{ currentWorkspaceName }}
         </h6>
