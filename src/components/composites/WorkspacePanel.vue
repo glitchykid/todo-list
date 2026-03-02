@@ -37,7 +37,7 @@
       <TransitionGroup
         name="workspaces"
         tag="div"
-        class="flex min-h-0 flex-1 flex-col overflow-y-auto"
+        class="relative flex min-h-0 flex-1 flex-col overflow-y-auto"
       >
         <div
           v-for="workspace of workspacesStore.workspaces"
