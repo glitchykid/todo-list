@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mobile-shell mobile-shell-compact-gap app-panel flex h-full min-h-0 flex-1 flex-col gap-4 overflow-hidden rounded-[1.5rem] border md:hidden"
+    class="mobile-shell-edge app-panel flex h-full min-h-0 flex-1 flex-col gap-2 overflow-hidden rounded-none border-0 md:hidden"
   >
     <header v-if="$slots.header" class="shrink-0">
       <slot name="header" />
@@ -10,8 +10,7 @@
       <slot name="toolbar" />
     </section>
 
-    <!-- min-h-0 is critical so the body can scroll within flex layouts -->
-    <section class="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
+    <section class="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
       <slot />
     </section>
 
