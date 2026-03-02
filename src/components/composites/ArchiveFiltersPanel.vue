@@ -6,21 +6,31 @@
   import TextField from "../primitives/TextField.vue";
 
   type RadioInput = {
-    id: string;
+    key: string;
+    mobileId: string;
+    desktopId: string;
     value: string;
   };
 
+  const radioGroupInstanceId = Math.random().toString(36).slice(2, 8);
+
   const radioInputs: RadioInput[] = [
     {
-      id: "regularTasks",
+      key: "regularTasks",
+      mobileId: `regularTasks-mobile-${radioGroupInstanceId}`,
+      desktopId: `regularTasks-desktop-${radioGroupInstanceId}`,
       value: "Regular tasks",
     },
     {
-      id: "repeatableTasks",
+      key: "repeatableTasks",
+      mobileId: `repeatableTasks-mobile-${radioGroupInstanceId}`,
+      desktopId: `repeatableTasks-desktop-${radioGroupInstanceId}`,
       value: "Repeatable tasks",
     },
     {
-      id: "showAll",
+      key: "showAll",
+      mobileId: `showAll-mobile-${radioGroupInstanceId}`,
+      desktopId: `showAll-desktop-${radioGroupInstanceId}`,
       value: "Show all",
     },
   ] as const;
@@ -80,8 +90,8 @@
             <legend class="sr-only">Task type</legend>
             <RadioField
               v-for="radioInput in radioInputs"
-              :key="radioInput.id"
-              :id="radioInput.id"
+              :key="radioInput.key"
+              :id="radioInput.mobileId"
               :value="radioInput.value"
               :picked="picked"
               @pick="picked = $event"
@@ -116,8 +126,8 @@
         <legend class="sr-only">Task type</legend>
         <RadioField
           v-for="radioInput in radioInputs"
-          :key="radioInput.id"
-          :id="radioInput.id"
+          :key="`desktop-${radioInput.key}`"
+          :id="radioInput.desktopId"
           :value="radioInput.value"
           :picked="picked"
           @pick="picked = $event"

@@ -1,11 +1,17 @@
 <script setup lang="ts">
+  import { useIsDesktop } from "@/composables/useIsDesktop";
   import { useTaskComposerSection } from "@/application/tasks/useTaskComposerSection";
   import ActionButton from "@/components/primitives/ActionButton.vue";
   import TaskComposer from "@/components/sections/TaskComposer.vue";
   import { PlusCircleIcon } from "@heroicons/vue/20/solid";
+  import { computed } from "vue";
 
   const { composerResetToken, updateTaskDraft, submitTask, canSubmitTask } =
     useTaskComposerSection();
+  const { isDesktop } = useIsDesktop();
+  const submitButtonLabel = computed(() =>
+    isDesktop.value ? undefined : "Add task",
+  );
 </script>
 
 <template>
@@ -17,23 +23,15 @@
       :reset-token="composerResetToken"
     />
     <ActionButton
-      class="md:hidden"
-      label="Add task"
+      class="h-11 w-full rounded-xl border border-[var(--color-border)] md:w-11"
+      :label="submitButtonLabel"
       :icon="PlusCircleIcon"
       aria-label="Add task"
       @click="submitTask"
+      :without-paddings-for-icon="isDesktop"
       :active="canSubmitTask"
       :disabled="!canSubmitTask"
       :border="true"
-    />
-    <ActionButton
-      class="hidden h-11 w-11 rounded-xl border border-[var(--color-border)] md:inline-flex"
-      :icon="PlusCircleIcon"
-      aria-label="Add task"
-      @click="submitTask"
-      :without-paddings-for-icon="true"
-      :active="canSubmitTask"
-      :disabled="!canSubmitTask"
     />
   </div>
 </template>

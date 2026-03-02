@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useIsDesktop } from "@/composables/useIsDesktop";
   import TimePicker from "@/components/composites/TimePicker.vue";
   import ActionButton from "@/components/primitives/ActionButton.vue";
   import RepeatRuleMenu from "@/components/primitives/RepeatRuleMenu.vue";
@@ -8,7 +9,7 @@
   import { useWorkspacesStore } from "@/stores/workspaces";
   import { ArrowPathIcon, ClockIcon } from "@heroicons/vue/20/solid";
   import { storeToRefs } from "pinia";
-  import { reactive, ref, watch, watchEffect } from "vue";
+  import { computed, reactive, ref, watch, watchEffect } from "vue";
 
   const showTime = ref<boolean>(false);
   const showTypesOfRepeat = ref<boolean>(false);
@@ -23,6 +24,8 @@
   const props = defineProps<{
     resetToken: number;
   }>();
+
+  const { isDesktop } = useIsDesktop();
 
   const time = reactive<TaskTime>({
     hours: "00",
@@ -43,6 +46,15 @@
   };
 
   const taskTitle = ref<string>("");
+  const taskTitleInputId = `task-title-input-${Math.random().toString(36).slice(2, 9)}`;
+
+  const repeatButtonLabel = computed(() =>
+    isDesktop.value ? defaultTypeOfRepeat.value : undefined,
+  );
+
+  const timeButtonLabel = computed(() =>
+    isDesktop.value ? `${time.hours}:${time.minutes}` : undefined,
+  );
 
   const emit = defineEmits<{
     "update:task": [value: TaskDraft];
@@ -88,9 +100,9 @@
   <div
     class="app-card flex items-center gap-2 px-2 py-2"
   >
-    <label for="task-title-input" class="sr-only">Task title</label>
+    <label :for="taskTitleInputId" class="sr-only">Task title</label>
     <input
-      id="task-title-input"
+      :id="taskTitleInputId"
       placeholder="Enter a task"
       class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)]"
       v-model="taskTitle"
@@ -99,20 +111,13 @@
 
     <div class="relative shrink-0">
       <ActionButton
-        class="h-11 w-11 md:hidden"
+        class="h-11 w-11 md:w-auto md:min-w-32"
+        :label="repeatButtonLabel"
         :icon="ArrowPathIcon"
         aria-label="Change repeat rule"
         :active="showTypesOfRepeat"
-        :without-paddings-for-icon="true"
+        :without-paddings-for-icon="!isDesktop"
         :customIconSize="4"
-        @click="toggleTypesOfRepeat"
-      />
-      <ActionButton
-        class="hidden min-h-11 items-center md:flex md:min-w-32"
-        :label="defaultTypeOfRepeat"
-        :icon="ArrowPathIcon"
-        aria-label="Repeat rule"
-        :active="showTypesOfRepeat"
         @click="toggleTypesOfRepeat"
       />
       <Transition name="fade">
@@ -126,20 +131,13 @@
 
     <div class="relative shrink-0">
       <ActionButton
-        class="h-11 w-11 md:hidden"
+        class="h-11 w-11 md:w-auto md:min-w-28"
+        :label="timeButtonLabel"
         :icon="ClockIcon"
         aria-label="Set due time"
         :active="showTime"
-        :without-paddings-for-icon="true"
+        :without-paddings-for-icon="!isDesktop"
         :customIconSize="4"
-        @click="toggleTime"
-      />
-      <ActionButton
-        class="hidden min-h-11 items-center md:flex md:min-w-28"
-        :label="`${time.hours}:${time.minutes}`"
-        :icon="ClockIcon"
-        aria-label="Due time"
-        :active="showTime"
         @click="toggleTime"
       />
       <Transition name="fade">
