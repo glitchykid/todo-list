@@ -24,7 +24,7 @@
       <TaskBoardHeader v-model:toggle-aside="toggleAside" />
     </template>
 
-    <div class="flex-1 overflow-y-hidden">
+    <div class="flex h-full min-h-0 flex-1 overflow-y-hidden">
       <TaskFeedPanel />
     </div>
 
