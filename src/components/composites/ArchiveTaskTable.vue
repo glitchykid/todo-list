@@ -60,6 +60,22 @@
       class="flex flex-col gap-4 text-[var(--color-text)] md:hidden"
     >
       <div
+        class="flex items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 py-2"
+      >
+        <span class="text-sm font-medium text-[var(--color-text-muted)]">
+          {{ checkedTasks.length }} selected
+        </span>
+        <button
+          type="button"
+          class="min-h-9 cursor-pointer rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-sm font-semibold text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-control-hover)]"
+          :class="props.allSelected && 'text-[var(--color-button-active-text)]'"
+          @click="props.toggleSelectAll()"
+        >
+          {{ props.allSelected ? "Clear selection" : "Select all" }}
+        </button>
+      </div>
+
+      <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
         class="app-card relative p-4"
