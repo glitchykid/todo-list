@@ -1,15 +1,10 @@
 services:
   todo-list:
     image: node:24-alpine
+    working_dir: /app
     ports:
       - 0.0.0.0:5173:5173
-    working_dir: /app
-    command: sh -c "npm install && npx vite --host 0.0.0.0 && npm run dev"
-    develop:
-      watch:
-        - action: sync
-          initial_sync: true
-          path: .
-          target: /app
-          ignore:
-            - node_modules/
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
