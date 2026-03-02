@@ -1,9 +1,12 @@
 <template>
-  <section class="h-full w-full overflow-hidden" aria-live="polite">
+  <section
+    class="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden"
+    aria-live="polite"
+  >
     <!-- Empty state -->
     <div
       v-if="tasks.length === 0"
-      class="flex h-full items-center justify-center px-2 sm:px-6"
+      class="flex flex-1 items-center justify-center px-2 sm:px-6"
     >
       <div class="app-card w-full max-w-md border-dashed px-5 py-8 text-center sm:px-6 sm:py-10">
         <p class="text-xl leading-7 font-semibold app-title-muted sm:text-2xl sm:leading-8">No tasks yet</p>
@@ -14,11 +17,15 @@
     </div>
 
     <!-- Messages container with chat-like behavior -->
-    <div v-else ref="messagesContainer" class="h-full overflow-y-auto">
+    <div
+      v-else
+      ref="messagesContainer"
+      class="min-h-0 flex-1 overflow-y-auto"
+    >
       <TransitionGroup
         name="tasks"
         tag="div"
-        class="relative flex h-full flex-col justify-end gap-3 pb-5 md:pb-1"
+        class="relative flex min-h-full flex-col justify-end gap-3 pb-2 md:pb-1"
       >
         <TaskMessageCard v-for="task in tasks" :task="task" :key="task.id" />
       </TransitionGroup>

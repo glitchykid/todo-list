@@ -1,5 +1,5 @@
 <template>
-  <article class="relative w-full overflow-hidden">
+  <article class="relative w-full shrink-0 overflow-hidden">
     <div
       class="app-card flex w-full items-start justify-between gap-4 px-4 py-3"
     >
