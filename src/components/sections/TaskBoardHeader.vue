@@ -1,6 +1,6 @@
 <template>
   <div class="sticky top-0 z-30 w-full bg-transparent">
-    <div class="flex w-full flex-col gap-3 md:gap-6">
+    <div class="flex w-full flex-col gap-4 md:gap-6">
       <div class="flex w-full flex-row items-center justify-between">
         <ActionButton
           class="md:hidden"

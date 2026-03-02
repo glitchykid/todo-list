@@ -25,7 +25,7 @@
       :purge="purgeCheckedTasks"
       :recover="recoverCheckedTasks"
     >
-      <section class="flex flex-row flex-wrap place-content-end gap-2 text-center">
+      <section class="flex flex-row flex-wrap place-content-end gap-3 text-center">
         <button
           type="button"
           class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] disabled:cursor-not-allowed disabled:opacity-50"

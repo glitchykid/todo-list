@@ -302,7 +302,7 @@
 
         <!-- Weekday Headers -->
         <div
-          class="grid grid-cols-7 justify-items-center gap-1 font-bold text-[var(--color-text-muted)] sm:gap-0"
+          class="grid grid-cols-7 justify-items-center gap-1 font-bold text-[var(--color-text-muted)] sm:gap-1"
         >
           <span
             v-for="weekday of weekdays"

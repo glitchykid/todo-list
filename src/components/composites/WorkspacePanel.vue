@@ -110,7 +110,7 @@
     </div>
 
     <div class="shrink-0 py-1">
-      <div class="flex flex-row justify-center gap-2">
+      <div class="flex flex-row justify-center gap-3">
         <ActionButton
           :icon="FolderPlusIcon"
           :custom-icon-size="4"

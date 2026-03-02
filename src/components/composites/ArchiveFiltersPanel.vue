@@ -72,21 +72,21 @@
           v-if="isMobileOpen"
           class="app-disclosure-body flex h-fit w-full flex-col gap-4"
         >
-          <div class="flex h-fit w-full flex-col gap-2">
+          <div class="flex h-fit w-full flex-col gap-3">
             <TextField
-              class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+              class="grid w-full grid-cols-1 gap-3 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
               label="Task name"
               :placeholder="textInputs[0]!.placeholder"
               v-model:filter="taskFilter"
             />
             <TextField
-              class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+              class="grid w-full grid-cols-1 gap-3 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
               label="Space name"
               :placeholder="textInputs[1]!.placeholder"
               v-model:filter="spaceFilter"
             />
           </div>
-          <fieldset class="flex h-fit flex-wrap items-start gap-2">
+          <fieldset class="flex h-fit flex-wrap items-start gap-3">
             <legend class="sr-only">Task type</legend>
             <RadioField
               v-for="radioInput in radioInputs"
@@ -105,23 +105,23 @@
       class="hidden h-fit w-full flex-col gap-4 border-t border-b border-[var(--color-border)] py-4 md:flex md:flex-row md:items-center md:justify-between"
     >
       <div
-        class="flex h-fit w-full flex-col gap-2 md:w-[30rem] md:min-w-[30rem]"
+        class="flex h-fit w-full flex-col gap-3 md:w-[30rem] md:min-w-[30rem]"
       >
         <TextField
-          class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-2"
+          class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-3"
           label="Task name"
           :placeholder="textInputs[0]!.placeholder"
           v-model:filter="taskFilter"
         />
         <TextField
-          class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-2"
+          class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-3"
           label="Space name"
           :placeholder="textInputs[1]!.placeholder"
           v-model:filter="spaceFilter"
         />
       </div>
       <fieldset
-        class="flex h-fit flex-col items-start gap-2 md:flex-row md:items-center md:gap-4"
+        class="flex h-fit flex-col items-start gap-3 md:flex-row md:items-center md:gap-4"
       >
         <legend class="sr-only">Task type</legend>
         <RadioField

@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+  <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-5">
     <TaskComposer
       class="w-full"
       @update:task="updateTaskDraft"

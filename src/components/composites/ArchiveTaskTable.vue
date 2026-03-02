@@ -28,7 +28,7 @@
       <div v-for="option of sortingOptions" :key="option" class="w-full">
         <button
           type="button"
-          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-1 rounded-xl border px-3 text-sm font-semibold transition-colors duration-200"
+          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors duration-200"
           :class="
             activeSortingOption === option
               ? 'border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] shadow-[var(--shadow-soft)]'
@@ -83,7 +83,7 @@
         <div class="flex flex-col gap-4">
           <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-              <div class="flex items-start gap-2">
+              <div class="flex items-start gap-3">
                 <span class="text-base leading-6 font-semibold break-words">
                   {{ filteredTask.title }}
                 </span>
@@ -124,13 +124,13 @@
       </div>
     </div>
 
-    <div class="hidden w-full flex-col gap-2 text-[var(--color-text)] md:flex">
+    <div class="hidden w-full flex-col gap-3 text-[var(--color-text)] md:flex">
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
         class="app-card grid grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_3rem] items-center gap-3 px-3 py-3 text-center"
       >
-        <div class="flex min-w-0 flex-row items-center justify-start gap-2">
+        <div class="flex min-w-0 flex-row items-center justify-start gap-3">
           <span class="font-semibold break-all">{{ filteredTask.title }}</span>
           <ArrowPathIcon
             v-if="filteredTask.repeatable"

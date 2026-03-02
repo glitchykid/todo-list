@@ -25,7 +25,7 @@
       <TransitionGroup
         name="tasks"
         tag="div"
-        class="relative flex min-h-full flex-col justify-end gap-3 pb-2 md:pb-1"
+        class="relative flex min-h-full flex-col justify-end gap-4 pb-2 md:pb-1"
       >
         <TaskMessageCard v-for="task in tasks" :task="task" :key="task.id" />
       </TransitionGroup>

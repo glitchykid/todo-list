@@ -20,17 +20,17 @@
     <hr class="hidden md:block" />
 
     <nav
-      class="flex min-h-[4.5rem] w-full flex-row items-center gap-1 pb-[env(safe-area-inset-bottom)] md:h-full md:flex-col md:gap-3 md:pb-0"
+      class="flex min-h-[4.5rem] w-full flex-row items-center gap-2 pb-[env(safe-area-inset-bottom)] md:h-full md:flex-col md:gap-3 md:pb-0"
       aria-label="Primary"
     >
       <div
-        class="grid min-w-0 flex-1 grid-cols-3 gap-1 md:w-full md:flex-none md:grid-cols-1 md:auto-rows-min md:content-start md:gap-2"
+        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:flex-none md:grid-cols-1 md:auto-rows-min md:content-start md:gap-3"
       >
         <AppLink
           v-for="link in appRoutes"
           :key="link.name"
           :to="link.path"
-          class="flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-2 text-center transition-colors md:w-full md:flex-row md:justify-start md:gap-3 md:px-3"
+          class="flex min-h-11 min-w-0 flex-col items-center justify-center gap-2 rounded-xl border px-2 py-2 text-center transition-colors md:w-full md:flex-row md:justify-start md:gap-3 md:px-3"
           activeClass="border-[var(--color-border)] bg-[var(--color-control-hover)] text-[var(--color-heading)]"
           inactiveClass="border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
         >

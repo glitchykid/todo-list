@@ -98,7 +98,7 @@
 
 <template>
   <div
-    class="app-card flex items-center gap-2 px-2 py-2"
+    class="app-card flex items-center gap-3 px-3 py-2"
   >
     <label :for="taskTitleInputId" class="sr-only">Task title</label>
     <input
