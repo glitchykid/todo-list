@@ -1,12 +1,11 @@
 <template>
-  <div class="relative w-full overflow-hidden">
+  <article class="relative w-full overflow-hidden">
     <div
-      class="flex w-full items-start justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-3"
+      class="app-card flex w-full items-start justify-between gap-4 px-4 py-3"
     >
-      <!-- Task info -->
       <div class="w-full flex-1">
         <h3
-          class="mb-2.5 text-[16px] font-bold break-all text-[var(--color-text)]"
+          class="mb-2.5 text-base leading-6 font-semibold break-words text-[var(--color-text)]"
         >
           {{ task.title }}
         </h3>
@@ -16,7 +15,7 @@
             style="
               background-color: color-mix(
                 in srgb,
-                var(--color-primary) 20%,
+                var(--color-primary) 22%,
                 transparent
               );
               color: var(--color-primary);
@@ -31,7 +30,7 @@
             style="
               background-color: color-mix(
                 in srgb,
-                var(--color-warning) 28%,
+                var(--color-warning) 24%,
                 transparent
               );
               color: var(--color-warning);
@@ -43,14 +42,13 @@
         </div>
       </div>
 
-      <!-- Actions -->
       <div class="flex items-center gap-1.5">
         <button
           v-if="task.repeatable"
           type="button"
           aria-label="Skip repeated task for selected date"
           @click="skipTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-primary-hover)] text-[var(--color-info)] transition-colors duration-200 hover:brightness-95"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
         >
           <ArrowLongRightIcon class="size-4" />
         </button>
@@ -58,7 +56,7 @@
           type="button"
           aria-label="Complete task"
           @click="completeTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-primary-hover)] text-[var(--color-success)] transition-colors duration-200 hover:brightness-95"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
         >
           <CheckIcon class="size-4" />
         </button>
@@ -66,13 +64,13 @@
           type="button"
           aria-label="Remove task"
           @click="removeTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-primary-hover)] text-[var(--color-danger)] transition-colors duration-200 hover:brightness-95"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
         >
           <TrashIcon class="size-4" />
         </button>
       </div>
     </div>
-  </div>
+  </article>
 </template>
 
 <script setup lang="ts">

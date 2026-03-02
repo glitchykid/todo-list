@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="flex items-center gap-3 md:gap-6">
+  <div class="flex items-center gap-3 md:gap-4">
     <TaskComposer
       class="w-full"
       @update:task="updateTaskDraft"
@@ -23,7 +23,7 @@
       :without-paddings-for-icon="true"
       :active="canSubmitTask"
       :disabled="!canSubmitTask"
-      class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)]"
+      class="h-11 w-11 rounded-xl border border-[var(--color-border)]"
     />
   </div>
 </template>

@@ -27,17 +27,11 @@
 
   const picked = defineModel<string>("picked", { required: true });
 
-  const idTextInput = ref<number>(0);
-
   const textInputs = [
     {
-      id: idTextInput.value++,
-      description: "Task name:",
       placeholder: "Enter a task name",
     },
     {
-      id: idTextInput.value++,
-      description: "Space name:",
       placeholder: "Enter a space name",
     },
   ];
@@ -51,11 +45,10 @@
 
 <template>
   <div class="w-full text-[var(--color-text)]">
-    <!-- Mobile-only collapse header -->
     <div
       class="flex items-center justify-between border-t border-b border-[var(--color-border)] py-3 md:hidden"
     >
-      <span class="text-sm font-semibold text-[var(--color-text-muted)]">
+      <span class="text-sm font-semibold tracking-wide text-[var(--color-text-muted)]">
         Filters
       </span>
       <ActionButton
@@ -66,7 +59,6 @@
       />
     </div>
 
-    <!-- Mobile: collapsible body -->
     <div
       v-show="isMobileOpen"
       class="flex h-fit w-full flex-col gap-4 border-b border-[var(--color-border)] py-4 md:hidden"
@@ -74,28 +66,19 @@
       <div class="flex h-fit w-full flex-col gap-2">
         <TextField
           class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+          label="Task name"
           :placeholder="textInputs[0]!.placeholder"
           v-model:filter="taskFilter"
-        >
-          <label
-            class="hidden text-sm text-[var(--color-text-muted)] md:inline-block"
-          >
-            {{ textInputs[0]!.description }}
-          </label>
-        </TextField>
+        />
         <TextField
           class="grid w-full grid-cols-1 gap-2 md:grid-cols-[6.5rem_minmax(0,1fr)] md:items-center"
+          label="Space name"
           :placeholder="textInputs[1]!.placeholder"
           v-model:filter="spaceFilter"
-        >
-          <label
-            class="hidden text-sm text-[var(--color-text-muted)] md:inline-block"
-          >
-            {{ textInputs[1]!.description }}
-          </label>
-        </TextField>
+        />
       </div>
-      <div class="flex h-fit flex-col items-start gap-2">
+      <fieldset class="flex h-fit flex-col items-start gap-2">
+        <legend class="sr-only">Task type</legend>
         <RadioField
           v-for="radioInput in radioInputs"
           :key="radioInput.id"
@@ -104,10 +87,9 @@
           :picked="picked"
           @pick="picked = $event"
         />
-      </div>
+      </fieldset>
     </div>
 
-    <!-- Desktop-only: always visible -->
     <div
       class="hidden h-fit w-full flex-col gap-4 border-t border-b border-[var(--color-border)] py-4 md:flex md:flex-row md:items-center md:justify-between"
     >
@@ -116,30 +98,21 @@
       >
         <TextField
           class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-2"
+          label="Task name"
           :placeholder="textInputs[0]!.placeholder"
           v-model:filter="taskFilter"
-        >
-          <label
-            class="hidden text-sm text-[var(--color-text-muted)] md:inline-block"
-          >
-            {{ textInputs[0]!.description }}
-          </label>
-        </TextField>
+        />
         <TextField
           class="grid w-full grid-cols-[6.5rem_minmax(0,1fr)] items-center gap-2"
+          label="Space name"
           :placeholder="textInputs[1]!.placeholder"
           v-model:filter="spaceFilter"
-        >
-          <label
-            class="hidden text-sm text-[var(--color-text-muted)] md:inline-block"
-          >
-            {{ textInputs[1]!.description }}
-          </label>
-        </TextField>
+        />
       </div>
-      <div
+      <fieldset
         class="flex h-fit flex-col items-start gap-2 md:flex-row md:items-center md:gap-4"
       >
+        <legend class="sr-only">Task type</legend>
         <RadioField
           v-for="radioInput in radioInputs"
           :key="radioInput.id"
@@ -148,7 +121,7 @@
           :picked="picked"
           @pick="picked = $event"
         />
-      </div>
+      </fieldset>
     </div>
   </div>
 </template>

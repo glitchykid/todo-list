@@ -85,22 +85,19 @@
 </script>
 
 <template>
-  <!-- Compact task creator: single-row input + controls -->
   <div
-    class="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-2 py-2"
+    class="app-card flex items-center gap-2 px-2 py-2"
   >
     <label for="task-title-input" class="sr-only">Task title</label>
     <input
       id="task-title-input"
       placeholder="Enter a task"
-      class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-2 text-[var(--color-text)] focus:border-transparent focus:outline-none focus-visible:border-transparent focus-visible:ring-0"
+      class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)]"
       v-model="taskTitle"
       @keyup.enter="emit('submit')"
     />
 
-    <!-- Repeat control -->
     <div class="relative shrink-0">
-      <!-- Mobile: icon-only -->
       <ActionButton
         class="h-11 w-11 md:hidden"
         :icon="ArrowPathIcon"
@@ -110,9 +107,8 @@
         :customIconSize="4"
         @click="toggleTypesOfRepeat"
       />
-      <!-- Desktop: icon + label -->
       <ActionButton
-        class="hidden min-h-11 items-center md:flex"
+        class="hidden min-h-11 items-center md:flex md:min-w-32"
         :label="defaultTypeOfRepeat"
         :icon="ArrowPathIcon"
         aria-label="Repeat rule"
@@ -128,9 +124,7 @@
       </Transition>
     </div>
 
-    <!-- Time control -->
     <div class="relative shrink-0">
-      <!-- Mobile: icon-only -->
       <ActionButton
         class="h-11 w-11 md:hidden"
         :icon="ClockIcon"
@@ -140,9 +134,8 @@
         :customIconSize="4"
         @click="toggleTime"
       />
-      <!-- Desktop: icon + label -->
       <ActionButton
-        class="hidden min-h-11 items-center md:flex"
+        class="hidden min-h-11 items-center md:flex md:min-w-28"
         :label="`${time.hours}:${time.minutes}`"
         :icon="ClockIcon"
         aria-label="Due time"

@@ -28,16 +28,20 @@
     <Transition name="fade" appear>
       <div
         class="fixed inset-0 z-[90] bg-[var(--color-overlay)]"
+        aria-hidden="true"
         @click="emit('toggle-time', false)"
       />
     </Transition>
 
     <Transition name="popover" appear>
       <div
-        class="fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] max-w-72 -translate-x-1/2 -translate-y-1/2 flex-row items-center justify-center gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-[var(--color-text)] shadow-[var(--shadow-soft)]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Set due time"
+        class="app-card fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] max-w-72 -translate-x-1/2 -translate-y-1/2 flex-row items-center justify-center gap-4 p-4 text-[var(--color-text)]"
       >
         <TimeField placeholder="hh" :max="23" v-model="hours" />
-        <span>:</span>
+        <span class="text-lg font-semibold text-[var(--color-text-muted)]">:</span>
         <TimeField placeholder="mm" :max="59" v-model="minutes" />
       </div>
     </Transition>

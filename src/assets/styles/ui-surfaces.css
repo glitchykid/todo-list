@@ -1,13 +1,39 @@
 @layer components {
   .app-panel {
-    @apply rounded-2xl border border-[var(--color-border)];
-    background: var(--color-surface);
+    @apply rounded-[1.75rem] border;
+    border-color: var(--color-border);
+    background:
+      linear-gradient(
+        170deg,
+        color-mix(in srgb, var(--color-surface-raised) 86%, transparent) 0%,
+        color-mix(in srgb, var(--color-surface) 90%, transparent) 100%
+      );
     box-shadow: var(--shadow-panel);
-    backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(12px) saturate(125%);
+  }
+
+  .app-card {
+    @apply rounded-2xl border;
+    border-color: var(--color-border);
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .app-control {
+    @apply min-h-11 rounded-xl border transition-colors;
+    border-color: var(--color-border);
+    background: var(--color-control-surface);
+  }
+
+  .app-control:hover {
+    background: var(--color-control-hover);
+  }
+
+  .app-control:active {
+    background: var(--color-control-active);
   }
 
   .app-title-muted {
-    @apply text-[var(--color-text-muted)];
+    color: var(--color-text-muted);
   }
 }
-

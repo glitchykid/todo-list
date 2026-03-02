@@ -22,18 +22,17 @@
 
 <template>
   <div class="w-full">
-    <!-- Desktop Sorting Header -->
     <div
       class="mb-3 hidden grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_3rem] items-center gap-3 px-3 text-center text-[var(--color-text-muted)] md:grid"
     >
       <div v-for="option of sortingOptions" :key="option" class="w-full">
         <button
           type="button"
-          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-1 border px-3 transition-colors duration-200"
+          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-1 rounded-xl border px-3 text-sm font-semibold transition-colors duration-200"
           :class="
             activeSortingOption === option
               ? 'border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] shadow-[var(--shadow-soft)]'
-              : 'border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary-active)] hover:text-[var(--color-button-hover-text)]'
+              : 'border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]'
           "
           @click="activeSortingOption = option"
         >
@@ -57,14 +56,13 @@
       </label>
     </div>
 
-    <!-- Mobile Card Layout -->
     <div
       class="flex flex-col gap-4 leading-3 text-[var(--color-text)] md:hidden"
     >
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
-        class="relative rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4 shadow-[var(--shadow-soft)]"
+        class="app-card relative p-4"
       >
         <div class="flex flex-col gap-4">
           <div class="flex items-start justify-between gap-3">
@@ -92,13 +90,13 @@
           </div>
 
           <div class="grid grid-cols-2 gap-3 text-sm">
-            <div class="rounded-xl bg-[var(--color-surface)] px-3 py-2">
+            <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
               <p class="text-[var(--color-text-muted)]">Due date</p>
               <p class="mt-1 leading-5 text-[var(--color-text)]">
                 {{ toLocaleDate(filteredTask.dueDate, filteredTask.dueTime) }}
               </p>
             </div>
-            <div class="rounded-xl bg-[var(--color-surface)] px-3 py-2">
+            <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
               <p class="text-[var(--color-text-muted)]">Completed on</p>
               <p class="mt-1 leading-5 text-[var(--color-text)]">
                 {{ filteredTask.completedOn || "Not completed" }}
@@ -109,12 +107,11 @@
       </div>
     </div>
 
-    <!-- Desktop Table Layout -->
     <div class="hidden w-full flex-col gap-2 text-[var(--color-text)] md:flex">
       <div
         v-for="filteredTask in filteredTasks"
         :key="filteredTask.id"
-        class="grid grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_3rem] items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-3 py-3 text-center"
+        class="app-card grid grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_minmax(0,1.2fr)_3rem] items-center gap-3 px-3 py-3 text-center"
       >
         <div class="flex min-w-0 flex-row items-center justify-start gap-2">
           <span class="font-semibold break-all">{{ filteredTask.title }}</span>
@@ -132,13 +129,13 @@
         </div>
         <div class="px-2">
           <p class="text-xs text-[var(--color-text-muted)]">Due date</p>
-          <p class="mt-1 truncate">
+          <p class="mt-1 truncate text-sm">
             {{ toLocaleDate(filteredTask.dueDate, filteredTask.dueTime) }}
           </p>
         </div>
         <div class="px-2">
           <p class="text-xs text-[var(--color-text-muted)]">Completed on</p>
-          <p class="mt-1 truncate">
+          <p class="mt-1 truncate text-sm">
             {{ filteredTask.completedOn || "Not completed" }}
           </p>
         </div>

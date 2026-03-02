@@ -10,36 +10,38 @@
 
 <template>
   <header
-    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-none border-x-0 border-b-0 md:relative md:h-full md:w-56 md:min-w-56 md:flex-col md:gap-6 md:border md:px-4 md:py-6"
+    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-2xl border px-2 py-2 md:relative md:h-full md:w-60 md:min-w-60 md:flex-col md:gap-5 md:rounded-[1.85rem] md:px-4 md:py-5"
   >
     <h5
-      class="hidden text-center !text-[var(--color-text-muted)] md:inline-block"
+      class="hidden text-center text-[1.65rem] font-semibold tracking-tight text-[var(--color-text-muted)] md:inline-block"
     >
       TODO LIST
     </h5>
     <hr class="hidden md:block" />
 
     <nav
-      class="flex min-h-20 w-full flex-row items-center gap-2 px-2 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] md:h-full md:flex-col md:gap-4 md:px-0 md:py-0"
+      class="flex min-h-20 w-full flex-row items-center gap-2 pb-[calc(0.35rem+env(safe-area-inset-bottom))] md:h-full md:flex-col md:gap-3 md:pb-0"
       aria-label="Primary"
     >
-      <div class="flex min-w-0 flex-1 flex-row gap-2 md:w-full md:flex-col md:gap-3">
+      <div
+        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:grid-cols-1 md:gap-2"
+      >
         <AppLink
           v-for="link in appRoutes"
           :key="link.name"
           :to="link.path"
-          class="flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-[var(--color-border)] px-2 py-2 transition-colors md:w-full md:flex-none md:flex-row md:justify-start md:gap-3 md:px-3 md:py-2.5"
-          activeClass="border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] !text-[var(--color-button-active-text)]"
-          inactiveClass="bg-[var(--color-control-surface)] text-[var(--color-text-muted)] md:hover:bg-[var(--color-primary-hover)] md:hover:text-[var(--color-button-hover-text)]"
+          class="flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-2 text-center transition-colors md:w-full md:flex-row md:justify-start md:gap-3 md:px-3"
+          activeClass="border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]"
+          inactiveClass="border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
         >
-          <component :is="link.icon" class="size-9 md:size-5" />
-          <div class="text-[16px] leading-4">
+          <component :is="link.icon" class="size-6 md:size-5" />
+          <span class="text-[0.8rem] leading-4 font-semibold md:text-[0.95rem]">
             {{ link.label }}
-          </div>
+          </span>
         </AppLink>
       </div>
 
-      <div class="flex items-center md:hidden">
+      <div class="ml-auto flex items-center md:hidden">
         <ActionButton
           :icon="isDark ? SunIcon : MoonIcon"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
@@ -51,12 +53,12 @@
       </div>
 
       <div
-        class="ml-auto hidden border-t border-[var(--color-border)] pt-4 md:mt-auto md:ml-0 md:flex md:justify-center"
+        class="ml-auto hidden border-t border-[var(--color-border)] pt-4 md:mt-auto md:ml-0 md:flex md:w-full md:justify-center"
       >
         <ActionButton
           :icon="isDark ? SunIcon : MoonIcon"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-          class="h-10 w-10 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-soft)]"
+          class="h-11 w-11 rounded-full border border-[var(--color-border)]"
           :without-paddings-for-icon="true"
           :custom-icon-size="4"
           @click="toggleTheme"

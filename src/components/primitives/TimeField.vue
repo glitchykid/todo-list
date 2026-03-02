@@ -36,8 +36,10 @@
     :placeholder="props.placeholder"
     :maxlength="2"
     type="text"
+    inputmode="numeric"
+    aria-label="Time value"
     v-model="value"
     @input="sanitize"
-    class="flex h-11 w-full min-w-15 flex-row rounded-xl border border-[var(--color-border)] px-4 py-3 text-center text-[var(--color-text)]"
+    class="flex h-11 w-full min-w-16 flex-row rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 py-3 text-center text-[var(--color-text)] hover:bg-[var(--color-control-hover)]"
   />
 </template>

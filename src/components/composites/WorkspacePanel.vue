@@ -24,15 +24,15 @@
 </script>
 
 <template>
-  <div class="flex h-full min-h-0 flex-col gap-8">
+  <div class="flex h-full min-h-0 flex-col gap-6">
     <h6
-      class="text-center !text-[1.5rem] !leading-8 !font-semibold !text-[var(--color-text-muted)]"
+      class="text-center !text-[1.35rem] !leading-8 !font-semibold !text-[var(--color-heading)]"
     >
       Spaces
     </h6>
 
     <div
-      class="flex min-h-0 flex-1 flex-col overflow-hidden border-y border-[var(--color-border)] bg-[var(--color-surface-raised)]"
+      class="app-card flex min-h-0 flex-1 flex-col overflow-hidden"
     >
       <TransitionGroup
         name="workspaces"
@@ -52,7 +52,7 @@
             :active="workspace.id === currentWorkspaceId"
             :border="true"
             :aria-label="`Switch workspace to ${workspace.name}`"
-            class="z-10 !w-full !max-w-none !justify-start !rounded-none !border-x-0 !border-t-0 !border-b !border-[var(--color-border)] !px-3 !py-2.5 text-left shadow-none select-none"
+            class="z-10 !w-full !max-w-none !justify-start !rounded-none !border-x-0 !border-t-0 !border-b !border-[var(--color-border)] !px-3 !py-2.5 text-left !font-medium shadow-none"
             :label="workspace.name"
             @click="currentWorkspaceId = workspace.id"
           />
@@ -63,7 +63,7 @@
             type="text"
             @keyup.enter="commitWorkspaceRename"
             @blur="commitWorkspaceRename"
-            class="h-11 w-full rounded-none border-x-0 border-t-0 border-b border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-left text-[var(--color-text)]"
+            class="h-11 w-full rounded-none border-x-0 border-t-0 border-b border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-left text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/80"
             maxlength="30"
           />
 
@@ -74,7 +74,7 @@
             >
               <button
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
                 :aria-label="`Delete workspace ${workspace.name}`"
                 @click="removeWorkspaceWithTasks(workspace.id, workspace.name)"
               >
@@ -87,7 +87,7 @@
                   chosenWorkspaceForRename !== workspace.id
                 "
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
                 :aria-label="`Rename workspace ${workspace.name}`"
                 @click="startWorkspaceRename(workspace.id, workspace.name)"
               >
@@ -97,7 +97,7 @@
               <button
                 v-else
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
                 aria-label="Save workspace name"
                 @click="commitWorkspaceRename"
               >
@@ -109,14 +109,14 @@
       </TransitionGroup>
     </div>
 
-    <div class="shrink-0 py-2">
+    <div class="shrink-0 py-1">
       <div class="flex flex-row justify-center gap-2">
         <ActionButton
           :icon="FolderPlusIcon"
           :custom-icon-size="4"
           aria-label="Add workspace"
           :without-paddings-for-icon="true"
-          class="h-10 w-10 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-soft)]"
+          class="h-11 w-11 rounded-full border border-[var(--color-border)]"
           @click="workspacesStore.addWorkspace('New space')"
         />
         <ActionButton
@@ -125,7 +125,7 @@
           :active="showActions"
           aria-label="Toggle workspace actions"
           :without-paddings-for-icon="true"
-          class="h-10 w-10 rounded-full border border-[var(--color-border)] shadow-[var(--shadow-soft)]"
+          class="h-11 w-11 rounded-full border border-[var(--color-border)]"
           @click="toggleTaskActions"
         />
       </div>

@@ -1,7 +1,6 @@
 <template>
-  <!-- Fixed header container -->
-  <div class="sticky top-0 z-30 w-full bg-transparent backdrop-blur-[2px]">
-    <div class="flex w-full flex-col gap-2 md:gap-8">
+  <div class="sticky top-0 z-30 w-full bg-transparent">
+    <div class="flex w-full flex-col gap-3 md:gap-6">
       <div class="flex w-full flex-row items-center justify-between">
         <ActionButton
           class="md:hidden"
@@ -10,18 +9,17 @@
           @click="toggleAside = true"
         />
         <h6
-          class="w-full min-w-0 truncate text-right !text-[1.65rem] !leading-8 !font-semibold !text-[var(--color-text-muted)] md:text-center"
+          class="w-full min-w-0 truncate text-right !text-[1.45rem] !leading-8 !font-semibold !text-[var(--color-heading)] md:text-center"
         >
           {{ currentWorkspaceName }}
         </h6>
       </div>
 
       <!-- Mobile Layout -->
-      <div class="flex flex-col gap-4 md:hidden">
+      <div class="app-card flex flex-col gap-3 p-3 md:hidden">
         <hr />
-        <!-- Collapsible date controls (mobile only) -->
         <div class="flex items-center justify-between">
-          <span class="text-sm font-semibold text-[var(--color-text-muted)]">
+          <span class="text-sm font-semibold tracking-wide text-[var(--color-text-muted)]">
             Date
           </span>
           <ActionButton
@@ -34,7 +32,6 @@
 
         <Transition name="expand">
           <div v-if="isMobileDatePanelOpen" class="flex flex-col gap-4">
-            <!-- Today & Tomorrow buttons -->
             <div class="grid grid-cols-2 gap-4">
               <ActionButton
                 v-for="button in quickButtons.slice(0, 2)"
@@ -47,9 +44,7 @@
               />
             </div>
 
-            <!-- Select date button and formatted date in same-width grid -->
             <div class="grid grid-cols-2 items-center gap-4">
-              <!-- Left column: Select date button -->
               <div class="relative">
                 <ActionButton
                   label="Select a date..."
@@ -67,10 +62,9 @@
                 </Transition>
               </div>
 
-              <!-- Right column: Date aligned to the right of its cell -->
               <div class="flex justify-center">
                 <span
-                  class="text-lg font-semibold text-nowrap text-[var(--color-text-muted)]"
+                  class="text-sm font-semibold text-nowrap text-[var(--color-text-muted)]"
                 >
                   {{ formattedSelectedDate }}
                 </span>
@@ -82,9 +76,8 @@
       </div>
 
       <!-- Desktop Layout -->
-      <div class="hidden md:flex md:items-center md:justify-between md:gap-16">
-        <div class="flex items-center gap-8">
-          <!-- All buttons together -->
+      <div class="app-card hidden p-4 md:flex md:items-center md:justify-between md:gap-6">
+        <div class="flex items-center gap-3 lg:gap-4">
           <ActionButton
             v-for="button in quickButtons.slice(0, 2)"
             :key="button.name"
@@ -115,7 +108,7 @@
 
         <!-- Formatted date on the right -->
         <span
-          class="text-right text-lg font-semibold text-nowrap text-[var(--color-text-muted)]"
+          class="text-right text-base font-semibold text-nowrap text-[var(--color-text-muted)]"
         >
           {{ formattedSelectedDate }}
         </span>

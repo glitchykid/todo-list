@@ -5,7 +5,7 @@
     :filters="filters"
     :which-type="activeTaskTypeFilter"
   >
-    <h6 class="app-title-muted text-center !text-[var(--color-text-muted)]">
+    <h6 class="text-center !text-[var(--color-heading)]">
       {{ title }}
     </h6>
     <ArchiveFiltersPanel
@@ -24,13 +24,12 @@
     :purge="purgeCheckedTasks"
     :recover="recoverCheckedTasks"
   >
-    <section class="flex flex-row place-content-end gap-2 text-center">
+    <section class="flex flex-row flex-wrap place-content-end gap-2 text-center">
       <button
         type="button"
-        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         :class="
-          checkedTaskIds.length > 0 &&
-          'text-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'
+          checkedTaskIds.length > 0 && 'text-[var(--color-danger)]'
         "
         :disabled="checkedTaskIds.length === 0"
         @click="purgeCheckedTasks"
@@ -39,15 +38,14 @@
       </button>
       <button
         type="button"
-        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text-muted)] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         :class="
-          checkedTaskIds.length > 0 &&
-          'text-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'
+          checkedTaskIds.length > 0 && 'text-[var(--color-success)]'
         "
         :disabled="checkedTaskIds.length === 0"
         @click="recoverCheckedTasks"
       >
-        Recovery
+        Recover
       </button>
     </section>
   </slot>
@@ -66,9 +64,9 @@
       class="flex h-full w-full items-center justify-center px-6"
     >
       <div
-        class="w-full max-w-md rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-raised)] px-6 py-10 text-center"
+        class="app-card w-full max-w-md border-dashed px-6 py-10 text-center"
       >
-        <p class="app-title-muted text-2xl leading-8 font-bold">
+        <p class="app-title-muted text-2xl leading-8 font-semibold">
           {{ emptyMessage }}
         </p>
         <p class="mt-2 text-base text-[var(--color-text-muted)]">

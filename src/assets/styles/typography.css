@@ -1,23 +1,31 @@
-h5 {
-  @apply text-[38px] leading-none font-bold text-[var(--color-text)];
-}
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    color: var(--color-heading);
+    letter-spacing: -0.01em;
+  }
 
-h6 {
-  @apply text-[30px] leading-8 font-bold text-[var(--color-text)];
-}
+  h5 {
+    @apply text-[2rem] leading-[2.15rem] font-semibold;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-p,
-label {
-  @apply select-none;
-}
+  h6 {
+    @apply text-[1.5rem] leading-8 font-semibold;
+  }
 
-hr {
-  @apply h-px border-none bg-[var(--color-border)] md:block;
+  p,
+  span,
+  label {
+    @apply leading-6;
+  }
+
+  hr {
+    @apply h-px border-none;
+    background: var(--color-border);
+  }
 }

@@ -269,6 +269,7 @@
     <Transition name="fade" appear>
       <div
         class="fixed inset-0 z-[90] bg-[var(--color-overlay)]"
+        aria-hidden="true"
         @click="emit('toggle-calendar', false)"
       />
     </Transition>
@@ -276,7 +277,10 @@
     <Transition name="popover" appear>
       <div
         ref="calendarRef"
-        class="fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-[var(--color-text)] shadow-[var(--shadow-soft)] sm:w-auto sm:gap-4 sm:p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Select date"
+        class="app-card fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 p-3 text-[var(--color-text)] sm:w-auto sm:gap-4 sm:p-4"
       >
         <!-- Month/Year Selectors -->
         <div
@@ -312,14 +316,13 @@
         <!-- Calendar Days -->
         <div class="grid grid-cols-7 justify-items-center gap-y-6">
           <template v-for="cell in calendarCells" :key="cell.key">
-            <!-- Current Month Days with Tasks Indicator -->
             <div v-if="cell.isCurrentMonth" class="relative">
               <ActionButton
                 :active="isActiveDay(cell.date)"
                 :border="false"
                 :label="cell.displayDay.toString()"
                 :name="cell.displayDay.toString()"
-                class="h-8 !min-h-0 w-8 !px-0 !py-0 text-xs sm:h-9 sm:w-9"
+                class="h-8 !min-h-0 w-8 !rounded-full !px-0 !py-0 text-xs sm:h-9 sm:w-9"
                 @click="
                   () => {
                     selectDay(cell.date);
@@ -328,12 +331,11 @@
                 "
                 :no-truncate="true"
                 :class="{
-                  'border border-[var(--color-border)] bg-[var(--color-surface-raised)]':
+                  'border border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text)]':
                     hasTasks(cell.date) && !isActiveDay(cell.date),
                 }"
               />
 
-              <!-- Dot indicator for tasks - Fixed positioning -->
               <div
                 v-if="hasTasks(cell.date)"
                 class="absolute -top-0.5 -right-0.5 z-10"
@@ -344,7 +346,6 @@
               </div>
             </div>
 
-            <!-- Non-current month days -->
             <span
               v-else
               class="flex h-8 w-8 items-center-safe justify-center text-xs text-[var(--color-text-muted)]/60"
