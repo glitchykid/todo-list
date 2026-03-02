@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { useIsDesktop } from "@/composables/useIsDesktop";
   import TimePicker from "@/components/composites/TimePicker.vue";
   import ActionButton from "@/components/primitives/ActionButton.vue";
   import RepeatRuleMenu from "@/components/primitives/RepeatRuleMenu.vue";
+  import { useIsDesktop } from "@/composables/useIsDesktop";
   import type { TaskRepeatRule } from "@/domain/tasks/repeat";
   import { useCalendarStore } from "@/stores/calendar";
   import { type TaskDraft } from "@/stores/tasks";
@@ -97,14 +97,12 @@
 </script>
 
 <template>
-  <div
-    class="app-card flex items-center gap-3 px-3 py-2"
-  >
+  <div class="app-card flex items-center gap-3 px-3 py-2">
     <label :for="taskTitleInputId" class="sr-only">Task title</label>
     <input
       :id="taskTitleInputId"
       placeholder="Enter a task"
-      class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)]"
+      class="h-11 w-full flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)] focus-visible:border-[var(--color-primary-active)] focus-visible:bg-[var(--color-control-hover)]"
       v-model="taskTitle"
       @keyup.enter="emit('submit')"
     />

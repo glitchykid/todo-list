@@ -25,13 +25,13 @@
       :purge="purgeCheckedTasks"
       :recover="recoverCheckedTasks"
     >
-      <section class="flex flex-row flex-wrap place-content-end gap-3 text-center">
+      <section
+        class="flex flex-row flex-wrap place-content-end gap-3 text-center"
+      >
         <button
           type="button"
-          class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] disabled:cursor-not-allowed disabled:opacity-50"
-          :class="
-            checkedTaskIds.length > 0 && 'text-[var(--color-danger)]'
-          "
+          class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)] disabled:cursor-not-allowed disabled:opacity-50"
+          :class="checkedTaskIds.length > 0 && 'text-[var(--color-danger)]'"
           :disabled="checkedTaskIds.length === 0"
           @click="purgeCheckedTasks"
         >
@@ -39,10 +39,8 @@
         </button>
         <button
           type="button"
-          class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] disabled:cursor-not-allowed disabled:opacity-50"
-          :class="
-            checkedTaskIds.length > 0 && 'text-[var(--color-success)]'
-          "
+          class="min-h-11 cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 text-sm font-semibold text-[var(--color-text-muted)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)] disabled:cursor-not-allowed disabled:opacity-50"
+          :class="checkedTaskIds.length > 0 && 'text-[var(--color-success)]'"
           :disabled="checkedTaskIds.length === 0"
           @click="recoverCheckedTasks"
         >
@@ -68,7 +66,9 @@
           <div
             class="app-card w-full max-w-md border-dashed px-5 py-8 text-center sm:px-6 sm:py-10"
           >
-            <p class="app-title-muted text-xl leading-7 font-semibold sm:text-2xl sm:leading-8">
+            <p
+              class="app-title-muted text-xl leading-7 font-semibold sm:text-2xl sm:leading-8"
+            >
               {{ emptyMessage }}
             </p>
             <p class="mt-2 text-sm text-[var(--color-text-muted)] sm:text-base">

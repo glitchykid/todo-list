@@ -18,7 +18,14 @@
 </script>
 
 <template>
-  <div class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 py-2 text-sm transition-colors hover:bg-[var(--color-control-hover)]">
+  <div
+    class="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors"
+    :class="
+      props.picked === props.value
+        ? 'border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
+        : 'border-[var(--color-border)] bg-[var(--color-control-surface)] hover:bg-[var(--color-control-hover)]'
+    "
+  >
     <input
       type="radio"
       :id="props.id"

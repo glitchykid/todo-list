@@ -46,8 +46,8 @@
           class="min-h-11 w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
           :class="
             defaultValue === type
-              ? 'bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-              : 'text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]'
+              ? 'bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] active:bg-[var(--color-control-active)]'
+              : 'text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)] active:bg-[var(--color-control-active)]'
           "
           @click="changeDefault(type)"
         >

@@ -28,10 +28,10 @@
 
   const stateClasses = computed(() =>
     props.active
-      ? "bg-[var(--color-primary-hover)] text-[var(--color-heading)]"
+      ? "bg-[var(--color-primary-hover)] text-[var(--color-heading)] active:bg-[var(--color-control-active)]"
       : isBordered.value
-        ? "bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
-        : "bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]",
+        ? "bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)] active:bg-[var(--color-control-active)]"
+        : "bg-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)] active:bg-[var(--color-control-active)]",
   );
 
   const borderClasses = computed(() =>

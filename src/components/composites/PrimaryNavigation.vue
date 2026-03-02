@@ -10,7 +10,7 @@
 
 <template>
   <header
-    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-none border-x-0 border-b-0 px-1 py-1 shadow-none md:relative md:h-full md:w-60 md:min-w-60 md:self-stretch md:flex-col md:gap-5 md:rounded-[1.85rem] md:border md:px-4 md:py-5 md:shadow-[var(--shadow-panel)]"
+    class="app-panel sticky right-0 bottom-0 left-0 z-30 flex h-auto w-full flex-row rounded-none border-x-0 border-b-0 px-1 py-1 shadow-none md:relative md:h-full md:w-60 md:min-w-60 md:flex-col md:gap-5 md:self-stretch md:rounded-[1.85rem] md:border md:px-4 md:py-5 md:shadow-[var(--shadow-panel)]"
   >
     <h5
       class="app-section-title hidden text-center !text-[1.55rem] md:inline-block"
@@ -24,15 +24,15 @@
       aria-label="Primary"
     >
       <div
-        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:flex-none md:grid-cols-1 md:auto-rows-min md:content-start md:gap-3"
+        class="grid min-w-0 flex-1 grid-cols-3 gap-2 md:w-full md:flex-none md:auto-rows-min md:grid-cols-1 md:content-start md:gap-3"
       >
         <AppLink
           v-for="link in appRoutes"
           :key="link.name"
           :to="link.path"
           class="flex min-h-11 min-w-0 flex-col items-center justify-center gap-2 rounded-xl border px-2 py-2 text-center transition-colors md:w-full md:flex-row md:justify-start md:gap-3 md:px-3"
-          activeClass="border-[var(--color-border)] bg-[var(--color-control-hover)] text-[var(--color-heading)]"
-          inactiveClass="border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]"
+          activeClass="border-[var(--color-border)] bg-[var(--color-control-hover)] text-[var(--color-heading)] active:bg-[var(--color-control-active)]"
+          inactiveClass="border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)] active:bg-[var(--color-control-active)]"
         >
           <component :is="link.icon" class="size-5" />
           <span class="text-[0.8rem] leading-4 font-medium md:text-[0.95rem]">

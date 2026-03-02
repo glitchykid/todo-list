@@ -28,7 +28,7 @@
       <div v-for="option of sortingOptions" :key="option" class="w-full">
         <button
           type="button"
-          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors duration-200"
+          class="flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors duration-200 active:bg-[var(--color-control-active)]"
           :class="
             activeSortingOption === option
               ? 'border-[var(--color-primary-active)] bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] shadow-[var(--shadow-soft)]'
@@ -56,9 +56,7 @@
       </label>
     </div>
 
-    <div
-      class="flex flex-col gap-4 text-[var(--color-text)] md:hidden"
-    >
+    <div class="flex flex-col gap-4 text-[var(--color-text)] md:hidden">
       <div
         class="flex items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3 py-2"
       >
@@ -67,7 +65,7 @@
         </span>
         <button
           type="button"
-          class="min-h-9 cursor-pointer rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-sm font-semibold text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-control-hover)]"
+          class="min-h-9 cursor-pointer rounded-lg border border-[var(--color-border)] px-3 py-1.5 text-sm font-semibold text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
           :class="props.allSelected && 'text-[var(--color-button-active-text)]'"
           @click="props.toggleSelectAll()"
         >
@@ -107,15 +105,19 @@
           </div>
 
           <div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-            <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+            <div
+              class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2"
+            >
               <p class="text-[var(--color-text-muted)]">Due date</p>
-              <p class="mt-1 break-words leading-5 text-[var(--color-text)]">
+              <p class="mt-1 leading-5 break-words text-[var(--color-text)]">
                 {{ toLocaleDate(filteredTask.dueDate, filteredTask.dueTime) }}
               </p>
             </div>
-            <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+            <div
+              class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2"
+            >
               <p class="text-[var(--color-text-muted)]">Completed on</p>
-              <p class="mt-1 break-words leading-5 text-[var(--color-text)]">
+              <p class="mt-1 leading-5 break-words text-[var(--color-text)]">
                 {{ filteredTask.completedOn || "Not completed" }}
               </p>
             </div>

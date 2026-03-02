@@ -40,7 +40,7 @@
     <input
       :id="props.id"
       type="text"
-      class="h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3.5 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)]"
+      class="h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-3.5 text-[var(--color-text)] transition-colors placeholder:text-[var(--color-text-muted)]/80 hover:bg-[var(--color-control-hover)] focus-visible:border-[var(--color-primary-active)] focus-visible:bg-[var(--color-control-hover)]"
       :placeholder="props.placeholder"
       v-bind="inputAttrs"
       v-model="filter"

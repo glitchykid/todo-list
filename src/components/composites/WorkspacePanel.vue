@@ -25,11 +25,7 @@
 
 <template>
   <div class="flex h-full min-h-0 flex-col gap-6">
-    <h6
-      class="app-section-title text-center !text-[1.35rem]"
-    >
-      Spaces
-    </h6>
+    <h6 class="app-section-title text-center !text-[1.35rem]">Spaces</h6>
 
     <div
       class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-none"
@@ -74,7 +70,7 @@
             >
               <button
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
                 :aria-label="`Delete workspace ${workspace.name}`"
                 @click="removeWorkspaceWithTasks(workspace.id, workspace.name)"
               >
@@ -87,7 +83,7 @@
                   chosenWorkspaceForRename !== workspace.id
                 "
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
                 :aria-label="`Rename workspace ${workspace.name}`"
                 @click="startWorkspaceRename(workspace.id, workspace.name)"
               >
@@ -97,7 +93,7 @@
               <button
                 v-else
                 type="button"
-                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+                class="flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border-l border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
                 aria-label="Save workspace name"
                 @click="commitWorkspaceRename"
               >

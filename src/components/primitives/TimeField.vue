@@ -40,6 +40,6 @@
     aria-label="Time value"
     v-model="value"
     @input="sanitize"
-    class="flex h-11 w-full min-w-16 flex-row rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 py-3 text-center text-[var(--color-text)] hover:bg-[var(--color-control-hover)]"
+    class="flex h-11 w-full min-w-16 flex-row rounded-xl border border-[var(--color-border)] bg-[var(--color-control-surface)] px-4 py-3 text-center text-[var(--color-text)] transition-colors hover:bg-[var(--color-control-hover)] focus-visible:border-[var(--color-primary-active)] focus-visible:bg-[var(--color-control-hover)]"
   />
 </template>

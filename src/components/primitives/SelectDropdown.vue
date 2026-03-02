@@ -26,7 +26,9 @@
     [normalizedValues, () => defaultValue.value],
     ([values, modelValue]) => {
       const fallback = modelValue ?? values[0] ?? "";
-      const nextSelected = values.includes(fallback) ? fallback : (values[0] ?? "");
+      const nextSelected = values.includes(fallback)
+        ? fallback
+        : (values[0] ?? "");
 
       selected.value = nextSelected;
       if (defaultValue.value !== nextSelected) {
@@ -97,11 +99,7 @@
 </script>
 
 <template>
-  <div
-    ref="rootRef"
-    class="relative z-50"
-    @keydown="handleRootKeydown"
-  >
+  <div ref="rootRef" class="relative z-50" @keydown="handleRootKeydown">
     <button
       :id="triggerId"
       type="button"
@@ -140,8 +138,8 @@
           class="min-h-11 w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors"
           :class="
             selected === value
-              ? 'bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)]'
-              : 'text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)]'
+              ? 'bg-[var(--color-primary-hover)] text-[var(--color-button-active-text)] active:bg-[var(--color-control-active)]'
+              : 'text-[var(--color-text-muted)] hover:bg-[var(--color-control-hover)] hover:text-[var(--color-button-hover-text)] active:bg-[var(--color-control-active)]'
           "
           @click="changeValue(value)"
         >

@@ -48,7 +48,7 @@
           type="button"
           aria-label="Skip repeated task for selected date"
           @click="skipTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-info)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
         >
           <ArrowLongRightIcon class="size-4" />
         </button>
@@ -56,7 +56,7 @@
           type="button"
           aria-label="Complete task"
           @click="completeTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-success)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
         >
           <CheckIcon class="size-4" />
         </button>
@@ -64,7 +64,7 @@
           type="button"
           aria-label="Remove task"
           @click="removeTask"
-          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)]"
+          class="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--color-border)] bg-[var(--color-control-surface)] text-[var(--color-danger)] transition-colors duration-200 hover:bg-[var(--color-control-hover)] active:bg-[var(--color-control-active)]"
         >
           <TrashIcon class="size-4" />
         </button>
