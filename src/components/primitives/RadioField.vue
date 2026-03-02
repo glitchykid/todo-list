@@ -29,7 +29,7 @@
     />
     <label
       :for="props.id"
-      class="cursor-pointer text-sm leading-5 text-nowrap text-[var(--color-text-muted)]"
+      class="cursor-pointer text-sm leading-5 text-[var(--color-text-muted)]"
     >
       {{ props.value }}
     </label>

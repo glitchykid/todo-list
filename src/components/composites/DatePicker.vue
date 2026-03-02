@@ -280,7 +280,7 @@
         role="dialog"
         aria-modal="true"
         aria-label="Select date"
-        class="app-card fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 p-3 text-[var(--color-text)] sm:w-auto sm:gap-4 sm:p-4"
+        class="app-card fixed top-1/2 left-1/2 z-[100] flex max-h-[calc(100dvh-1.25rem)] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 overflow-auto p-3 text-[var(--color-text)] sm:w-auto sm:gap-4 sm:p-4"
       >
         <!-- Month/Year Selectors -->
         <div
@@ -314,7 +314,7 @@
         </div>
 
         <!-- Calendar Days -->
-        <div class="grid grid-cols-7 justify-items-center gap-y-6">
+        <div class="grid grid-cols-7 justify-items-center gap-y-3 sm:gap-y-6">
           <template v-for="cell in calendarCells" :key="cell.key">
             <div v-if="cell.isCurrentMonth" class="relative">
               <ActionButton

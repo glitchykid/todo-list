@@ -37,7 +37,7 @@
         role="dialog"
         aria-modal="true"
         aria-label="Select repeat rule"
-        class="app-card fixed top-1/2 left-1/2 z-[100] flex max-h-[70vh] w-[calc(100vw-2rem)] max-w-60 -translate-x-1/2 -translate-y-1/2 flex-col overflow-auto p-1"
+        class="app-card fixed top-1/2 left-1/2 z-[100] flex max-h-[calc(100dvh-1.25rem)] w-[calc(100vw-1rem)] max-w-60 -translate-x-1/2 -translate-y-1/2 flex-col overflow-auto p-1"
       >
         <button
           v-for="type in typesOfRepeat"

@@ -38,7 +38,7 @@
         role="dialog"
         aria-modal="true"
         aria-label="Set due time"
-        class="app-card fixed top-1/2 left-1/2 z-[100] flex w-[calc(100vw-2rem)] max-w-72 -translate-x-1/2 -translate-y-1/2 flex-row items-center justify-center gap-4 p-4 text-[var(--color-text)]"
+        class="app-card fixed top-1/2 left-1/2 z-[100] flex max-h-[calc(100dvh-1.25rem)] w-[calc(100vw-1rem)] max-w-72 -translate-x-1/2 -translate-y-1/2 flex-row items-center justify-center gap-4 overflow-auto p-4 text-[var(--color-text)]"
       >
         <TimeField placeholder="hh" :max="23" v-model="hours" />
         <span class="text-lg font-semibold text-[var(--color-text-muted)]">:</span>

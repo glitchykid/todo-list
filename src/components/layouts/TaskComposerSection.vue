@@ -9,7 +9,7 @@
 </script>
 
 <template>
-  <div class="flex items-center gap-3 md:gap-4">
+  <div class="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
     <TaskComposer
       class="w-full"
       @update:task="updateTaskDraft"
@@ -17,13 +17,23 @@
       :reset-token="composerResetToken"
     />
     <ActionButton
+      class="md:hidden"
+      label="Add task"
+      :icon="PlusCircleIcon"
+      aria-label="Add task"
+      @click="submitTask"
+      :active="canSubmitTask"
+      :disabled="!canSubmitTask"
+      :border="true"
+    />
+    <ActionButton
+      class="hidden h-11 w-11 rounded-xl border border-[var(--color-border)] md:inline-flex"
       :icon="PlusCircleIcon"
       aria-label="Add task"
       @click="submitTask"
       :without-paddings-for-icon="true"
       :active="canSubmitTask"
       :disabled="!canSubmitTask"
-      class="h-11 w-11 rounded-xl border border-[var(--color-border)]"
     />
   </div>
 </template>

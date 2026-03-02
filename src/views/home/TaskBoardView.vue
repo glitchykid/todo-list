@@ -53,7 +53,7 @@
   <Transition name="sheet-left">
     <aside
       v-if="toggleAside"
-      class="fixed inset-y-3 left-3 z-[100] flex h-[calc(100%-1.5rem)] w-[74%] max-w-[22rem] flex-col overflow-y-auto rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-3 py-6 shadow-[var(--shadow-panel)] md:hidden"
+      class="fixed inset-y-2 left-2 z-[100] flex h-[calc(100%-1rem)] w-[min(22rem,calc(100%-1rem))] flex-col overflow-y-auto rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-3 py-5 shadow-[var(--shadow-panel)] md:hidden"
     >
       <WorkspacePanel />
     </aside>

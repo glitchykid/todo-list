@@ -1,13 +1,13 @@
 <template>
-  <section class="h-full w-full overflow-y-auto" aria-live="polite">
+  <section class="h-full w-full overflow-hidden" aria-live="polite">
     <!-- Empty state -->
     <div
       v-if="tasks.length === 0"
-      class="flex h-full items-center justify-center px-6"
+      class="flex h-full items-center justify-center px-2 sm:px-6"
     >
-      <div class="app-card w-full max-w-md border-dashed px-6 py-10 text-center">
-        <p class="text-2xl leading-8 font-semibold app-title-muted">No tasks yet</p>
-        <p class="mt-2 text-base text-[var(--color-text-muted)]">
+      <div class="app-card w-full max-w-md border-dashed px-5 py-8 text-center sm:px-6 sm:py-10">
+        <p class="text-xl leading-7 font-semibold app-title-muted sm:text-2xl sm:leading-8">No tasks yet</p>
+        <p class="mt-2 text-sm text-[var(--color-text-muted)] sm:text-base">
           Add your first task from the input below.
         </p>
       </div>

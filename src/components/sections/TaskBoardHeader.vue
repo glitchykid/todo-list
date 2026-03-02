@@ -44,7 +44,7 @@
               />
             </div>
 
-            <div class="grid grid-cols-2 items-center gap-4">
+            <div class="grid grid-cols-1 items-center gap-3 sm:grid-cols-2 sm:gap-4">
               <div class="relative">
                 <ActionButton
                   label="Select a date..."
@@ -64,7 +64,7 @@
 
               <div class="flex justify-center">
                 <span
-                  class="text-sm font-semibold text-nowrap text-[var(--color-text-muted)]"
+                  class="text-center text-sm font-semibold text-[var(--color-text-muted)] sm:text-nowrap"
                 >
                   {{ formattedSelectedDate }}
                 </span>

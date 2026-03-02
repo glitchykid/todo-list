@@ -77,7 +77,7 @@
           v-model:filter="spaceFilter"
         />
       </div>
-      <fieldset class="flex h-fit flex-col items-start gap-2">
+      <fieldset class="flex h-fit flex-wrap items-start gap-2">
         <legend class="sr-only">Task type</legend>
         <RadioField
           v-for="radioInput in radioInputs"

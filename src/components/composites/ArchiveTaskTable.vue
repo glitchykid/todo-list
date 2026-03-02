@@ -57,7 +57,7 @@
     </div>
 
     <div
-      class="flex flex-col gap-4 leading-3 text-[var(--color-text)] md:hidden"
+      class="flex flex-col gap-4 text-[var(--color-text)] md:hidden"
     >
       <div
         v-for="filteredTask in filteredTasks"
@@ -77,28 +77,29 @@
                 />
               </div>
               <div
-                class="mt-2 inline-flex min-h-8 items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm text-[var(--color-text-muted)]"
+                class="mt-2 inline-flex min-h-8 max-w-full items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm text-[var(--color-text-muted)]"
               >
                 {{ filteredTask.workspaceSnapshot ?? "Deleted workspace" }}
               </div>
             </div>
             <CheckboxField
               :id="String(filteredTask.id)"
+              :aria-label="`Select task ${filteredTask.title}`"
               class="accent-[var(--color-primary)]"
               v-model:checked-tasks="checkedTasks"
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
             <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
               <p class="text-[var(--color-text-muted)]">Due date</p>
-              <p class="mt-1 leading-5 text-[var(--color-text)]">
+              <p class="mt-1 break-words leading-5 text-[var(--color-text)]">
                 {{ toLocaleDate(filteredTask.dueDate, filteredTask.dueTime) }}
               </p>
             </div>
             <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
               <p class="text-[var(--color-text-muted)]">Completed on</p>
-              <p class="mt-1 leading-5 text-[var(--color-text)]">
+              <p class="mt-1 break-words leading-5 text-[var(--color-text)]">
                 {{ filteredTask.completedOn || "Not completed" }}
               </p>
             </div>
@@ -141,6 +142,7 @@
         </div>
         <CheckboxField
           :id="String(filteredTask.id)"
+          :aria-label="`Select task ${filteredTask.title}`"
           class="mx-auto flex accent-[var(--color-primary)]"
           v-model:checked-tasks="checkedTasks"
         />
