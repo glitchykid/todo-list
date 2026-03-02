@@ -1,6 +1,6 @@
 <template>
   <main
-    class="mobile-shell-edge app-panel flex h-full min-h-0 flex-1 flex-col gap-2 overflow-hidden rounded-none border-0 md:hidden"
+    class="app-panel flex h-full min-h-0 flex-1 flex-col gap-0 overflow-hidden rounded-[1.5rem] rounded-b-none border md:hidden"
   >
     <header v-if="$slots.header" class="shrink-0">
       <slot name="header" />
@@ -10,7 +10,7 @@
       <slot name="toolbar" />
     </section>
 
-    <section class="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
+    <section class="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <slot />
     </section>
 
